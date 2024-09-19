@@ -7,6 +7,7 @@ import '../../data/providers/expenses_provider.dart';
 import '../../domain/Services/_service_locator.dart';
 import '../../domain/Services/animation_controller_service.dart';
 import '../../domain/Services/dialogs_service.dart';
+import '../../domain/helpers/helpers.dart';
 import '../../domain/models/expense_model.dart';
 import '../components/chart/chart.dart';
 import '../components/chart/chart_alt.dart';
@@ -24,12 +25,19 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   late AnimationService animationService;
+  late bool isDarkTheme;
 
   @override
   void initState() {
     super.initState();
     animationService = GetIt.instance<AnimationService>();
     animationService.init(this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    isDarkTheme = Helpers.isDarkMode(context);
   }
 
   @override
@@ -135,17 +143,18 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
     showDialog(
       context: context,
+      barrierColor: Theme.of(context)
+          .colorScheme
+          .onTertiaryContainer
+          .withOpacity(isDarkTheme ? 0.85 : 0.74),
       builder: (context) {
         return CustomDialog(
-          contentWidget: NewExpense(
-            key: newExpenseState,
-          ),
+          contentWidget: NewExpense(key: newExpenseState),
           onActionPressed: () {
             final expenseState = newExpenseState.currentState;
             if (expenseState != null) {
               // Викликаємо метод валідації
               final isValid = expenseState.validateExpenseData();
-
               // Якщо дані валідні, додаємо витрату
               if (isValid) {
                 final expenseData = expenseState.getExpenseData();
@@ -157,7 +166,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                         category: expenseData['category'],
                       ),
                     );
-                Navigator.of(context).pop(); // Закриваємо діалог
+                Navigator.of(context).pop();
               }
             }
           },

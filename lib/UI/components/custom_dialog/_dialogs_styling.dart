@@ -82,7 +82,7 @@ abstract class AppDialogsStyling {
           left: 0,
           right: 0,
           child: Container(
-            color: colorScheme.surface.withOpacity(0.5),
+            color: colorScheme.onTertiary.withOpacity(0.15),
             padding: AppStylingConstants.allPadding10,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
