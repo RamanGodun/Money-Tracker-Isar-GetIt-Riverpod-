@@ -11,22 +11,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/*
+    In this app will be used Isar DB for local storage, RiverPod for theme changing, GetIt for DIs
+ */
+
 import 'package:flutter/material.dart';
-import 'UI/pages/0.home_screen.dart';
+import 'UI/components/cashed_on_get_it.dart';
+import 'UI/pages/main_screen.dart';
 import 'data/Theme_configuration/Themes_provider/app_themes.dart';
 import 'data/Theme_configuration/Themes_provider/themes_provider.dart';
 import 'domain/Services/_service_locator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/*
-    In this app will be used Isar DB for local storage, RiverPod for theme changing, GetIt for DIs
- */
-
 void main() async {
+  await initializeApp();
+  runApp(const ProviderScope(child: MoneyTrackerApp()));
+}
+
+Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DIServiceLocator.instance.setupDependencies();
-
-  runApp(const ProviderScope(child: MoneyTrackerApp()));
 }
 
 class MoneyTrackerApp extends ConsumerWidget {
@@ -34,13 +38,26 @@ class MoneyTrackerApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(themeProvider);
-    return MaterialApp(
-      darkTheme: ThisAppThemes.kDarkAndroidTheme,
-      theme: ThisAppThemes.kLightAndroidTheme,
-      themeMode: themeMode,
-      debugShowCheckedModeBanner: false,
-      home: const ExpensesMainScreen(),
+    return FutureBuilder(
+      future: ref.read(themeProvider.notifier).loadThemeFromPreferences(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Використовуємо кешований віджет для завантаження
+          return DIServiceLocator.instance
+              .get<AppCashedWidgets1>()
+              .loadingWidget;
+        }
+
+        final themeMode = ref.watch(themeProvider);
+
+        return MaterialApp(
+          darkTheme: ThisAppThemes.kDarkTheme,
+          theme: ThisAppThemes.kLightTheme,
+          themeMode: themeMode,
+          debugShowCheckedModeBanner: false,
+          home: const MainScreen(),
+        );
+      },
     );
   }
 }

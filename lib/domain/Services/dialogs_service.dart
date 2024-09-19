@@ -1,21 +1,19 @@
 import 'package:flutter/cupertino.dart';
 
 class CustomDialogService {
-  void showErrorDialog(BuildContext context, String message) {
+  void showDialog({
+    required BuildContext context,
+    required String title,
+    required Widget content,
+    required List<Widget> actions,
+  }) {
     showCupertinoDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: const Text('Error title '),
-          content: Text(message),
-          actions: [
-            CupertinoDialogAction(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+          title: Text(title),
+          content: content,
+          actions: actions,
         );
       },
     );

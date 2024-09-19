@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../domain/models/category_model.dart';
-import '../../../domain/models/expenses_model.dart';
+import '../../../domain/models/expenses_bucket_model.dart';
+import '../../../domain/models/expense_model.dart';
 import 'chart_bar.dart';
 
 class Chart extends StatelessWidget {
@@ -9,13 +10,13 @@ class Chart extends StatelessWidget {
 
   final List<ExpenseModel> expenses;
 
-  List<ExpenseBucket> get buckets => [
+  List<ExpensesBucket> get buckets => [
         Category.food,
         Category.leisure,
         Category.travel,
         Category.work,
       ]
-          .map((category) => ExpenseBucket.forCategory(expenses, category))
+          .map((category) => ExpensesBucket.forCategory(expenses, category))
           .toList();
 
   double get maxTotalExpense {
@@ -86,7 +87,7 @@ class Chart extends StatelessWidget {
                       child: Column(
                         children: [
                           Icon(
-                            categoryIcons[bucket.category],
+                            categoriesIcons[bucket.category],
                             color: isDarkMode
                                 ? Theme.of(context).colorScheme.primary
                                 : Theme.of(context)

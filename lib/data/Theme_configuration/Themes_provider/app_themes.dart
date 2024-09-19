@@ -5,8 +5,7 @@ import 'themes_builder.dart';
 
 class ThisAppThemes {
   //  Themes
-  static final ThemeData kLightAndroidTheme =
-      ThisAppThemesBuilder.buildThemeData(
+  static final ThemeData kLightTheme = ThisAppThemesBuilder.buildThemeData(
     isDark: false,
     colorScheme: ThisAppColorSchemes.kLightAndroidColorScheme,
     scaffoldBackgroundColor: AppColors.kLightAndroidBackground,
@@ -24,8 +23,7 @@ class ThisAppThemes {
         ThisAppColorSchemes.kLightAndroidColorScheme.onSurface,
   );
 
-  static final ThemeData kDarkAndroidTheme =
-      ThisAppThemesBuilder.buildThemeData(
+  static final ThemeData kDarkTheme = ThisAppThemesBuilder.buildThemeData(
     isDark: true,
     colorScheme: ThisAppColorSchemes.kDarkAndroidColorScheme,
     scaffoldBackgroundColor: AppColors.kDarkAndroidBackground,

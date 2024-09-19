@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../../domain/models/expenses_model.dart';
+import '../../../domain/models/expense_model.dart';
 import 'chart_bar_alt.dart';
 
 class ChartAlt extends StatelessWidget {
-  const ChartAlt(this.recentTransactions, {super.key});
+  final List<ExpenseModel> expenses;
+  const ChartAlt(this.expenses, {super.key});
   //
-  final List<ExpenseModel> recentTransactions;
 
   List<Map<String, dynamic>> get groupedTransactionValues {
     return List.generate(7, (index) {
@@ -16,11 +16,11 @@ class ChartAlt extends StatelessWidget {
 
       double totalSum = 0.0;
 
-      for (var i = 0; i < recentTransactions.length; i++) {
-        if (recentTransactions[i].date.day == weekDay.day &&
-            recentTransactions[i].date.month == weekDay.month &&
-            recentTransactions[i].date.year == weekDay.year) {
-          totalSum += recentTransactions[i].amount;
+      for (var i = 0; i < expenses.length; i++) {
+        if (expenses[i].date.day == weekDay.day &&
+            expenses[i].date.month == weekDay.month &&
+            expenses[i].date.year == weekDay.year) {
+          totalSum += expenses[i].amount;
         }
       }
 

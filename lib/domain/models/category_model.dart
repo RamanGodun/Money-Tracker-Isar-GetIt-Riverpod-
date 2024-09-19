@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const categoryIcons = {
+const categoriesIcons = {
   Category.food: Icons.lunch_dining,
   Category.travel: Icons.flight_takeoff,
   Category.leisure: Icons.movie,
@@ -10,6 +10,21 @@ const categoryIcons = {
 enum Category { food, travel, leisure, work }
 
 extension CategoryExtension on Category {
+  static Category fromName(String name) {
+    switch (name) {
+      case 'продукти':
+        return Category.food;
+      case 'транспорт':
+        return Category.travel;
+      case 'відпочинок':
+        return Category.leisure;
+      case 'робота':
+        return Category.work;
+      default:
+        throw ArgumentError('Unknown category name');
+    }
+  }
+
   String get name {
     switch (this) {
       case Category.food:

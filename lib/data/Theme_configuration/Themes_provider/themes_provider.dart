@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'app_themes.dart';
 
-// StateProvider for managing theme
+// StateProvider для управління темою
 final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>((ref) {
   return ThemeNotifier();
 });
@@ -12,12 +11,10 @@ final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>((ref) {
 class ThemeNotifier extends StateNotifier<ThemeMode> {
   static const String _themePreferenceKey = 'theme_mode';
 
-  ThemeNotifier() : super(ThemeMode.light) {
-    _loadThemeFromPreferences();
-  }
+  ThemeNotifier() : super(ThemeMode.light);
 
-  // Load saved theme from SharedPreferences
-  Future<void> _loadThemeFromPreferences() async {
+  // Завантаження теми з SharedPreferences
+  Future<void> loadThemeFromPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     final themeIndex = prefs.getInt(_themePreferenceKey);
 
@@ -26,7 +23,7 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
     }
   }
 
-  // Toggle theme and save it to SharedPreferences
+  // Зміна теми і збереження у SharedPreferences
   Future<void> toggleTheme(bool isDarkMode) async {
     state = isDarkMode ? ThemeMode.dark : ThemeMode.light;
     final prefs = await SharedPreferences.getInstance();
@@ -42,11 +39,11 @@ class ThemeProviderHelper {
   static ThemeData? getSelectedTheme(ThemeMode themeMode) {
     switch (themeMode) {
       case ThemeMode.light:
-        return ThisAppThemes.kLightAndroidTheme;
+        return ThisAppThemes.kLightTheme;
       case ThemeMode.dark:
-        return ThisAppThemes.kDarkAndroidTheme;
+        return ThisAppThemes.kDarkTheme;
       default:
-        return ThisAppThemes.kLightAndroidTheme;
+        return ThisAppThemes.kLightTheme;
     }
   }
 }

@@ -1,8 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-
-final getIt = GetIt.instance;
 
 class AppCashedWidgets1 {
   AppCashedWidgets1._internal();
@@ -37,8 +34,8 @@ class AppCashedWidgets1 {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CupertinoActivityIndicator(
-            radius: radius ?? 15.0,
-            color: color ?? Colors.blue,
+            radius: radius ?? 25.0,
+            color: color ?? const Color.fromARGB(255, 143, 201, 122),
           ),
         ],
       ),
