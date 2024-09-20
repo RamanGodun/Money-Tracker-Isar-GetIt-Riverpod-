@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../data/Theme_configuration/app_colors/app_colors.dart';
 import '../../data/Theme_configuration/others/app_styling_constants.dart';
-import '../../data/providers/constants/app_borders.dart';
-import '../../data/providers/constants/app_box_decoration.dart';
-import '../../data/providers/constants/app_text_styling.dart';
+import '../../data/constants/app_borders.dart';
+import '../../data/constants/app_box_decoration.dart';
+import '../../data/constants/app_text_styling.dart';
 import '../../data/helpers/helpers.dart';
 
 abstract class AppButtonsStyling {

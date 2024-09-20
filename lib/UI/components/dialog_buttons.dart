@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import '../../data/providers/constants/app_text_styling.dart';
+import '../../data/constants/app_text_styling.dart';
 import '../../domain/app_enums.dart';
 import '../../data/helpers/helpers.dart';
 import '_buttons_styling.dart';

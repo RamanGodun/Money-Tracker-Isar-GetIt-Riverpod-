@@ -27,6 +27,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   late AnimationService animationService;
   late bool isDarkTheme;
+  late ThemeData theme;
+  late Size deviceSize;
 
   @override
   void initState() {
@@ -39,49 +41,36 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   void didChangeDependencies() {
     super.didChangeDependencies();
     isDarkTheme = Helpers.isDarkMode(context);
+    theme = Helpers.themeGet(context);
+    deviceSize = Helpers.deviceSizeGet(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = deviceSize.width;
     return Consumer(
       builder: (context, ref, child) {
         final expensesState = ref.watch(expensesNotifierProvider);
-        final widthMQ = MediaQuery.of(context).size.width;
         final isFirstChart = ref.watch(chartTypeProvider);
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Трекер витрат'),
+            title: Text('Трекер витрат', style: theme.textTheme.displayMedium),
             actions: [
               IconButton(
-                onPressed: () {
-                  final dialogService =
-                      DIServiceLocator.instance.get<CustomDialogService>();
-
-                  dialogService.showDialog(
-                    context: context,
-                    title: 'Налаштування',
-                    content: const SettingsWidget(),
-                    actions: [
-                      CupertinoDialogAction(
-                        child: const Text('Закрити'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                },
+                onPressed: () => showSettingDialog(context, theme),
                 icon: const Icon(Icons.settings),
-              ),
+              )
             ],
           ),
           body: SafeArea(
             child: expensesState.isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? Center(
+                    child: CircularProgressIndicator.adaptive(
+                        backgroundColor: theme.colorScheme.onSurface))
                 : expensesState.error != null
                     ? Center(child: Text('Error: ${expensesState.error}'))
-                    : widthMQ < 600
+                    : deviceWidth < 600
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -91,19 +80,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                                 child: isFirstChart
                                     ? Text(
                                         'Динаміка витрат по категоріям',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge,
+                                        style: theme.textTheme.bodyLarge,
                                       )
                                     : Text(
                                         'Динаміка витрат за останній тиждень',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge,
+                                        style: theme.textTheme.bodyLarge,
                                       ),
                               ),
-                              Expanded(
-                                // Відображаємо обраний чарт
+                              SizedBox(
+                                height: deviceSize.height * 0.26,
                                 child: isFirstChart
                                     ? Chart(expenses: expensesState.expenses)
                                     : ChartAlt(expensesState.expenses),
@@ -130,12 +115,36 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                             ],
                           ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => _showCustomAddExpenseDialog(context, ref),
-            child: const Icon(Icons.add),
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.only(bottom: 118.0),
+            child: FloatingActionButton(
+              backgroundColor: theme.colorScheme.primary,
+              onPressed: () => _showCustomAddExpenseDialog(context, ref),
+              child: const Icon(Icons.add, size: 30),
+            ),
           ),
         );
       },
+    );
+  }
+
+  void showSettingDialog(BuildContext context, ThemeData theme) {
+    final dialogService = DIServiceLocator.instance.get<CustomDialogService>();
+
+    dialogService.showDialog(
+      context: context,
+      title: 'Налаштування',
+      content: const SettingsWidget(),
+      actions: [
+        CupertinoDialogAction(
+          textStyle: theme.textTheme.bodyLarge
+              ?.copyWith(color: theme.colorScheme.primaryFixed),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Закрити'),
+        ),
+      ],
     );
   }
 
@@ -145,7 +154,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       barrierColor: Theme.of(context)
           .colorScheme
           .onTertiaryContainer
-          .withOpacity(isDarkTheme ? 0.85 : 0.74),
+          .withOpacity(isDarkTheme ? 0.8 : 0.74),
       builder: (context) {
         return CustomDialog(
           contentWidget: const NewExpense(),
@@ -153,8 +162,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             final expenseNotifier = ref.read(newExpenseProvider.notifier);
 
             if (expenseNotifier.validateData()) {
+              // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
               final expenseData = expenseNotifier.state;
-
               ref.read(expensesNotifierProvider.notifier).addExpense(
                     ExpenseModel(
                       title: expenseData.title,

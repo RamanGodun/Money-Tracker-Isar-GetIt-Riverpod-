@@ -9,6 +9,7 @@ class CustomDialogService {
   }) {
     showCupertinoDialog(
       context: context,
+      barrierDismissible: true,
       builder: (context) {
         return CupertinoAlertDialog(
           title: Text(title),
