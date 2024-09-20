@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/UI/pages/main_screen.dart';
-import 'package:money_tracker/domain/helpers/helpers.dart';
+import 'package:money_tracker/data/helpers/helpers.dart';
 
 import '_buttons_styling.dart';
 

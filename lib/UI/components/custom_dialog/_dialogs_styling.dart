@@ -5,24 +5,23 @@ import '../../../data/providers/constants/app_borders.dart';
 import '../../../data/providers/constants/app_box_decoration.dart';
 import '../../../data/providers/constants/app_text_styling.dart';
 import '../../../domain/app_enums.dart';
-import '../../../domain/helpers/helpers.dart';
+import '../../../data/helpers/helpers.dart';
 import '../dialog_buttons.dart';
 import '../dividers.dart';
 import '../mini_widgets.dart';
 
 abstract class AppDialogsStyling {
-  static Widget customAndroidDialogStyle({
-    required BuildContext context,
-    required double widthFraction,
-    required double heightFraction,
-    required String dialogTitle,
-    required Widget contentWidget,
-    required EdgeInsets contentPadding,
-    required VoidCallback onActionPressed,
-    required VoidCallback onCancelPressed,
-    required String actionButtonText,
-    required String cancelButtonText,
-  }) {
+  static Widget customAndroidDialogStyle(
+      {required BuildContext context,
+      required double widthFraction,
+      heightFraction,
+      required Widget contentWidget,
+      required EdgeInsets contentPadding,
+      required VoidCallback onActionPressed,
+      onCancelPressed,
+      required String actionButtonText,
+      cancelButtonText,
+      dialogTitle}) {
     final theme = Helpers.themeGet(context);
     final colorScheme = theme.colorScheme;
     final deviceSize = Helpers.deviceSizeGet(context);
@@ -78,7 +77,7 @@ abstract class AppDialogsStyling {
           ),
         ),
         Positioned(
-          bottom: 0,
+          bottom: 30,
           left: 0,
           right: 0,
           child: Container(

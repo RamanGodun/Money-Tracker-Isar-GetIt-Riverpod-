@@ -146,6 +146,9 @@ class Helpers {
     bool isDarkTheme = Helpers.isDarkMode(ctx);
     ScaffoldMessenger.of(ctx).showSnackBar(
       SnackBar(
+        duration: const Duration(milliseconds: 2350),
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(bottom: Helpers.deviceHeightGet(ctx) * 0.85),
         backgroundColor: !isDarkTheme
             ? colorSchemeGet(ctx).surface.withOpacity(0.75)
             : colorSchemeGet(ctx).surface.withOpacity(0.9),
@@ -158,9 +161,6 @@ class Helpers {
                 .copyWith(color: Helpers.colorSchemeGet(ctx).secondary),
           ),
         ),
-        duration: const Duration(milliseconds: 2350),
-        behavior: SnackBarBehavior.floating,
-        margin: EdgeInsets.only(bottom: Helpers.deviceHeightGet(ctx) * 0.85),
       ),
     );
   }
@@ -176,6 +176,7 @@ class Helpers {
         const SnackBar(
           content: Text('Немає з\'єднання з Інтернетом'),
           duration: Duration(seconds: 3),
+          behavior: SnackBarBehavior.floating,
         ),
       );
     }

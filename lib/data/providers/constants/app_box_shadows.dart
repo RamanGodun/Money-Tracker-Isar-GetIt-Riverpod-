@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/helpers/helpers.dart';
+import '../../helpers/helpers.dart';
 import '../../Theme_configuration/app_colors/app_colors.dart';
 
 abstract class AppBoxShadows {

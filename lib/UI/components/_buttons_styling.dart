@@ -6,7 +6,7 @@ import '../../data/Theme_configuration/others/app_styling_constants.dart';
 import '../../data/providers/constants/app_borders.dart';
 import '../../data/providers/constants/app_box_decoration.dart';
 import '../../data/providers/constants/app_text_styling.dart';
-import '../../domain/helpers/helpers.dart';
+import '../../data/helpers/helpers.dart';
 
 abstract class AppButtonsStyling {
 /* 

@@ -4,10 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import '../../data/providers/chart_type_provider.dart';
 import '../../data/providers/expenses_provider.dart';
+import '../../data/providers/input_data_provider.dart';
 import '../../domain/Services/_service_locator.dart';
 import '../../domain/Services/animation_controller_service.dart';
 import '../../domain/Services/dialogs_service.dart';
-import '../../domain/helpers/helpers.dart';
+import '../../data/helpers/helpers.dart';
 import '../../domain/models/expense_model.dart';
 import '../components/chart/chart.dart';
 import '../components/chart/chart_alt.dart';
@@ -139,8 +140,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   void _showCustomAddExpenseDialog(BuildContext context, WidgetRef ref) {
-    final newExpenseState = GlobalKey<NewExpenseState>();
-
     showDialog(
       context: context,
       barrierColor: Theme.of(context)
@@ -149,25 +148,29 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           .withOpacity(isDarkTheme ? 0.85 : 0.74),
       builder: (context) {
         return CustomDialog(
-          contentWidget: NewExpense(key: newExpenseState),
+          contentWidget: const NewExpense(),
           onActionPressed: () {
-            final expenseState = newExpenseState.currentState;
-            if (expenseState != null) {
-              // Викликаємо метод валідації
-              final isValid = expenseState.validateExpenseData();
-              // Якщо дані валідні, додаємо витрату
-              if (isValid) {
-                final expenseData = expenseState.getExpenseData();
-                ref.read(expensesNotifierProvider.notifier).addExpense(
-                      ExpenseModel(
-                        title: expenseData['title'],
-                        amount: double.parse(expenseData['amount']),
-                        date: expenseData['date'],
-                        category: expenseData['category'],
-                      ),
-                    );
-                Navigator.of(context).pop();
-              }
+            final expenseNotifier = ref.read(newExpenseProvider.notifier);
+
+            if (expenseNotifier.validateData()) {
+              final expenseData = expenseNotifier.state;
+
+              ref.read(expensesNotifierProvider.notifier).addExpense(
+                    ExpenseModel(
+                      title: expenseData.title,
+                      amount: double.parse(expenseData.amount),
+                      date: expenseData.date!,
+                      category: expenseData.category,
+                    ),
+                  );
+              Navigator.of(context).pop();
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Заповніть всі поля!'),
+                  backgroundColor: Colors.redAccent,
+                ),
+              );
             }
           },
           onCancelPressed: () => Navigator.of(context).pop(),

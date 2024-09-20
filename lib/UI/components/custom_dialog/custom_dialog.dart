@@ -5,14 +5,10 @@ import '_dialogs_styling.dart';
 class CustomDialog extends HookWidget {
   final Widget contentWidget;
   final EdgeInsets contentPadding;
-  final double widthFraction;
-  final double heightFraction;
-  final String dialogTitle;
+  final double widthFraction, heightFraction;
+  final String dialogTitle, actionButtonText, cancelButtonText;
   final bool isIOSStyle;
-  final VoidCallback onActionPressed;
-  final VoidCallback onCancelPressed;
-  final String actionButtonText;
-  final String cancelButtonText;
+  final VoidCallback onActionPressed, onCancelPressed;
 
   const CustomDialog({
     super.key,

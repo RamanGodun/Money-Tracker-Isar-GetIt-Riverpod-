@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../data/Theme_configuration/app_colors/app_colors.dart';
 import '../../data/Theme_configuration/others/app_styling_constants.dart';
 import '../../data/providers/constants/strings_4_app.dart';
-import '../../domain/helpers/helpers.dart';
+import '../../data/helpers/helpers.dart';
 
 class AppDividers {
 /* Custom Dividers
