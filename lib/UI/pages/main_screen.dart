@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
@@ -47,7 +46,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final deviceWidth = deviceSize.width;
     return Consumer(
       builder: (context, ref, child) {
         final expensesState = ref.watch(expensesNotifierProvider);
@@ -55,12 +53,12 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text('Трекер витрат', style: theme.textTheme.displayMedium),
+            title: const Text('Трекер витрат'),
             actions: [
               IconButton(
-                onPressed: () => showSettingDialog(context, theme),
-                icon: const Icon(Icons.settings),
-              )
+                  onPressed: () =>
+                      _openSettingsDialog(context, theme, isDarkTheme),
+                  icon: const Icon(Icons.settings))
             ],
           ),
           body: SafeArea(
@@ -70,56 +68,36 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                         backgroundColor: theme.colorScheme.onSurface))
                 : expensesState.error != null
                     ? Center(child: Text('Error: ${expensesState.error}'))
-                    : deviceWidth < 600
+                    : deviceSize.width < 600
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: isFirstChart
-                                    ? Text(
-                                        'Динаміка витрат по категоріям',
-                                        style: theme.textTheme.bodyLarge,
-                                      )
-                                    : Text(
-                                        'Динаміка витрат за останній тиждень',
-                                        style: theme.textTheme.bodyLarge,
-                                      ),
-                              ),
-                              SizedBox(
-                                height: deviceSize.height * 0.26,
-                                child: isFirstChart
-                                    ? Chart(expenses: expensesState.expenses)
-                                    : ChartAlt(expensesState.expenses),
-                              ),
+                              _getGraphicsTitleWidget(isFirstChart),
+                              _getChartWidget(isFirstChart, expensesState),
                               Expanded(
                                 child: ExpensesList(
-                                  expenses: expensesState.expenses,
-                                ),
+                                    expenses: expensesState.expenses),
                               ),
                             ],
                           )
                         : Row(
                             children: [
                               Expanded(
-                                child: isFirstChart
-                                    ? Chart(expenses: expensesState.expenses)
-                                    : ChartAlt(expensesState.expenses),
+                                child: _getChartWidget(
+                                    isFirstChart, expensesState),
                               ),
                               Expanded(
                                 child: ExpensesList(
-                                  expenses: expensesState.expenses,
-                                ),
+                                    expenses: expensesState.expenses),
                               ),
                             ],
                           ),
           ),
           floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 118.0),
+            padding: const EdgeInsets.only(bottom: 90.0),
             child: FloatingActionButton(
-              backgroundColor: theme.colorScheme.primary,
-              onPressed: () => _showCustomAddExpenseDialog(context, ref),
+              backgroundColor: theme.colorScheme.primary.withOpacity(0.7),
+              onPressed: () => _showCustomAddExpenseDialog(context, ref, theme),
               child: const Icon(Icons.add, size: 30),
             ),
           ),
@@ -128,32 +106,51 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     );
   }
 
-  void showSettingDialog(BuildContext context, ThemeData theme) {
-    final dialogService = DIServiceLocator.instance.get<CustomDialogService>();
-
-    dialogService.showDialog(
-      context: context,
-      title: 'Налаштування',
-      content: const SettingsWidget(),
-      actions: [
-        CupertinoDialogAction(
-          textStyle: theme.textTheme.bodyLarge
-              ?.copyWith(color: theme.colorScheme.primaryFixed),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Закрити'),
-        ),
-      ],
+  Padding _getGraphicsTitleWidget(bool isFirstChart) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 20, left: 20, top: 25),
+      child: isFirstChart
+          ? Text(
+              'Витрати по категоріям',
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.7),
+              ),
+            )
+          : Text(
+              'Витрати за останній тиждень',
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.7),
+              ),
+            ),
     );
   }
 
-  void _showCustomAddExpenseDialog(BuildContext context, WidgetRef ref) {
+  SizedBox _getChartWidget(bool isFirstChart, expensesState) {
+    return SizedBox(
+      height: deviceSize.height * 0.26,
+      child: isFirstChart
+          ? Chart(expenses: expensesState.expenses)
+          : ChartAlt(expensesState.expenses),
+    );
+  }
+
+  void _openSettingsDialog(
+      BuildContext context, ThemeData theme, bool isDarkTheme) {
+    final dialogService = DIServiceLocator.instance.get<CustomDialogService>();
+    dialogService.showCustomDialog(
+      context: context,
+      title: 'Налаштування',
+      content: const SettingsWidget(),
+      theme: theme,
+      isDarkTheme: isDarkTheme,
+    );
+  }
+
+  void _showCustomAddExpenseDialog(
+      BuildContext context, WidgetRef ref, ThemeData theme) {
     showDialog(
       context: context,
-      barrierColor: Theme.of(context)
-          .colorScheme
-          .onTertiaryContainer
+      barrierColor: theme.colorScheme.onTertiaryContainer
           .withOpacity(isDarkTheme ? 0.8 : 0.74),
       builder: (context) {
         return CustomDialog(
@@ -162,7 +159,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             final expenseNotifier = ref.read(newExpenseProvider.notifier);
 
             if (expenseNotifier.validateData()) {
-              // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
               final expenseData = expenseNotifier.state;
               ref.read(expensesNotifierProvider.notifier).addExpense(
                     ExpenseModel(
@@ -173,13 +169,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                     ),
                   );
               Navigator.of(context).pop();
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Заповніть всі поля!'),
-                  backgroundColor: Colors.redAccent,
-                ),
-              );
             }
           },
           onCancelPressed: () => Navigator.of(context).pop(),

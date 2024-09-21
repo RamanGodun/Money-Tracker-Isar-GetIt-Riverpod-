@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import '../../data/constants/app_text_styling.dart';
-import '../../domain/app_enums.dart';
+import '../../domain/models/app_enums.dart';
 import '../../data/helpers/helpers.dart';
-import '_buttons_styling.dart';
+import 'custom_dialog/_buttons_styling.dart';
 
 class AppDialogsButtons {
   static Widget custom({

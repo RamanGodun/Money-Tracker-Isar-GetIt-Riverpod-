@@ -1,4 +1,4 @@
-import 'category_model.dart';
+import 'app_enums.dart';
 import 'expense_model.dart';
 
 class ExpensesBucket {

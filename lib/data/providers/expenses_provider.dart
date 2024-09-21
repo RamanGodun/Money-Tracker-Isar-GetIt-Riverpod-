@@ -4,6 +4,13 @@ import '../../domain/Services/isar_service.dart';
 import '../../domain/models/expanses_state.dart';
 import 'isar_provider.dart';
 
+// Провайдер для ExpensesNotifier
+final expensesNotifierProvider =
+    StateNotifierProvider<ExpensesNotifier, ExpensesState>((ref) {
+  final isarService = ref.read(isarServiceProvider);
+  return ExpensesNotifier(isarService)..loadExpenses();
+});
+
 class ExpensesNotifier extends StateNotifier<ExpensesState> {
   final IsarService _isarService;
 
@@ -37,10 +44,3 @@ class ExpensesNotifier extends StateNotifier<ExpensesState> {
     }
   }
 }
-
-// Провайдер для ExpensesNotifier
-final expensesNotifierProvider =
-    StateNotifierProvider<ExpensesNotifier, ExpensesState>((ref) {
-  final isarService = ref.read(isarServiceProvider);
-  return ExpensesNotifier(isarService)..loadExpenses();
-});

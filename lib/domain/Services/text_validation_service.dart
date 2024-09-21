@@ -1,4 +1,4 @@
-import '../app_enums.dart';
+import '../models/app_enums.dart';
 
 class TextFieldValidationService {
   static String? Function(String?)? getValidatorFunction(

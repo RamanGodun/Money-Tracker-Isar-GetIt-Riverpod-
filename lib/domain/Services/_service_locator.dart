@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../UI/components/cashed_on_get_it.dart';
 import 'animation_controller_service.dart';
 import 'dialogs_service.dart';
 import 'isar_service.dart';
@@ -9,9 +8,7 @@ import 'text_validation_service.dart';
 class DIServiceLocator {
   DIServiceLocator._internal();
   static final DIServiceLocator _singleton = DIServiceLocator._internal();
-
   static DIServiceLocator get instance => _singleton;
-
   final GetIt _getIt = GetIt.instance;
 
   Future<void> setupDependencies() async {
@@ -20,7 +17,6 @@ class DIServiceLocator {
     _setupAnimationService();
     _setupTextValidation();
     _setupCustomDialogService();
-    _setupStaticWidgets();
   }
 
   Future<void> _setupIsarService() async {
@@ -55,13 +51,6 @@ class DIServiceLocator {
       _getIt.registerSingleton<CustomDialogService>(
         CustomDialogService(),
       );
-    }
-  }
-
-  void _setupStaticWidgets() {
-    // Реєструємо кешовані віджети
-    if (!_getIt.isRegistered<AppCashedWidgets1>()) {
-      _getIt.registerSingleton<AppCashedWidgets1>(AppCashedWidgets1());
     }
   }
 

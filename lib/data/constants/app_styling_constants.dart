@@ -5,13 +5,13 @@ abstract class AppStylingConstants {
   static const double elevation = 0;
 
   // Загальний радіус для обводки
-  static const double generalBorderRadius = 7.5;
+  static const double generalBorderRadius = 12.0;
 
   // Висота кнопок
-  static const double buttonsHeight = 45;
+  static const double buttonsHeight = 50;
 
   // Розмір іконок
-  static const double iconSize = 25;
+  static const double iconSize = 28;
 
   // Загальний радіус для обводки, що використовується часто
   static final BorderRadius commonBorderRadius =
@@ -38,14 +38,4 @@ abstract class AppStylingConstants {
   // Мінімальний горизонтальний внутрішній відступ
   static const EdgeInsets minHorizontal =
       EdgeInsets.symmetric(vertical: 0, horizontal: 3);
-
-  /* PADDING FOR SPECIFIC WIDGETS */
-
-  // Внутрішній відступ для жирного роздільника
-  static const EdgeInsets forBoldDivider =
-      EdgeInsets.only(right: 0, top: 0.0, bottom: 0.0);
-
-  // Внутрішній відступ для роздільника
-  static const EdgeInsets forDivider =
-      EdgeInsets.only(left: 10.0, right: 14, top: 0.0, bottom: 0.0);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../data/helpers/helpers.dart';
 import '../../../domain/models/expense_model.dart';
 import '../../../domain/models/category_model.dart';
 import 'package:money_tracker/data/providers/expenses_provider.dart';
@@ -11,23 +12,26 @@ class ExpenseItemForList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ThemeData theme = Theme.of(context);
+    bool isDarkTheme = Helpers.isDarkTheme(theme);
+
     return Slidable(
       endActionPane: ActionPane(
         motion: const StretchMotion(),
         children: [
           SlidableAction(
-            backgroundColor: Colors.grey.withOpacity(0.1),
+            backgroundColor: theme.colorScheme.surface.withOpacity(0.1),
             foregroundColor: const Color.fromARGB(255, 58, 157, 63),
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(10),
             onPressed: (_) {
               // Можна додати додаткові дії
             },
             icon: Icons.settings,
           ),
           SlidableAction(
-            backgroundColor: Colors.grey.withOpacity(0.1),
-            foregroundColor: Colors.red,
-            borderRadius: BorderRadius.circular(5),
+            backgroundColor: theme.colorScheme.surface.withOpacity(0.1),
+            foregroundColor: theme.colorScheme.error,
+            borderRadius: BorderRadius.circular(10),
             onPressed: (_) {
               ref
                   .read(expensesNotifierProvider.notifier)
@@ -38,21 +42,41 @@ class ExpenseItemForList extends ConsumerWidget {
         ],
       ),
       child: Card(
-        color: Colors.grey.withOpacity(0.3),
+        color: theme.colorScheme.surface.withOpacity(isDarkTheme ? 0.8 : 0.2),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        elevation: 5,
+        shadowColor: theme.shadowColor.withOpacity(0.2),
         child: ListTile(
           title: Text(
             expense.title,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: theme.colorScheme.onSurface,
+            ),
           ),
           subtitle: Row(
             children: [
-              Text('\$${expense.amount.toStringAsFixed(2)}'),
+              Text(
+                '\$${expense.amount.toStringAsFixed(2)}',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurface.withOpacity(0.7),
+                ),
+              ),
               const Spacer(),
               Row(
                 children: [
-                  Icon(categoriesIcons[expense.category]),
+                  Icon(
+                    categoriesIcons[expense.category],
+                    color: theme.colorScheme.primary.withOpacity(0.8),
+                  ),
                   const SizedBox(width: 8),
-                  Text(expense.formattedDate),
+                  Text(
+                    expense.formattedDate,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    ),
+                  ),
                 ],
               ),
             ],

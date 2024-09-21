@@ -6,7 +6,6 @@ import 'chart_bar_alt.dart';
 class ChartAlt extends StatelessWidget {
   final List<ExpenseModel> expenses;
   const ChartAlt(this.expenses, {super.key});
-  //
 
   List<Map<String, dynamic>> get groupedTransactionValues {
     return List.generate(7, (index) {
@@ -40,25 +39,25 @@ class ChartAlt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 6,
       margin: const EdgeInsets.all(19),
       child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: groupedTransactionValues.map((data) {
-              return Flexible(
-                fit: FlexFit.loose,
-                child: ChartBarAlt(
-                  data['day'].toString(),
-                  (data['spentMoney'] as double? ?? 0.0),
-                  totalSpending == 0.0
-                      ? 0.0
-                      : (data['spentMoney'] as double) / totalSpending,
-                ),
-              );
-            }).toList(),
-          )),
+        padding: const EdgeInsets.all(15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupedTransactionValues.map((data) {
+            return Flexible(
+              fit: FlexFit.loose,
+              child: ChartBarAlt(
+                data['day'].toString(),
+                (data['spentMoney'] as double? ?? 0.0),
+                totalSpending == 0.0
+                    ? 0.0
+                    : (data['spentMoney'] as double) / totalSpending,
+              ),
+            );
+          }).toList(),
+        ),
+      ),
     );
   }
 }

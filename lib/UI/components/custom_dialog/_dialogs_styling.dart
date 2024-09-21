@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import '../../../data/Theme_configuration/app_colors/app_colors.dart';
-import '../../../data/Theme_configuration/others/app_styling_constants.dart';
+import '../../../data/constants/app_styling_constants.dart';
 import '../../../data/constants/app_borders.dart';
 import '../../../data/constants/app_box_decoration.dart';
-import '../../../data/constants/app_text_styling.dart';
-import '../../../domain/app_enums.dart';
+import '../../../domain/models/app_enums.dart';
 import '../../../data/helpers/helpers.dart';
 import '../dialog_buttons.dart';
-import '../dividers.dart';
 import '../mini_widgets.dart';
 
 abstract class AppDialogsStyling {
-  static Widget customAndroidDialogStyle(
-      {required BuildContext context,
-      required double widthFraction,
-      heightFraction,
-      required Widget contentWidget,
-      required EdgeInsets contentPadding,
-      required VoidCallback onActionPressed,
-      onCancelPressed,
-      required String actionButtonText,
-      cancelButtonText,
-      dialogTitle}) {
+  static Widget customAndroidDialogStyle({
+    required BuildContext context,
+    required double widthFraction,
+    required double heightFraction,
+    required Widget contentWidget,
+    required EdgeInsets contentPadding,
+    required VoidCallback onActionPressed,
+    required VoidCallback onCancelPressed,
+    required String actionButtonText,
+    required String cancelButtonText,
+    required String dialogTitle,
+  }) {
     final theme = Helpers.themeGet(context);
     final colorScheme = theme.colorScheme;
     final deviceSize = Helpers.deviceSizeGet(context);
@@ -55,12 +54,11 @@ abstract class AppDialogsStyling {
                             top: 26, left: 16, right: 16, bottom: 8),
                         child: Text(
                           dialogTitle,
-                          style: AppTextStyling.appBarTitle(context, theme),
                           maxLines: 2,
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      AppDividers.divider2(theme),
+                      AppMiniWidgets.divider(theme),
                       const SizedBox(height: 7),
                       Expanded(
                         child: Padding(
@@ -92,7 +90,7 @@ abstract class AppDialogsStyling {
                   onPressed: onCancelPressed,
                   buttonText: cancelButtonText,
                 ),
-                AppDividers.dividerBetweenDialogButtons(theme),
+                AppMiniWidgets.dividerBetweenDialogButtons(theme),
                 AppDialogsButtons.custom(
                   context: context,
                   buttonType: DialogButtonType.actionButtonInAndroidStyle,

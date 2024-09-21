@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/helpers/helpers.dart';
+
 class ChartBarAlt extends StatelessWidget {
   final String label;
   final double spendingMoney;
@@ -10,8 +12,9 @@ class ChartBarAlt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode =
-        MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final theme = Helpers.themeGet(context);
+    final isDarkMode = Helpers.isDarkMode(context);
+
     return LayoutBuilder(builder: (context, constraints) {
       return Column(
         children: <Widget>[
@@ -25,9 +28,7 @@ class ChartBarAlt extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
-            height: constraints.maxHeight * 0.05,
-          ),
+          SizedBox(height: constraints.maxHeight * 0.05),
           SizedBox(
             height: constraints.maxHeight * 0.6,
             width: 10,
@@ -36,12 +37,8 @@ class ChartBarAlt extends StatelessWidget {
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
-                    color: isDarkMode
-                        ? Theme.of(context).canvasColor.withOpacity(0.3)
-                        : Theme.of(context).primaryColor,
-                    border: Border.all(
-                      width: 0.03,
-                    ),
+                    color:
+                        theme.canvasColor.withOpacity(isDarkMode ? 0.9 : 0.7),
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
@@ -50,7 +47,7 @@ class ChartBarAlt extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: isDarkMode ? Colors.green : Colors.amber,
+                      color: theme.colorScheme.primaryFixed,
                     ),
                   ),
                 ),

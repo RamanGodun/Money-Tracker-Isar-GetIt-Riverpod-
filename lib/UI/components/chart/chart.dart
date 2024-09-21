@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../domain/models/app_enums.dart';
 import '../../../domain/models/category_model.dart';
 import '../../../domain/models/expenses_bucket_model.dart';
 import '../../../domain/models/expense_model.dart';
@@ -13,8 +14,11 @@ class Chart extends StatelessWidget {
   List<ExpensesBucket> get buckets => [
         Category.food,
         Category.leisure,
-        Category.travel,
+        Category.transport,
         Category.work,
+        Category.charity,
+        Category.health,
+        Category.other
       ]
           .map((category) => ExpensesBucket.forCategory(expenses, category))
           .toList();
@@ -41,8 +45,11 @@ class Chart extends StatelessWidget {
     final categorySum = {
       Category.food: categorySum1[0],
       Category.leisure: categorySum1[1],
-      Category.travel: categorySum1[2],
+      Category.transport: categorySum1[2],
       Category.work: categorySum1[3],
+      Category.charity: categorySum1[4],
+      Category.health: categorySum1[5],
+      Category.other: categorySum1[6],
     };
     //
     return Container(

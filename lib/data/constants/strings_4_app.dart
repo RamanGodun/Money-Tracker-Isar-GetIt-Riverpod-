@@ -1,10 +1,4 @@
 class AppStrings {
-  static const List<String> appBarTitles = [
-    'Перша закладка',
-    'Друга закладка',
-    'Третя закладка'
-  ];
-  static const String add = "Додати";
   static const List<String> categoryNames = [
     'Їжа',
     'Транспорт',
@@ -16,18 +10,7 @@ class AppStrings {
     'Побутове',
     'Інше'
   ];
-  static const String change = "Змінити";
-  static const String chosenQuantityOFQuestions =
-      "Chosen quantity of questions:    ";
-  static const String chosenComplexity = "Chosen complexity:    ";
-  static const List<String> complexityLevels = ["intern", "junior", "middle"];
-  static const String continueWith = "Or continue with";
-  static const String delete = "Видалити";
-  static const List<String> iconTitles = [
-    'трекер',
-    'закупи',
-    'шаблони',
-  ];
+
   static const String inheritedWidgetNotFound =
       "No StateInheritedWidget found in context";
   static const String key4StateWidget = "StateInheritedWidget";

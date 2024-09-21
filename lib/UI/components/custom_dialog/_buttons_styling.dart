@@ -1,16 +1,15 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../data/Theme_configuration/app_colors/app_colors.dart';
-import '../../data/Theme_configuration/others/app_styling_constants.dart';
-import '../../data/constants/app_borders.dart';
-import '../../data/constants/app_box_decoration.dart';
-import '../../data/constants/app_text_styling.dart';
-import '../../data/helpers/helpers.dart';
+import '../../../data/Theme_configuration/app_colors/app_colors.dart';
+import '../../../data/constants/app_styling_constants.dart';
+import '../../../data/constants/app_borders.dart';
+import '../../../data/constants/app_box_decoration.dart';
+import '../../../data/constants/app_text_styling.dart';
+import '../../../data/helpers/helpers.dart';
 
 abstract class AppButtonsStyling {
-/* 
- */
+  /* Кнопка з градієнтом у стилі гласморфізму */
   static Widget withGradient(
     BuildContext context, {
     void Function()? onPressed,
@@ -46,6 +45,7 @@ abstract class AppButtonsStyling {
     );
   }
 
+  /* Кнопка в стилі iOS */
   static Widget inIOSStyle(
     BuildContext context, {
     void Function()? onPressed,
@@ -82,6 +82,7 @@ abstract class AppButtonsStyling {
     );
   }
 
+  /* Стиль першого дизайну кнопки */
   static Widget firstDesign(
     BuildContext context, {
     void Function()? onPressed,
@@ -116,6 +117,7 @@ abstract class AppButtonsStyling {
     );
   }
 
+  /* Кнопка для ElevatedButton */
   static Widget forElevatedButton(
     BuildContext context, {
     void Function()? onPressed,
@@ -150,8 +152,7 @@ abstract class AppButtonsStyling {
     );
   }
 
-/* OUTLINED Button
- */
+  /* Стиль для обведеної кнопки */
   static Widget forOutlinedButton(
     BuildContext context, {
     void Function()? onPressed,
@@ -163,21 +164,28 @@ abstract class AppButtonsStyling {
     final textStyleForButton = textStyle ?? AppTextStyling.forButtons(theme);
     return Material(
       color: AppColors.transparent,
-      child: ElevatedButton(
-        style: OutlinedButton.styleFrom(
-          backgroundColor:
-              theme.colorScheme.surface.withOpacity(isDark ? 0.2 : 0.5),
-          side: AppBordersStyling.borderSideForFIAnswer(theme),
-        ),
-        onPressed: onPressed,
-        child: Center(
-          child: Text(
-            buttonText,
-            style: textStyleForButton,
+      child: SizedBox(
+        width: double.infinity,
+        height: AppStylingConstants.buttonsHeight,
+        child: OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            backgroundColor:
+                theme.colorScheme.surface.withOpacity(isDark ? 0.1 : 0.01),
+            side: BorderSide(
+              color: theme.colorScheme.primary.withOpacity(0.3),
+              width: 1.0,
+            ),
+            shape: AppBordersStyling.roundedRectangleBorderForButton(theme),
+          ),
+          onPressed: onPressed,
+          child: Center(
+            child: Text(
+              buttonText,
+              style: textStyleForButton,
+            ),
           ),
         ),
       ),
     );
   }
-//
 }

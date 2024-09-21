@@ -1,3 +1,4 @@
+import 'app_enums.dart';
 import 'category_model.dart';
 import 'db_item_model.dart';
 import 'package:intl/intl.dart';

@@ -7,12 +7,13 @@ abstract class ThisAppColorSchemes {
     brightness: Brightness.light,
     primarySwatch: AppColors.kPrimarySwatch,
     accentColor: AppColors.kSecondaryVariant,
-    backgroundColor: AppColors.kLightAndroidBackground,
+    backgroundColor: const Color.fromARGB(255, 255, 255, 255)
+        .withOpacity(0.7), // Злегка прозорий
     errorColor: AppColors.kErrorColor,
   ).copyWith(
     primaryContainer: AppColors.kAppPrimaryColor.withOpacity(0.2),
-    secondaryContainer: AppColors.kSecondaryColor.withOpacity(0.2),
-    surface: AppColors.kLightAndroidSurface,
+    secondaryContainer: AppColors.kSecondaryColor.withOpacity(0.15),
+    surface: const Color.fromARGB(255, 255, 254, 254).withOpacity(0.6),
     onPrimary: AppColors.kLightAndroidOnPrimary,
     onSecondary: AppColors.kLightAndroidOnPrimary,
     onSurface: AppColors.kLightAndroidOnSurface,
@@ -24,12 +25,13 @@ abstract class ThisAppColorSchemes {
     brightness: Brightness.dark,
     primarySwatch: AppColors.kPrimarySwatch,
     accentColor: AppColors.kSecondaryVariant,
-    backgroundColor: AppColors.kDarkAndroidBackground,
+    backgroundColor:
+        AppColors.kDarkAndroidBackground.withOpacity(0.65), // Прозорий
     errorColor: AppColors.kErrorColor,
   ).copyWith(
     primaryContainer: AppColors.kAppPrimaryColor.withOpacity(0.2),
-    secondaryContainer: AppColors.kSecondaryColor.withOpacity(0.2),
-    surface: AppColors.kDarkAndroidSurface,
+    secondaryContainer: AppColors.kSecondaryColor.withOpacity(0.15),
+    surface: AppColors.kDarkAndroidSurface.withOpacity(0.5),
     onPrimary: AppColors.kDarkAndroidOnPrimary,
     onSecondary: AppColors.kDarkAndroidOnPrimary,
     onSurface: AppColors.kDarkAndroidOnSurface,
