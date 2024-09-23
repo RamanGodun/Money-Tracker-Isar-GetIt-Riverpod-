@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../../data/constants/app_styling_constants.dart';
-import '../../data/helpers/helpers.dart';
+import '../../DATA/constants/app_styling_constants.dart';
+import '../../DATA/helpers/helpers.dart';
 
 class AppMiniWidgets {
 /* Custom Dividers
@@ -33,7 +33,7 @@ DIVIDER for CUSTOM DIALOG
 //
 
 /*
-OTHERS (borders)
+backDropFilter
 */
   static Widget backDropFilter({required Widget child}) {
     return ClipRRect(
@@ -45,4 +45,15 @@ OTHERS (borders)
     );
   }
 //
+//
+// TEXTS WIDGETS
+
+  static Widget smallTitle(ThemeData theme, String content) {
+    return Text(
+      content,
+      style: theme.textTheme.titleSmall?.copyWith(
+        color: theme.colorScheme.onSurface.withOpacity(0.7),
+      ),
+    );
+  }
 }

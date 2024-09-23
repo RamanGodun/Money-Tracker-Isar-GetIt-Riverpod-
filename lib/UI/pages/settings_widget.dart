@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_tracker/data/Theme_configuration/Themes_provider/themes_provider.dart';
-import '../../data/Theme_configuration/app_colors/app_colors.dart';
-import '../../data/helpers/helpers.dart';
-import '../../data/providers/chart_type_provider.dart';
+import 'package:money_tracker/DATA/Theme_configuration/Themes_provider/themes_provider.dart';
+import '../../DATA/Theme_configuration/app_colors/app_colors.dart';
+import '../../DATA/helpers/helpers.dart';
+import '../../DATA/providers/chart_type_provider.dart';
 
 class SettingsWidget extends ConsumerWidget {
   const SettingsWidget({super.key});

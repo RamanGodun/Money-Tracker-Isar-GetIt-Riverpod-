@@ -3,11 +3,11 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:money_tracker/data/helpers/helpers.dart';
+import 'package:money_tracker/DATA/helpers/helpers.dart';
 import 'UI/pages/main_screen.dart';
-import 'data/Theme_configuration/Themes_provider/app_themes.dart';
-import 'data/Theme_configuration/Themes_provider/themes_provider.dart';
-import 'domain/Services/_service_locator.dart';
+import 'DATA/Theme_configuration/Themes_provider/app_themes.dart';
+import 'DATA/Theme_configuration/Themes_provider/themes_provider.dart';
+import 'DOMAIN/Services/_service_locator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {

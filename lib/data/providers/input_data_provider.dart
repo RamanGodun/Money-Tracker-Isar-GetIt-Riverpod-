@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../domain/models/app_enums.dart';
+import '../../DOMAIN/models/app_enums.dart';
 
 final newExpenseProvider =
     StateNotifierProvider<NewExpenseNotifier, NewExpenseState>(

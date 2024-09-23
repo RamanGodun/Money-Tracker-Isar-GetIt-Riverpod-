@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
-import '../../data/providers/chart_type_provider.dart';
-import '../../data/providers/expenses_provider.dart';
-import '../../data/providers/input_data_provider.dart';
-import '../../domain/Services/_service_locator.dart';
-import '../../domain/Services/animation_controller_service.dart';
-import '../../domain/Services/dialogs_service.dart';
-import '../../data/helpers/helpers.dart';
-import '../../domain/models/expense_model.dart';
-import '../components/chart/chart.dart';
+import '../../DATA/providers/chart_type_provider.dart';
+import '../../DATA/providers/expenses_provider.dart';
+import '../../DATA/providers/input_data_provider.dart';
+import '../../DOMAIN/Services/_service_locator.dart';
+import '../../DOMAIN/Services/animation_controller_service.dart';
+import '../../DOMAIN/Services/dialogs_service.dart';
+import '../../DATA/helpers/helpers.dart';
+import '../../DOMAIN/models/expense_model.dart';
+import '../components/chart/_chart.dart';
 import '../components/chart/chart_alt.dart';
 import '../components/custom_dialog/custom_dialog.dart';
 import '../components/expenses_list/expenses_list.dart';
-import '../components/new_expense.dart';
-import '../components/settings.dart';
+import '../components/mini_widgets.dart';
+import 'new_expense.dart';
+import 'settings_widget.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -53,27 +54,33 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Трекер витрат'),
+            title: const Padding(
+              padding: EdgeInsets.only(left: 18.0),
+              child: Text('Трекер витрат'),
+            ),
             actions: [
               IconButton(
                   onPressed: () =>
                       _openSettingsDialog(context, theme, isDarkTheme),
-                  icon: const Icon(Icons.settings))
+                  icon: const Icon(Icons.settings)),
+              const SizedBox(width: 20)
             ],
           ),
           body: SafeArea(
             child: expensesState.isLoading
-                ? Center(
-                    child: CircularProgressIndicator.adaptive(
-                        backgroundColor: theme.colorScheme.onSurface))
+                ? const Center(child: CircularProgressIndicator.adaptive())
                 : expensesState.error != null
                     ? Center(child: Text('Error: ${expensesState.error}'))
                     : deviceSize.width < 600
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _getGraphicsTitleWidget(isFirstChart),
+                              _getGraphicsTitleWidget(
+                                  isFirstChart: isFirstChart),
                               _getChartWidget(isFirstChart, expensesState),
+                              _getGraphicsTitleWidget(
+                                  isListTitle: true,
+                                  isFirstChart: isFirstChart),
                               Expanded(
                                 child: ExpensesList(
                                     expenses: expensesState.expenses),
@@ -94,7 +101,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                           ),
           ),
           floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 90.0),
+            padding: const EdgeInsets.only(bottom: 80.0, right: 15),
             child: FloatingActionButton(
               backgroundColor: theme.colorScheme.primary.withOpacity(0.7),
               onPressed: () => _showCustomAddExpenseDialog(context, ref, theme),
@@ -106,22 +113,25 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     );
   }
 
-  Padding _getGraphicsTitleWidget(bool isFirstChart) {
+  Padding _getGraphicsTitleWidget(
+      {bool? isListTitle, required bool isFirstChart}) {
     return Padding(
       padding: const EdgeInsets.only(right: 20, left: 20, top: 25),
-      child: isFirstChart
-          ? Text(
-              'Витрати по категоріям',
-              style: theme.textTheme.titleSmall?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
-              ),
-            )
-          : Text(
-              'Витрати за останній тиждень',
-              style: theme.textTheme.titleSmall?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
-              ),
-            ),
+      child: (isListTitle != null)
+          ? AppMiniWidgets.smallTitle(theme, 'Список витрат')
+          : isFirstChart
+              ? Text(
+                  'Витрати по категоріям',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                  ),
+                )
+              : Text(
+                  'Витрати за останній тиждень',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                  ),
+                ),
     );
   }
 
@@ -150,8 +160,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       BuildContext context, WidgetRef ref, ThemeData theme) {
     showDialog(
       context: context,
-      barrierColor: theme.colorScheme.onTertiaryContainer
-          .withOpacity(isDarkTheme ? 0.8 : 0.74),
+      barrierColor:
+          theme.colorScheme.shadow.withOpacity(isDarkTheme ? 0.8 : 0.74),
       builder: (context) {
         return CustomDialog(
           contentWidget: const NewExpense(),

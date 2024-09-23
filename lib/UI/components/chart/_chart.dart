@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/models/app_enums.dart';
-import '../../../domain/models/category_model.dart';
-import '../../../domain/models/expenses_bucket_model.dart';
-import '../../../domain/models/expense_model.dart';
-import 'chart_bar.dart';
+import '../../../DATA/helpers/helpers.dart';
+import '../../../DOMAIN/models/app_enums.dart';
+import '../../../DOMAIN/models/category_model.dart';
+import '../../../DOMAIN/models/expenses_bucket_model.dart';
+import '../../../DOMAIN/models/expense_model.dart';
+import '_chart_bar.dart';
 
 class Chart extends StatelessWidget {
-  const Chart({super.key, required this.expenses});
-
   final List<ExpenseModel> expenses;
+  const Chart({super.key, required this.expenses});
 
   List<ExpensesBucket> get buckets => [
         Category.food,
@@ -39,9 +39,9 @@ class Chart extends StatelessWidget {
 //
   @override
   Widget build(BuildContext context) {
-    //
-    final isDarkMode =
-        MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final isDarkMode = Helpers.isDarkMode(context);
+    final colorScheme = Helpers.colorSchemeGet(context);
+
     final categorySum = {
       Category.food: categorySum1[0],
       Category.leisure: categorySum1[1],
@@ -61,8 +61,8 @@ class Chart extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         gradient: LinearGradient(
           colors: [
-            Theme.of(context).colorScheme.primary.withOpacity(0.3),
-            Theme.of(context).colorScheme.primary.withOpacity(0.0)
+            colorScheme.secondary.withOpacity(0.3),
+            colorScheme.secondary.withOpacity(0.0)
           ],
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
@@ -74,8 +74,7 @@ class Chart extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                for (final bucket
-                    in buckets) // alternative to map() when inside List<Widget>
+                for (final bucket in buckets)
                   ChartBar(
                     fill: bucket.totalExpenses == 0
                         ? 0
@@ -96,11 +95,8 @@ class Chart extends StatelessWidget {
                           Icon(
                             categoriesIcons[bucket.category],
                             color: isDarkMode
-                                ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                    .withOpacity(0.7),
+                                ? colorScheme.secondary
+                                : colorScheme.secondary.withOpacity(0.7),
                           ),
                           Text(categorySum[bucket.category].toString()),
                         ],

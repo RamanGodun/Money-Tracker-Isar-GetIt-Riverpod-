@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../data/Theme_configuration/app_colors/app_colors.dart';
+import '../../../DATA/Theme_configuration/app_colors/app_colors.dart';
 import '../../../data/constants/app_styling_constants.dart';
 import '../../../data/constants/app_borders.dart';
 import '../../../data/constants/app_box_decoration.dart';
-import '../../../domain/models/app_enums.dart';
-import '../../../data/helpers/helpers.dart';
-import '../dialog_buttons.dart';
+import '../../../DOMAIN/models/app_enums.dart';
+import '../../../DATA/helpers/helpers.dart';
+import '../buttons/dialog_buttons.dart';
 import '../mini_widgets.dart';
 
 abstract class AppDialogsStyling {
@@ -22,7 +22,7 @@ abstract class AppDialogsStyling {
     required String dialogTitle,
   }) {
     final theme = Helpers.themeGet(context);
-    final colorScheme = theme.colorScheme;
+    // final colorScheme = theme.colorScheme;
     final deviceSize = Helpers.deviceSizeGet(context);
     final deviceWidth = deviceSize.width;
     final deviceHeight = deviceSize.height;
@@ -56,6 +56,7 @@ abstract class AppDialogsStyling {
                           dialogTitle,
                           maxLines: 2,
                           textAlign: TextAlign.center,
+                          style: theme.textTheme.titleMedium,
                         ),
                       ),
                       AppMiniWidgets.divider(theme),
@@ -79,7 +80,7 @@ abstract class AppDialogsStyling {
           left: 0,
           right: 0,
           child: Container(
-            color: colorScheme.onTertiary.withOpacity(0.15),
+            // color: colorScheme.shadow.withOpacity(0.15),
             padding: AppStylingConstants.allPadding10,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

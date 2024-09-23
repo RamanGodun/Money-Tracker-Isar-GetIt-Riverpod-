@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 abstract class AppColors {
-  static const Color kAppPrimaryColor = Color.fromARGB(255, 69, 127, 155);
+  static const Color kAppPrimaryColor = Color.fromARGB(255, 183, 102, 223);
   static final MaterialColor kPrimarySwatch =
       createMaterialColor(kAppPrimaryColor);
 
@@ -25,9 +25,9 @@ abstract class AppColors {
     return MaterialColor(color.value, swatch);
   }
 
-  static const Color kSecondaryColor = Color.fromARGB(255, 255, 80, 191);
-  static const Color kSecondaryDarkColor = Color.fromARGB(255, 86, 179, 226);
-  static const Color kSecondaryVariant = Color.fromARGB(255, 124, 170, 194);
+  static const Color kSecondaryColor = Color.fromARGB(255, 69, 127, 155);
+  static const Color kSecondaryDarkColor = Color.fromARGB(255, 89, 184, 231);
+  static const Color kSecondaryVariant = Color.fromARGB(255, 57, 138, 179);
   static const Color kErrorColor = CupertinoColors.destructiveRed;
   static const Color kErrorColorDark = Color.fromARGB(255, 231, 122, 122);
 

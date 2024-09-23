@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../../domain/models/expense_model.dart';
+import '../../../DOMAIN/models/expense_model.dart';
 import 'chart_bar_alt.dart';
 
 class ChartAlt extends StatelessWidget {

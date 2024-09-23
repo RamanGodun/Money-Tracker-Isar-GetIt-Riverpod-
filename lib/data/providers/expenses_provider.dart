@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../domain/models/expense_model.dart';
-import '../../domain/Services/isar_service.dart';
-import '../../domain/models/expanses_state.dart';
+import '../../DOMAIN/models/expense_model.dart';
+import '../../DOMAIN/Services/isar_service.dart';
+import '../../DOMAIN/models/expanses_state.dart';
 import 'isar_provider.dart';
 
 // Провайдер для ExpensesNotifier

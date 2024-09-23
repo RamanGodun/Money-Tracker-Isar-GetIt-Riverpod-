@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/helpers/helpers.dart';
+import '../../../DATA/helpers/helpers.dart';
 
 class ChartBarAlt extends StatelessWidget {
   final String label;

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import '../../data/constants/app_text_styling.dart';
-import '../../domain/models/app_enums.dart';
-import '../../data/helpers/helpers.dart';
-import 'custom_dialog/_buttons_styling.dart';
+import '../../../data/constants/app_text_styling.dart';
+import '../../../DOMAIN/models/app_enums.dart';
+import '../../../DATA/helpers/helpers.dart';
+import '_buttons_styling.dart';
 
 class AppDialogsButtons {
   static Widget custom({
@@ -44,7 +44,7 @@ class AppDialogsButtons {
     return SizedBox(
       width: deviceWidth * 0.4,
       child: isActionButton
-          ? AppButtonsStyling.withGradient(
+          ? AppButtonsStyling.firstDesign(
               context,
               onPressed: onPressed ?? () => Navigator.of(context).pop(),
               buttonText: buttonText,

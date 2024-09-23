@@ -34,18 +34,15 @@ class ThisAppThemesBuilder {
       ),
       appBarTheme: AppBarTheme(
         elevation: 0,
-        iconTheme: IconThemeData(color: colorScheme.onSurface),
+        centerTitle: false,
+        iconTheme: IconThemeData(color: colorScheme.primary),
         titleTextStyle: TextStyles4ThisAppThemes.kTextThemeData(isDark)
-            .titleLarge
-            ?.copyWith(
-              color: colorScheme.onSurface,
-            ),
+            .titleMedium
+            ?.copyWith(color: colorScheme.onSurface),
         toolbarTextStyle: TextStyles4ThisAppThemes.kTextThemeData(isDark)
             .bodyMedium
-            ?.copyWith(
-              color: colorScheme.onSurface,
-            ),
-        color: scaffoldBackgroundColor,
+            ?.copyWith(color: colorScheme.onSurface),
+        color: scaffoldBackgroundColor.withOpacity(0.25),
       ),
       scaffoldBackgroundColor: scaffoldBackgroundColor,
       inputDecorationTheme: InputDecorationTheme(
