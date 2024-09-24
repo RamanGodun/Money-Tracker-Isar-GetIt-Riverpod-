@@ -4,7 +4,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'DATA/helpers/error.dart';
+import 'DATA/helpers/error_widget.dart';
 import 'DATA/providers/gen_data_provider.dart';
 import 'UI/pages/main_screen.dart';
 import 'DATA/themes_set/app_themes/app_themes.dart';

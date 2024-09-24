@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../UI/components/buttons/_buttons_styling.dart';
+import '../../UI/components/dialog_and_buttons/_buttons_styling.dart';
 
 class CustomDialogService {
   void showCustomDialog({
@@ -18,7 +18,7 @@ class CustomDialogService {
         return Dialog(
           backgroundColor: theme.colorScheme.surface.withOpacity(0.95),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(16),
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 16),

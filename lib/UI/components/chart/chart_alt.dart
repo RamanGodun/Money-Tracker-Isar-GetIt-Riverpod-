@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../DOMAIN/models/expense_model.dart';
 import 'chart_bar_alt.dart';
 
-class ChartAlt extends StatelessWidget {
+class ChartAlt extends ConsumerWidget {
   final List<ExpenseModel> expenses;
   const ChartAlt(this.expenses, {super.key});
 
@@ -24,7 +25,7 @@ class ChartAlt extends StatelessWidget {
       }
 
       return {
-        'day': DateFormat.E().format(weekDay).substring(0, 2),
+        'day': DateFormat.E().format(weekDay).substring(0, 3),
         'spentMoney': totalSum,
       };
     }).reversed.toList();
@@ -37,9 +38,8 @@ class ChartAlt extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
-      margin: const EdgeInsets.all(19),
       child: Padding(
         padding: const EdgeInsets.all(15),
         child: Row(

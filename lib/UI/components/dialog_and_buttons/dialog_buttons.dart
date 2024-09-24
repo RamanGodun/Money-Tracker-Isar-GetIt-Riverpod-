@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import '../../../DATA/constants/app_text_styling.dart';
+import '../../../data/constants/app_text_styling.dart';
 import '../../../DOMAIN/models/app_enums.dart';
 import '../../../DATA/helpers/helpers.dart';
 import '_buttons_styling.dart';
@@ -9,7 +9,7 @@ class AppDialogsButtons {
     required BuildContext context,
     required DialogButtonType? buttonType,
     VoidCallback? onPressed,
-    required String buttonText,
+    required String buttonText, // Текст кнопки
   }) {
     switch (buttonType) {
       case DialogButtonType.actionButtonInAndroidStyle:

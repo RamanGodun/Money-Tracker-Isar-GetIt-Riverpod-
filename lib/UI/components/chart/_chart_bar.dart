@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../DATA/themes_set/themes_provider.dart';
 
-import '../../../DATA/helpers/helpers.dart';
-
-class ChartBar extends StatelessWidget {
+class ChartBar extends ConsumerWidget {
   final double fill;
-  const ChartBar({
-    super.key,
-    required this.fill,
-  });
+  const ChartBar({super.key, required this.fill});
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Helpers.themeGet(context);
-    final isDarkMode = Helpers.isDarkMode(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeDataProvider);
+    final colorScheme = theme.colorScheme;
+    final isDarkMode = theme.brightness == Brightness.dark;
 
     return Expanded(
       child: Padding(
@@ -25,8 +23,7 @@ class ChartBar extends StatelessWidget {
               shape: BoxShape.rectangle,
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(12)),
-              color:
-                  theme.colorScheme.secondary.withOpacity(isDarkMode ? 1 : 0.6),
+              color: colorScheme.secondary.withOpacity(isDarkMode ? 0.8 : 0.6),
             ),
           ),
         ),

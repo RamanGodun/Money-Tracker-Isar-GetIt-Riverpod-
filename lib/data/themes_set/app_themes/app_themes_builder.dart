@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'app_colors.dart';
 import 'text_styles.dart';
 
 class ThisAppThemesBuilder {
@@ -70,9 +69,12 @@ class ThisAppThemesBuilder {
       ),
 
       cardTheme: CardTheme(
-        color: AppColors.glassBackgroundLight.withOpacity(0.3),
+        color: isDark
+            ? colorScheme.inverseSurface.withOpacity(0.2)
+            : colorScheme.surface.withOpacity(0.5),
+        shadowColor: colorScheme.shadow.withOpacity(0.6),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        elevation: 7,
+        elevation: 3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),

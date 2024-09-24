@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../themes_set/app_themes/app_colors.dart';
+
 class ErrorApp extends StatelessWidget {
   final String errorMessage;
 
@@ -12,7 +14,7 @@ class ErrorApp extends StatelessWidget {
         body: Center(
           child: Text(
             'Error occurred: $errorMessage',
-            style: const TextStyle(color: Colors.red, fontSize: 18),
+            style: const TextStyle(color: AppColors.kErrorColor, fontSize: 18),
           ),
         ),
       ),

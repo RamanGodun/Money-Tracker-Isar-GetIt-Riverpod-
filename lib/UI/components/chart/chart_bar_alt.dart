@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:money_tracker/DATA/constants/app_text_styling.dart';
+import '../../../DATA/themes_set/themes_provider.dart';
 
-import '../../../DATA/helpers/helpers.dart';
-
-class ChartBarAlt extends StatelessWidget {
+class ChartBarAlt extends ConsumerWidget {
   final String label;
   final double spendingMoney;
   final double spendingPctOfTotal;
@@ -11,9 +12,10 @@ class ChartBarAlt extends StatelessWidget {
       {super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Helpers.themeGet(context);
-    final isDarkMode = Helpers.isDarkMode(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeDataProvider);
+    final colorScheme = theme.colorScheme;
+    final isDarkMode = theme.brightness == Brightness.dark;
 
     return LayoutBuilder(builder: (context, constraints) {
       return Column(
@@ -23,7 +25,8 @@ class ChartBarAlt extends StatelessWidget {
             child: Wrap(
               children: [
                 FittedBox(
-                  child: Text("${spendingMoney.toStringAsFixed(1)}₴"),
+                  child: StyledText.bodyMedium(
+                      theme, "${spendingMoney.toStringAsFixed(0)} ₴"),
                 ),
               ],
             ),
@@ -31,23 +34,28 @@ class ChartBarAlt extends StatelessWidget {
           SizedBox(height: constraints.maxHeight * 0.05),
           SizedBox(
             height: constraints.maxHeight * 0.6,
-            width: 10,
+            width: 20,
             child: Stack(
               alignment: AlignmentDirectional.bottomCenter,
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
                     color:
-                        theme.canvasColor.withOpacity(isDarkMode ? 0.9 : 0.7),
-                    borderRadius: BorderRadius.circular(20),
+                        theme.canvasColor.withOpacity(isDarkMode ? 0.6 : 0.5),
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(12)),
                   ),
                 ),
                 FractionallySizedBox(
                   heightFactor: spendingPctOfTotal,
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: theme.colorScheme.primaryFixed,
+                      shape: BoxShape.rectangle,
+                      borderRadius:
+                          const BorderRadius.vertical(top: Radius.circular(12)),
+                      color: colorScheme.secondary
+                          .withOpacity(isDarkMode ? 0.8 : 0.6),
                     ),
                   ),
                 ),
@@ -57,10 +65,7 @@ class ChartBarAlt extends StatelessWidget {
           SizedBox(height: constraints.maxHeight * 0.05),
           SizedBox(
             height: constraints.maxHeight * 0.15,
-            child: Text(
-              label,
-              style: const TextStyle(fontSize: 13),
-            ),
+            child: StyledText.bodyMedium(theme, label),
           ),
         ],
       );

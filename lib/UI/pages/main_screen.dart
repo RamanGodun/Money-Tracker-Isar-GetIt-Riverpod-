@@ -10,7 +10,7 @@ import '../../DOMAIN/Services/dialogs_service.dart';
 import '../../DOMAIN/models/expense_model.dart';
 import '../components/chart/_chart.dart';
 import '../components/chart/chart_alt.dart';
-import '../components/custom_dialog/custom_dialog.dart';
+import '../components/dialog_and_buttons/custom_dialog.dart';
 import '../components/expenses_list/expenses_list.dart';
 import 'new_expense.dart';
 import 'settings_widget.dart';
@@ -52,14 +52,13 @@ class MainScreen extends ConsumerWidget {
             ? const Center(child: CircularProgressIndicator.adaptive())
             : expensesState.error != null
                 ? Center(child: Text('Error: ${expensesState.error}'))
-                : deviceSize.width < 600
+                : generalData.isPortraitMode
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _getGraphicsTitleWidget(theme,
                               isFirstChart: isFirstChart),
-                          _getChartWidget(
-                              isFirstChart, expensesState, deviceSize),
+                          _getChartWidget(generalData, expensesState),
                           _getGraphicsTitleWidget(
                             theme,
                             isListTitle: true,
@@ -74,8 +73,7 @@ class MainScreen extends ConsumerWidget {
                     : Row(
                         children: [
                           Expanded(
-                            child: _getChartWidget(
-                                isFirstChart, expensesState, deviceSize),
+                            child: _getChartWidget(generalData, expensesState),
                           ),
                           Expanded(
                             child:
@@ -88,8 +86,8 @@ class MainScreen extends ConsumerWidget {
         padding: const EdgeInsets.only(bottom: 80.0, right: 15),
         child: FloatingActionButton(
           backgroundColor: theme.colorScheme.primary.withOpacity(0.7),
-          onPressed: () =>
-              _showCustomAddExpenseDialog(context, ref, theme, isDarkTheme),
+          onPressed: () => _showCustomAddExpenseDialog(
+              context, ref, theme, isDarkTheme, deviceSize),
           child: const Icon(Icons.add, size: 30),
         ),
       ),
@@ -118,10 +116,12 @@ class MainScreen extends ConsumerWidget {
     );
   }
 
-  SizedBox _getChartWidget(bool isFirstChart, expensesState, Size deviceSize) {
+  SizedBox _getChartWidget(generalData, expensesState) {
     return SizedBox(
-      height: deviceSize.height * 0.26,
-      child: isFirstChart
+      height: generalData.isPortraitMode
+          ? generalData.deviceSize.height * 0.26
+          : generalData.deviceSize.height * 0.8,
+      child: generalData.isFirstChart
           ? Chart(expenses: expensesState.expenses)
           : ChartAlt(expensesState.expenses),
     );
@@ -139,14 +139,16 @@ class MainScreen extends ConsumerWidget {
     );
   }
 
-  void _showCustomAddExpenseDialog(
-      BuildContext context, WidgetRef ref, ThemeData theme, bool isDarkTheme) {
+  void _showCustomAddExpenseDialog(BuildContext context, WidgetRef ref,
+      ThemeData theme, bool isDarkTheme, Size deviceSize) {
     showDialog(
       context: context,
       barrierColor:
           theme.colorScheme.shadow.withOpacity(isDarkTheme ? 0.8 : 0.74),
       builder: (context) {
         return CustomDialog(
+          theme,
+          deviceSize,
           contentWidget: const NewExpense(),
           onActionPressed: () {
             final expenseNotifier = ref.read(newExpenseProvider.notifier);

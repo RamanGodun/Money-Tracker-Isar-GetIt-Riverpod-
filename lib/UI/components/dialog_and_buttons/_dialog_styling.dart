@@ -1,47 +1,46 @@
 import 'package:flutter/material.dart';
 import '../../../DATA/constants/app_constants.dart';
-import '../../../DATA/themes_set/app_themes/app_colors.dart';
+import '../../../DATA/constants/app_borders.dart';
 import '../../../DATA/constants/app_box_decoration.dart';
-import '../../../data/constants/app_borders.dart';
+import '../../../DATA/themes_set/app_themes/app_colors.dart';
 import '../../../DOMAIN/models/app_enums.dart';
-import '../../../DATA/helpers/helpers.dart';
-import '../buttons/dialog_buttons.dart';
-import '../mini_widgets.dart';
+import 'dialog_buttons.dart';
+import '../other_widgets.dart';
 
 abstract class AppDialogsStyling {
+/*
+ NEED TO ADD  customIOSDialogStyle 
+ */
+
   static Widget customAndroidDialogStyle({
     required BuildContext context,
-    required double widthFraction,
-    required double heightFraction,
+    required ThemeData theme,
+    required double width,
+    height,
     required Widget contentWidget,
     required EdgeInsets contentPadding,
     required VoidCallback onActionPressed,
-    required VoidCallback onCancelPressed,
+    onCancelPressed,
     required String actionButtonText,
-    required String cancelButtonText,
-    required String dialogTitle,
+    cancelButtonText,
+    dialogTitle,
+    required bool isPortraitMode,
   }) {
-    final theme = Helpers.themeGet(context);
-    // final colorScheme = theme.colorScheme;
-    final deviceSize = Helpers.deviceSizeGet(context);
-    final deviceWidth = deviceSize.width;
-    final deviceHeight = deviceSize.height;
-
     return Stack(
       children: [
         Dialog(
           backgroundColor: AppColors.transparent,
           shape: AppBordersStyling.rectangleBorderForDialog(theme),
           child: Container(
-            width: deviceWidth * widthFraction,
-            height: deviceHeight * heightFraction,
+            width: width,
+            height: height,
             padding: AppConstants.zeroPadding,
             decoration: AppBoxDecorations.withShadows(theme),
             child: Stack(
               children: [
                 AppMiniWidgets.backDropFilter(
                   child: Container(
-                      decoration: AppBoxDecorations.withShadows(theme)),
+                      decoration: AppBoxDecorations.withoutShadows(theme)),
                 ),
                 Container(
                   padding: AppConstants.zeroPadding,
@@ -76,11 +75,10 @@ abstract class AppDialogsStyling {
           ),
         ),
         Positioned(
-          bottom: 30,
+          bottom: isPortraitMode ? 30 : 0,
           left: 0,
           right: 0,
           child: Container(
-            // color: colorScheme.shadow.withOpacity(0.15),
             padding: AppConstants.allPadding10,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
