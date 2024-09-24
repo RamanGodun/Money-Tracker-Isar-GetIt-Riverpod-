@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:money_tracker/UI/components/other_widgets.dart';
 import '../../DATA/constants/strings_4_app.dart';
+import '../../DATA/helpers/helpers.dart';
 import '../../DATA/providers/expenses_provider.dart';
 import '../../DATA/providers/gen_data_provider.dart';
 import '../../DATA/providers/input_data_provider.dart';
@@ -31,7 +32,6 @@ class MainScreen extends ConsumerWidget {
 
     final generalData = ref.watch(generalDataProvider);
     final isFirstChart = generalData.isFirstChart;
-    final deviceSize = generalData.deviceSize;
     final theme = ref.watch(themeDataProvider);
     final isDarkTheme = theme.brightness == Brightness.dark;
     final expensesState = ref.watch(expensesNotifierProvider);
@@ -53,10 +53,10 @@ class MainScreen extends ConsumerWidget {
             ? const Center(child: CircularProgressIndicator.adaptive())
             : expensesState.error != null
                 ? Center(
-                    child: StyledText.errorText(
-                        theme, 'Error: ${expensesState.error}'))
+                    child: StyledText.errorText(theme,
+                        '${AppStrings.errorMessage}${expensesState.error}'))
+                // Next Portrait mode
                 : generalData.isPortraitMode
-                    // Next Portrait mode
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -73,15 +73,31 @@ class MainScreen extends ConsumerWidget {
                                   expenses: expensesState.expenses)),
                         ],
                       )
-                    // Next Portrait mode
+                    // Next Landscape mode
                     : Row(
                         children: [
                           Expanded(
-                            child: _getChartWidget(generalData, expensesState),
+                            child: Column(
+                              children: [
+                                _getGraphicsTitleWidget(theme,
+                                    isFirstChart: isFirstChart),
+                                _getChartWidget(generalData, expensesState),
+                              ],
+                            ),
                           ),
                           Expanded(
-                            child:
-                                ExpensesList(expenses: expensesState.expenses),
+                            child: Column(
+                              children: [
+                                _getGraphicsTitleWidget(
+                                  theme,
+                                  isListTitle: true,
+                                  isFirstChart: isFirstChart,
+                                ),
+                                Expanded(
+                                    child: ExpensesList(
+                                        expenses: expensesState.expenses)),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -91,8 +107,7 @@ class MainScreen extends ConsumerWidget {
         padding: const EdgeInsets.only(bottom: 80.0, right: 15),
         child: FloatingActionButton(
           backgroundColor: theme.colorScheme.primary.withOpacity(0.7),
-          onPressed: () => _showCustomAddExpenseDialog(
-              context, ref, theme, isDarkTheme, deviceSize),
+          onPressed: () => _showCustomAddExpenseDialog(context, ref),
           child: const Icon(Icons.add, size: 30),
         ),
       ),
@@ -102,30 +117,19 @@ class MainScreen extends ConsumerWidget {
   Padding _getGraphicsTitleWidget(ThemeData theme,
       {bool? isListTitle, required bool isFirstChart}) {
     return Padding(
-      padding: const EdgeInsets.only(right: 20, left: 40, top: 25),
-      child: (isListTitle != null)
-          ? StyledText.titleSmall(theme, AppStrings.purchasesList)
-          : isFirstChart
-              ? Text(
-                  'Витрати по категоріям',
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
-                  ),
-                )
-              : Text(
-                  'Витрати за останній тиждень',
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
-                  ),
-                ),
-    );
+        padding: const EdgeInsets.only(right: 20, left: 40, top: 25),
+        child: (isListTitle != null)
+            ? StyledText.titleSmall(theme, AppStrings.purchasesList)
+            : isFirstChart
+                ? StyledText.titleSmall(theme, AppStrings.categoryExpenses)
+                : StyledText.titleSmall(theme, AppStrings.weeklyExpenses));
   }
 
   SizedBox _getChartWidget(generalData, expensesState) {
     return SizedBox(
       height: generalData.isPortraitMode
           ? generalData.deviceSize.height * 0.26
-          : generalData.deviceSize.height * 0.8,
+          : generalData.deviceSize.height * 0.6,
       child: generalData.isFirstChart
           ? Chart(expenses: expensesState.expenses)
           : ChartAlt(expensesState.expenses),
@@ -134,26 +138,25 @@ class MainScreen extends ConsumerWidget {
 
   void _openSettingsDialog(
       BuildContext context, ThemeData theme, bool isDarkTheme) {
-    final dialogService = DIServiceLocator.instance.get<CustomDialogService>();
+    final dialogService =
+        DIServiceLocator.instance.get<SettingsDialogService>();
     dialogService.showCustomDialog(
       context: context,
       title: AppStrings.settings,
       content: const SettingsWidget(),
-      theme: theme,
       isDarkTheme: isDarkTheme,
     );
   }
 
-  void _showCustomAddExpenseDialog(BuildContext context, WidgetRef ref,
-      ThemeData theme, bool isDarkTheme, Size deviceSize) {
+  void _showCustomAddExpenseDialog(BuildContext context, WidgetRef ref) {
+    final theme = Helpers.themeGet(context);
+    final isDarkTheme = Helpers.isDarkTheme(theme);
     showDialog(
       context: context,
       barrierColor:
           theme.colorScheme.shadow.withOpacity(isDarkTheme ? 0.8 : 0.74),
       builder: (context) {
         return CustomDialog(
-          theme,
-          deviceSize,
           contentWidget: const NewExpense(),
           onActionPressed: () {
             final expenseNotifier = ref.read(newExpenseProvider.notifier);
@@ -172,9 +175,9 @@ class MainScreen extends ConsumerWidget {
             }
           },
           onCancelPressed: () => Navigator.of(context).pop(),
-          dialogTitle: 'Додати нову витрату',
-          actionButtonText: 'Зберегти',
-          cancelButtonText: 'Відміна',
+          dialogTitle: AppStrings.addNewExpense,
+          actionButtonText: AppStrings.save,
+          cancelButtonText: AppStrings.cancel,
         );
       },
     );

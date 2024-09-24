@@ -25,9 +25,9 @@ abstract class AppColors {
     return MaterialColor(color.value, swatch);
   }
 
-  static const Color kSecondaryColor = Color.fromARGB(255, 69, 127, 155);
-  static const Color kSecondaryDarkColor = Color.fromARGB(255, 89, 184, 231);
-  static const Color kSecondaryVariant = Color.fromARGB(255, 57, 138, 179);
+  static const Color kSecondaryColor = Color.fromARGB(255, 95, 147, 173);
+  static const Color kSecondaryDarkColor = Color.fromARGB(255, 112, 172, 201);
+  static const Color kSecondaryVariant = Color.fromARGB(255, 91, 137, 159);
   static const Color kErrorColor = CupertinoColors.destructiveRed;
   static const Color kErrorColorDark = Color.fromARGB(255, 231, 122, 122);
 

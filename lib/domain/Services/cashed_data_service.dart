@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
 
-class CashedDataService {
+// class CashedDataService {
   // ThemeData? _cashedTheme;
   // ColorScheme? _cashedColorScheme;
   // TextTheme? _cashedTextTheme;
@@ -53,4 +53,4 @@ class CashedDataService {
   // }
 
 //
-}
+// }

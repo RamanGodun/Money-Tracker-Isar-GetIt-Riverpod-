@@ -1,13 +1,10 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../../DATA/constants/app_constants.dart';
 import '../../DATA/helpers/helpers.dart';
 import '../../DOMAIN/models/app_enums.dart';
 
 class AppMiniWidgets {
 /* Custom Dividers
  */
-
   static Widget divider(ThemeData theme) {
     final colorScheme = theme.colorScheme;
     final isDarkMode = Helpers.isDarkTheme(theme);
@@ -20,7 +17,6 @@ class AppMiniWidgets {
 /*
 DIVIDER for CUSTOM DIALOG 
  */
-
   static Widget dividerBetweenDialogButtons(ThemeData theme) {
     final colorScheme = theme.colorScheme;
     return Container(
@@ -32,19 +28,6 @@ DIVIDER for CUSTOM DIALOG
   static Widget getDividerBetweenDialogButtons(ThemeData theme) =>
       dividerBetweenDialogButtons(theme);
 //
-
-/*
-backDropFilter
-*/
-  static Widget backDropFilter({required Widget child}) {
-    return ClipRRect(
-      borderRadius: AppConstants.radius12,
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-        child: child,
-      ),
-    );
-  }
 
   static Widget onlyPadding(Widget child, Side side, double padding) {
     return Padding(
@@ -69,6 +52,4 @@ backDropFilter
   }
 
 //
-//
-// TEXTS WIDGETS
 }

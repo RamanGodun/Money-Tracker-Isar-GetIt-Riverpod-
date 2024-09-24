@@ -47,7 +47,6 @@ class TextStyling {
     );
   }
 
-  // Стиль тексту для текстових полів
   static TextStyle forTextField(ThemeData theme) {
     return theme.textTheme.displayMedium!.copyWith(
       fontSize: 17.5,
@@ -56,14 +55,12 @@ class TextStyling {
     );
   }
 
-  // Стиль тексту для дій
   static TextStyle forActionText(ThemeData theme) {
     return theme.textTheme.labelLarge!.copyWith(
       color: theme.colorScheme.primary,
     );
   }
 
-  // Стиль тексту для текстових полів форми
   static TextStyle forTextFormField(ThemeData theme, double? textSize) {
     return theme.textTheme.bodyMedium!.copyWith(
       color: theme.colorScheme.onSurface,

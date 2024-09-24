@@ -35,9 +35,8 @@ class ThisAppThemesBuilder {
         elevation: 0,
         centerTitle: false,
         iconTheme: IconThemeData(color: colorScheme.primary),
-        titleTextStyle: TextStyles4ThisAppThemes.kTextThemeData(isDark)
-            .titleMedium
-            ?.copyWith(color: colorScheme.onSurface),
+        titleTextStyle:
+            TextStyles4ThisAppThemes.kTextThemeData(isDark).titleSmall,
         toolbarTextStyle: TextStyles4ThisAppThemes.kTextThemeData(isDark)
             .bodyMedium
             ?.copyWith(color: colorScheme.onSurface),

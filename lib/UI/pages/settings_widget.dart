@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../DATA/constants/strings_4_app.dart';
 import '../../DATA/providers/gen_data_provider.dart';
 import '../../DATA/themes_set/themes_provider.dart';
 import '../components/text_widgets.dart';
@@ -21,7 +22,7 @@ class SettingsWidget extends ConsumerWidget {
         children: [
           _buildSwitchRow(
             context: context,
-            text: 'Темна тема',
+            text: AppStrings.darkTheme,
             value: isDarkMode,
             onChanged: (value) {
               ref.read(themeProvider.notifier).toggleTheme(value);
@@ -32,7 +33,7 @@ class SettingsWidget extends ConsumerWidget {
           const SizedBox(height: 20),
           _buildSwitchRow(
             context: context,
-            text: 'Основний чарт',
+            text: AppStrings.isMainChart,
             value: dataProvider.isFirstChart,
             onChanged: (value) {
               ref.read(generalDataProvider.notifier).toggleChart(value);

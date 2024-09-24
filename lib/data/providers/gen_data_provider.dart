@@ -41,7 +41,6 @@ class GeneralDataNotifier extends StateNotifier<GeneralDataModel> {
       return;
     }
 // Перевіряємо чи дійсно потрібне оновлення
-
     state = GeneralDataModel(
       deviceSize: state.deviceSize,
       isFirstChart: isFirstChart,

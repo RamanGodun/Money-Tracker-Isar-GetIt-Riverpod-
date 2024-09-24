@@ -23,7 +23,7 @@ abstract class AppButtonsStyling {
         child: ElevatedButton(
           style: ButtonStyle(
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                AppBordersStyling.roundedRectangleBorderForButton(theme)),
+                AppBordersStyling.roundedRectangleBorder(theme)),
             backgroundColor: WidgetStateProperty.all(
               colorScheme.primary.withOpacity(isDark ? 0.45 : 0.7),
             ),
@@ -58,7 +58,7 @@ abstract class AppButtonsStyling {
           style: ElevatedButton.styleFrom(
             backgroundColor: backgroundColor,
             foregroundColor: foregroundColor,
-            shape: AppBordersStyling.roundedRectangleBorderForButton(theme),
+            shape: AppBordersStyling.roundedRectangleBorder(theme),
             elevation: AppConstants.elevation,
             padding: AppConstants.commonPadding,
           ),
@@ -92,7 +92,7 @@ abstract class AppButtonsStyling {
               color: theme.colorScheme.primary.withOpacity(0.3),
               width: 1.0,
             ),
-            shape: AppBordersStyling.roundedRectangleBorderForButton(theme),
+            shape: AppBordersStyling.roundedRectangleBorder(theme),
           ),
           onPressed: onPressed,
           child: Center(

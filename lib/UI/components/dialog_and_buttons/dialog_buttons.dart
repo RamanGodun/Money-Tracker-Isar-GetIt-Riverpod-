@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:money_tracker/DATA/themes_set/app_themes/app_colors.dart';
 import '../../../DATA/constants/app_text_styling.dart';
 import '../../../DOMAIN/models/app_enums.dart';
 import '../../../DATA/helpers/helpers.dart';
@@ -52,7 +53,7 @@ class AppDialogsButtons {
           : AppButtonsStyling.forOutlinedButton(
               context,
               textStyle: TextStyling.forButtons(theme).copyWith(
-                  color: theme.colorScheme.error, fontWeight: fontWeight),
+                  color: AppColors.kErrorColor, fontWeight: fontWeight),
               onPressed: onPressed ?? () => Navigator.of(context).pop(),
               buttonText: buttonText,
             ),

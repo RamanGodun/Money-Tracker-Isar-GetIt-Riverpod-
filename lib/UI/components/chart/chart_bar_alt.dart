@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../DATA/constants/app_box_decoration.dart';
 import '../../../DATA/themes_set/themes_provider.dart';
 import '../text_widgets.dart';
 
@@ -14,8 +15,6 @@ class ChartBarAlt extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeDataProvider);
-    final colorScheme = theme.colorScheme;
-    final isDarkMode = theme.brightness == Brightness.dark;
 
     return LayoutBuilder(builder: (context, constraints) {
       return Column(
@@ -39,24 +38,12 @@ class ChartBarAlt extends ConsumerWidget {
               alignment: AlignmentDirectional.bottomCenter,
               children: <Widget>[
                 Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color:
-                        theme.canvasColor.withOpacity(isDarkMode ? 0.6 : 0.5),
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(12)),
-                  ),
+                  decoration: AppBoxDecorations.forGraphics(theme, false),
                 ),
                 FractionallySizedBox(
                   heightFactor: spendingPctOfTotal,
                   child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius:
-                          const BorderRadius.vertical(top: Radius.circular(12)),
-                      color: colorScheme.secondary
-                          .withOpacity(isDarkMode ? 0.8 : 0.6),
-                    ),
+                    decoration: AppBoxDecorations.forGraphics(theme, true),
                   ),
                 ),
               ],

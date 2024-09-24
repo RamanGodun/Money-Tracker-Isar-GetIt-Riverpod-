@@ -57,9 +57,9 @@ class DIServiceLocator {
   }
 
   void _setupCustomDialogService() {
-    if (!_getIt.isRegistered<CustomDialogService>()) {
-      _getIt.registerSingleton<CustomDialogService>(
-        CustomDialogService(),
+    if (!_getIt.isRegistered<SettingsDialogService>()) {
+      _getIt.registerSingleton<SettingsDialogService>(
+        SettingsDialogService(),
       );
     }
   }

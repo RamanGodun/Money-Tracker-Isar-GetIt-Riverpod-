@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-
 import '../helpers/helpers.dart';
 import 'app_box_shadows.dart';
 import 'app_constants.dart';
-
 import 'dart:ui';
 
 abstract class AppBoxDecorations {
-  /* BoxDecoration для елементів у стилі "GLASS MORPHISM" з ефектом розмиття */
   static BoxDecoration inGlassMorphismStyle(ThemeData theme) {
     final isDark = Helpers.isDarkTheme(theme);
     final colorScheme = theme.colorScheme;
@@ -25,7 +22,6 @@ abstract class AppBoxDecorations {
     );
   }
 
-  /* Метод для додавання BackdropFilter */
   static Widget withBlurEffect({required Widget child, required double blur}) {
     return ClipRRect(
       borderRadius: AppConstants.commonBorderRadius,
@@ -35,4 +31,16 @@ abstract class AppBoxDecorations {
       ),
     );
   }
+
+  static BoxDecoration forGraphics(ThemeData theme, bool isMainChart) {
+    final isDarkMode = theme.brightness == Brightness.dark;
+    return BoxDecoration(
+      shape: BoxShape.rectangle,
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+      color: isMainChart
+          ? theme.colorScheme.secondary.withOpacity(isDarkMode ? 0.8 : 0.6)
+          : theme.canvasColor.withOpacity(isDarkMode ? 0.5 : 0.4),
+    );
+  }
+//
 }

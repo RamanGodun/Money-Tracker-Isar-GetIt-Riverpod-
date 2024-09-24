@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../DATA/constants/app_constants.dart';
 import '../../../DATA/constants/app_borders.dart';
 import '../../../DATA/constants/app_box_decoration.dart';
+import '../../../DATA/helpers/helpers.dart';
 import '../../../DATA/themes_set/app_themes/app_colors.dart';
 import '../../../DOMAIN/models/app_enums.dart';
 import 'dialog_buttons.dart';
@@ -14,9 +15,6 @@ abstract class AppDialogsStyling {
 
   static Widget customAndroidDialogStyle({
     required BuildContext context,
-    required ThemeData theme,
-    required double width,
-    height,
     required Widget contentWidget,
     required EdgeInsets contentPadding,
     required VoidCallback onActionPressed,
@@ -24,13 +22,21 @@ abstract class AppDialogsStyling {
     required String actionButtonText,
     cancelButtonText,
     dialogTitle,
-    required bool isPortraitMode,
   }) {
+    final theme = Helpers.themeGet(context);
+    final deviceSize = Helpers.deviceSizeGet(context);
+
+    final isPortraitMode = (deviceSize.width < 600);
+    final widthFraction = isPortraitMode ? 0.77 : 0.85;
+    final width = widthFraction * deviceSize.width;
+    final heightFraction = isPortraitMode ? 0.6 : 0.9;
+    final height = heightFraction * deviceSize.height;
+
     return Stack(
       children: [
         Dialog(
           backgroundColor: AppColors.transparent,
-          shape: AppBordersStyling.rectangleBorderForDialog(theme),
+          shape: AppBordersStyling.rectangleBorder(theme),
           child: Container(
             width: width,
             height: height,
@@ -38,7 +44,8 @@ abstract class AppDialogsStyling {
             decoration: AppBoxDecorations.inGlassMorphismStyle(theme),
             child: Stack(
               children: [
-                AppMiniWidgets.backDropFilter(
+                AppBoxDecorations.withBlurEffect(
+                  blur: 10,
                   child: Container(
                       decoration:
                           AppBoxDecorations.inGlassMorphismStyle(theme)),

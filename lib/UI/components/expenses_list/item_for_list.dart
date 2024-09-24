@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:money_tracker/DATA/constants/app_borders.dart';
 import '../../../DATA/constants/app_constants.dart';
 import '../../../DATA/themes_set/themes_provider.dart';
 import '../../../DOMAIN/models/expense_model.dart';
@@ -24,8 +25,8 @@ class ExpenseItemForList extends ConsumerWidget {
         children: [
           SlidableAction(
             backgroundColor: colorScheme.surface.withOpacity(0.1),
-            foregroundColor: const Color.fromARGB(255, 58, 157, 63),
-            borderRadius: BorderRadius.circular(10),
+            foregroundColor: colorScheme.primary,
+            borderRadius: AppConstants.commonBorderRadius,
             onPressed: (_) {
               // Можна додати додаткові дії
             },
@@ -34,7 +35,7 @@ class ExpenseItemForList extends ConsumerWidget {
           SlidableAction(
             backgroundColor: colorScheme.surface.withOpacity(0.1),
             foregroundColor: colorScheme.error,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: AppConstants.commonBorderRadius,
             onPressed: (_) {
               ref
                   .read(expensesNotifierProvider.notifier)
@@ -46,9 +47,7 @@ class ExpenseItemForList extends ConsumerWidget {
       ),
       child: Card(
         color: colorScheme.surface.withOpacity(isDarkTheme ? 0.8 : 0.2),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        shape: AppBordersStyling.rectangleBorder(theme),
         elevation: 5,
         shadowColor: theme.shadowColor.withOpacity(0.2),
         child: ListTile(

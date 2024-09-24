@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracker/DATA/constants/app_borders.dart';
+import 'package:money_tracker/DATA/constants/strings_4_app.dart';
 
+import '../../DATA/helpers/helpers.dart';
 import '../../UI/components/dialog_and_buttons/_buttons_styling.dart';
 
-class CustomDialogService {
+class SettingsDialogService {
   void showCustomDialog({
     required BuildContext context,
     required String title,
     required Widget content,
-    required ThemeData theme,
+    // required ThemeData theme,
     bool isDarkTheme = false,
   }) {
+    final theme = Helpers.themeGet(context);
     showDialog(
       context: context,
       barrierColor:
@@ -17,9 +21,7 @@ class CustomDialogService {
       builder: (context) {
         return Dialog(
           backgroundColor: theme.colorScheme.surface.withOpacity(0.95),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+          shape: AppBordersStyling.rectangleBorder(theme),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 16),
             child: Column(
@@ -33,7 +35,7 @@ class CustomDialogService {
                 SizedBox(
                     width: 200,
                     child: AppButtonsStyling.forElevatedButton(context,
-                        buttonText: 'Закрити', onPressed: () {
+                        buttonText: AppStrings.close, onPressed: () {
                       Navigator.of(context).pop();
                     })),
               ],
