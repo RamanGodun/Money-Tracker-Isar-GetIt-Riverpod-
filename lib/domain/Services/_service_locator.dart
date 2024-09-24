@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'animation_controller_service.dart';
 import 'dialogs_service.dart';
 import 'isar_service.dart';
+import 'sh_prefs_service.dart';
 import 'text_validation_service.dart';
 
 class DIServiceLocator {
@@ -31,10 +32,19 @@ class DIServiceLocator {
     }
   }
 
+  // Future<void> _setupSharedPreferences() async {
+  //   if (!_getIt.isRegistered<SharedPreferences>()) {
+  //     final prefs = await SharedPreferences.getInstance();
+  //     _getIt.registerSingleton<SharedPreferences>(prefs);
+  //   }
+  // }
+
   Future<void> _setupSharedPreferences() async {
-    if (!_getIt.isRegistered<SharedPreferences>()) {
+    if (!_getIt.isRegistered<SharedPreferencesService>()) {
       final prefs = await SharedPreferences.getInstance();
-      _getIt.registerSingleton<SharedPreferences>(prefs);
+      _getIt.registerSingleton<SharedPreferencesService>(
+        SharedPreferencesService(prefs),
+      );
     }
   }
 

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../../DOMAIN/Services/_service_locator.dart';
+import '../../DOMAIN/Services/sh_prefs_service.dart';
 import 'app_themes/app_themes.dart';
 
 // StateNotifierProvider для управління темою
 final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>((ref) {
-  return ThemeNotifier();
+  final sharedPrefsService =
+      DIServiceLocator.instance.get<SharedPreferencesService>();
+  return ThemeNotifier(sharedPrefsService);
 });
 
 // Провайдер для отримання ThemeData відповідно до ThemeMode
@@ -17,29 +20,27 @@ final themeDataProvider = Provider<ThemeData>((ref) {
 });
 
 class ThemeNotifier extends StateNotifier<ThemeMode> {
-  static const String _themePreferenceKey = 'theme_mode';
+  final SharedPreferencesService _sharedPreferencesService;
 
-  ThemeNotifier() : super(ThemeMode.light) {
+  ThemeNotifier(this._sharedPreferencesService) : super(ThemeMode.light) {
     loadThemeFromPreferences();
   }
 
   Future<void> loadThemeFromPreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    final themeIndex = prefs.getInt(_themePreferenceKey);
-
-    if (themeIndex != null) {
-      state = ThemeMode.values[themeIndex];
-    }
+    // Отримуємо дані через сервіс
+    final themeMode = _sharedPreferencesService.loadThemeMode();
+    state = themeMode;
   }
 
   Future<void> toggleTheme(bool isDarkMode) async {
     state = isDarkMode ? ThemeMode.dark : ThemeMode.light;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_themePreferenceKey, state.index);
-    // Скидання кешу після зміни теми
+    // Зберігаємо нову тему через сервіс
+    await _sharedPreferencesService.saveThemeMode(state);
+    // Можна додати додаткову логіку, наприклад, скидання кешу
     // cachedDataService.resetThemeCache();
   }
 }
+
 
 /*
 Maybe will use later
