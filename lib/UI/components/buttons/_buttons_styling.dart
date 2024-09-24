@@ -18,7 +18,7 @@ abstract class AppButtonsStyling {
       color: AppColors.transparent,
       child: SizedBox(
         width: double.infinity,
-        height: AppStylingConstants.buttonsHeight,
+        height: AppConstants.buttonsHeight,
         child: ElevatedButton(
           style: ButtonStyle(
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -29,10 +29,10 @@ abstract class AppButtonsStyling {
           ),
           onPressed: onPressed,
           child: Padding(
-            padding: AppStylingConstants.horizontal8,
+            padding: AppConstants.horizontal8,
             child: Text(
               buttonText,
-              style: AppTextStyling.forButtons(theme),
+              style: StyledText.forButtons(theme),
             ),
           ),
         ),
@@ -55,19 +55,19 @@ abstract class AppButtonsStyling {
       color: AppColors.transparent,
       child: SizedBox(
         width: double.infinity,
-        height: AppStylingConstants.buttonsHeight,
+        height: AppConstants.buttonsHeight,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: backgroundColor,
             foregroundColor: foregroundColor,
             shape: AppBordersStyling.roundedRectangleBorderForButton(theme),
-            elevation: AppStylingConstants.elevation,
-            padding: AppStylingConstants.commonPadding,
+            elevation: AppConstants.elevation,
+            padding: AppConstants.commonPadding,
           ),
           onPressed: onPressed,
           child: Text(
             buttonText,
-            style: AppTextStyling.forButtons(theme),
+            style: StyledText.forButtons(theme),
           ),
         ),
       ),
@@ -83,12 +83,12 @@ abstract class AppButtonsStyling {
   }) {
     final theme = Helpers.themeGet(context);
     final isDark = Helpers.isDarkTheme(theme);
-    final textStyleForButton = textStyle ?? AppTextStyling.forButtons(theme);
+    final textStyleForButton = textStyle ?? StyledText.forButtons(theme);
     return Material(
       color: AppColors.transparent,
       child: SizedBox(
         width: double.infinity,
-        height: AppStylingConstants.buttonsHeight,
+        height: AppConstants.buttonsHeight,
         child: OutlinedButton(
           style: OutlinedButton.styleFrom(
             backgroundColor:

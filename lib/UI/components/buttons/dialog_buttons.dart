@@ -51,7 +51,7 @@ class AppDialogsButtons {
             )
           : AppButtonsStyling.forOutlinedButton(
               context,
-              textStyle: AppTextStyling.forButtons(theme).copyWith(
+              textStyle: StyledText.forButtons(theme).copyWith(
                   color: theme.colorScheme.error, fontWeight: fontWeight),
               onPressed: onPressed ?? () => Navigator.of(context).pop(),
               buttonText: buttonText,

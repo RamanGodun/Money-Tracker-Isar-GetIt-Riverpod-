@@ -6,41 +6,41 @@ import 'app_box_shadows.dart';
 
 abstract class AppBoxDecorations {
   /* BoxDecoration для кнопок у стилі "GLASS MORPHISM" */
-  static BoxDecoration forButtonsInGlassMorphismStyle(ThemeData theme) {
+  static BoxDecoration inGlassMorphismStyle(ThemeData theme) {
     final isDark = Helpers.isDarkTheme(theme);
     final colorScheme = theme.colorScheme;
     return BoxDecoration(
       color: colorScheme.primary.withOpacity(isDark ? 0.35 : 0.6),
-      borderRadius: AppStylingConstants.commonBorderRadius,
-      boxShadow: [
-        AppBoxShadows.glassMorphismShadow1(theme, isDark),
-        AppBoxShadows.glassMorphismShadow2(theme, isDark),
-      ],
+      borderRadius: AppConstants.commonBorderRadius,
       border: Border.all(
         color: colorScheme.onSurface.withOpacity(0.1),
       ),
+      boxShadow: [
+        AppBoxShadows.forGlassMorphism1(theme, isDark),
+        AppBoxShadows.forGlassMorphism2(theme, isDark),
+      ],
     );
   }
 
   /* BoxDecoration для Android Dialog */
-  static BoxDecoration forAndroidDialog(ThemeData theme) {
+  static BoxDecoration withShadows(ThemeData theme) {
     return BoxDecoration(
-      border: AppBordersStyling.forAndroidBoxDecoration(theme),
-      borderRadius: AppStylingConstants.radius12,
       color: theme.colorScheme.surface.withOpacity(0.4),
+      borderRadius: AppConstants.radius12,
+      border: AppBordersStyling.forAndroidBoxDecoration(theme),
       boxShadow: [
-        AppBoxShadows.customDialogShadow1(theme, false),
-        AppBoxShadows.customDialogShadow2(theme, false),
+        AppBoxShadows.forDialog1(theme, false),
+        AppBoxShadows.forDialog2(theme, false),
       ],
     );
   }
 
   /* BoxDecoration для низьких контейнерів */
-  static BoxDecoration forAndroidDialog1(ThemeData theme) {
+  static BoxDecoration withoutShadows(ThemeData theme) {
     final colorScheme = theme.colorScheme;
     return BoxDecoration(
       color: colorScheme.surface.withOpacity(0.6),
-      borderRadius: AppStylingConstants.radius12,
+      borderRadius: AppConstants.radius12,
       border: Border.all(
         color: colorScheme.inverseSurface.withOpacity(0.1),
       ),

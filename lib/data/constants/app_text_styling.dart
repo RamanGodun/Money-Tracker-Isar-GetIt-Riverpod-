@@ -1,7 +1,56 @@
 import 'package:flutter/material.dart';
 
-abstract class AppTextStyling {
+abstract class StyledText {
   /* General text styles */
+  static Widget titleMedium(ThemeData theme, String text) {
+    return Text(
+      text,
+      style: theme.textTheme.titleSmall?.copyWith(
+        color: theme.colorScheme.onSurface.withOpacity(0.7),
+      ),
+    );
+  }
+
+  static Widget titleSmall(ThemeData theme, String text,
+      {Color? color, TextAlign? align}) {
+    return Text(
+      text,
+      textAlign: align ?? TextAlign.start,
+      style: theme.textTheme.titleSmall?.copyWith(
+        color: color ?? theme.colorScheme.onSurface.withOpacity(0.7),
+      ),
+    );
+  }
+
+  static Widget bodyLarge(ThemeData theme, String text,
+      {Color? color, TextAlign? align}) {
+    return Text(
+      text,
+      style: theme.textTheme.bodyLarge?.copyWith(
+        color: theme.colorScheme.onSurface,
+      ),
+    );
+  }
+
+  static Widget bodyMedium(ThemeData theme, String text,
+      {Color? color, TextAlign? align}) {
+    return Text(
+      text,
+      style: theme.textTheme.bodyMedium?.copyWith(
+        color: theme.colorScheme.onSurface.withOpacity(0.7),
+      ),
+    );
+  }
+
+  static Widget bodySmall(ThemeData theme, String text,
+      {Color? color, TextAlign? align}) {
+    return Text(
+      text,
+      style: theme.textTheme.bodySmall?.copyWith(
+        color: theme.colorScheme.onSurface.withOpacity(0.7),
+      ),
+    );
+  }
 
   // Загальний стиль тексту для кнопок
   static TextStyle forButtons(ThemeData theme) {
@@ -13,16 +62,6 @@ abstract class AppTextStyling {
       letterSpacing: 1.04,
       wordSpacing: 1.96,
       color: colorScheme.onPrimary,
-    );
-  }
-
-  // Стиль тексту для заголовка в тілі
-  static TextStyle bodyMedium(ThemeData theme) {
-    final textTheme = theme.textTheme;
-    final colorScheme = theme.colorScheme;
-    return textTheme.bodyMedium!.copyWith(
-      color: colorScheme.onSurface,
-      fontSize: 16.0,
     );
   }
 
@@ -44,13 +83,6 @@ abstract class AppTextStyling {
   }
 
   // Стиль тексту для великого тіла
-  static TextStyle bodyLarge(ThemeData theme) {
-    final textTheme = theme.textTheme;
-    final colorScheme = theme.colorScheme;
-    return textTheme.bodyLarge!.copyWith(
-      color: colorScheme.onSurface,
-    );
-  }
 
   // Стиль тексту для label
   static TextStyle label(ThemeData theme) {

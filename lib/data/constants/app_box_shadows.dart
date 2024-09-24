@@ -4,7 +4,7 @@ import '../Theme_configuration/app_colors/app_colors.dart';
 
 abstract class AppBoxShadows {
   /* Головні тіні для діалогів у стилі гласморфізму */
-  static BoxShadow customDialogShadow1(ThemeData theme, bool isIOS) {
+  static BoxShadow forDialog1(ThemeData theme, bool isIOS) {
     final colorScheme = theme.colorScheme;
     final isDarkMode = Helpers.isDarkTheme(theme);
     return BoxShadow(
@@ -17,7 +17,7 @@ abstract class AppBoxShadows {
     );
   }
 
-  static BoxShadow customDialogShadow2(ThemeData theme, bool isIOS) {
+  static BoxShadow forDialog2(ThemeData theme, bool isIOS) {
     final colorScheme = theme.colorScheme;
     final isDarkMode = Helpers.isDarkTheme(theme);
     return BoxShadow(
@@ -31,7 +31,7 @@ abstract class AppBoxShadows {
   }
 
   /* Тіні для стилю гласморфізму */
-  static BoxShadow glassMorphismShadow1(ThemeData theme, bool isDarkMode) {
+  static BoxShadow forGlassMorphism1(ThemeData theme, bool isDarkMode) {
     return BoxShadow(
       color: AppColors.cupertinoBlackColor.withOpacity(isDarkMode ? 0.5 : 0.7),
       spreadRadius: 2,
@@ -40,7 +40,7 @@ abstract class AppBoxShadows {
     );
   }
 
-  static BoxShadow glassMorphismShadow2(ThemeData theme, bool isDarkMode) {
+  static BoxShadow forGlassMorphism2(ThemeData theme, bool isDarkMode) {
     return BoxShadow(
       color: AppColors.cupertinoBlackColor.withOpacity(isDarkMode ? 0.3 : 0.4),
       spreadRadius: 1,

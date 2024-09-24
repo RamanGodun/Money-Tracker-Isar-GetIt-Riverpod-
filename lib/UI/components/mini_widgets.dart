@@ -37,7 +37,7 @@ backDropFilter
 */
   static Widget backDropFilter({required Widget child}) {
     return ClipRRect(
-      borderRadius: AppStylingConstants.radius12,
+      borderRadius: AppConstants.radius12,
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
         child: child,

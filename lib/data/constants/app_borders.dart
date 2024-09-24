@@ -17,7 +17,7 @@ abstract class AppBordersStyling {
   static RoundedRectangleBorder roundedRectangleBorderForButton(
       ThemeData theme) {
     return RoundedRectangleBorder(
-      borderRadius: AppStylingConstants.commonBorderRadius,
+      borderRadius: AppConstants.commonBorderRadius,
       side: BorderSide(color: theme.colorScheme.primary.withOpacity(0.1)),
     );
   }
@@ -25,7 +25,7 @@ abstract class AppBordersStyling {
   static ShapeBorder rectangleBorderForDialog(ThemeData theme,
       {BorderRadius? borderRadius}) {
     return RoundedRectangleBorder(
-      borderRadius: borderRadius ?? AppStylingConstants.radius12,
+      borderRadius: borderRadius ?? AppConstants.radius12,
       side: BorderSide(
         color: theme.colorScheme.onSurface.withOpacity(0.05),
       ),

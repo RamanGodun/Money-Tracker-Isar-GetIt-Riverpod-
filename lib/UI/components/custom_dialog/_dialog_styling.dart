@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../DATA/Theme_configuration/app_colors/app_colors.dart';
+import '../../../DATA/constants/app_box_decoration.dart';
 import '../../../data/constants/app_styling_constants.dart';
 import '../../../data/constants/app_borders.dart';
-import '../../../data/constants/app_box_decoration.dart';
 import '../../../DOMAIN/models/app_enums.dart';
 import '../../../DATA/helpers/helpers.dart';
 import '../buttons/dialog_buttons.dart';
@@ -35,16 +35,16 @@ abstract class AppDialogsStyling {
           child: Container(
             width: deviceWidth * widthFraction,
             height: deviceHeight * heightFraction,
-            padding: AppStylingConstants.zeroPadding,
-            decoration: AppBoxDecorations.forAndroidDialog(theme),
+            padding: AppConstants.zeroPadding,
+            decoration: AppBoxDecorations.withShadows(theme),
             child: Stack(
               children: [
                 AppMiniWidgets.backDropFilter(
                   child: Container(
-                      decoration: AppBoxDecorations.forAndroidDialog1(theme)),
+                      decoration: AppBoxDecorations.withShadows(theme)),
                 ),
                 Container(
-                  padding: AppStylingConstants.zeroPadding,
+                  padding: AppConstants.zeroPadding,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -81,7 +81,7 @@ abstract class AppDialogsStyling {
           right: 0,
           child: Container(
             // color: colorScheme.shadow.withOpacity(0.15),
-            padding: AppStylingConstants.allPadding10,
+            padding: AppConstants.allPadding10,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
