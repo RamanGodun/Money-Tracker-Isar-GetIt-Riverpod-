@@ -25,15 +25,15 @@ class MoneyTrackerApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+    final theme = ref.watch(themeDataProvider);
     return FutureBuilder(
       future: ref.read(themeProvider.notifier).loadThemeFromPreferences(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator.adaptive(
-              backgroundColor: Helpers.themeGet(context).colorScheme.onSurface);
+              backgroundColor: theme.colorScheme.onSurface);
         }
-
-        final themeMode = ref.watch(themeProvider);
 
         return MaterialApp(
           darkTheme: ThisAppThemes.kDarkTheme,
