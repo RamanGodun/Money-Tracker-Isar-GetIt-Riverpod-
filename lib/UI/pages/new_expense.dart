@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../DATA/themes_set/app_themes/app_colors.dart';
-import '../../DATA/helpers/helpers.dart';
+import 'package:money_tracker/DATA/constants/app_text_styling.dart';
 import '../../DATA/providers/input_data_provider.dart';
+import '../../DATA/providers/gen_data_provider.dart';
+import '../../DATA/themes_set/app_themes/app_colors.dart';
+import '../../DATA/themes_set/themes_provider.dart';
 import '../../DOMAIN/models/app_enums.dart';
 
 class NewExpense extends ConsumerWidget {
@@ -10,23 +12,67 @@ class NewExpense extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final expenseState = ref.watch(newExpenseProvider);
-    final theme = Helpers.themeGet(context);
-    final isDarkMode = Helpers.isDarkMode(context);
+    return Consumer(
+      builder: (context, ref, child) {
+        final expenseState = ref.watch(newExpenseProvider);
+        final theme = ref.watch(themeDataProvider);
+        final isDarkMode = theme.brightness == Brightness.dark;
+        final generalData = ref.watch(generalDataProvider);
+        final deviceSize = generalData.deviceSize;
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ListView(
-        children: [
-          _buildTitleInputField(ref, expenseState, theme),
-          const SizedBox(height: 12),
-          _buildAmountInputField(ref, expenseState, theme),
-          const SizedBox(height: 12),
-          _buildCategoryDropdown(ref, expenseState, theme),
-          const SizedBox(height: 12),
-          _buildDatePickerButton(context, ref, expenseState, isDarkMode, theme),
-        ],
-      ),
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            children: deviceSize.width < 600
+                ? [
+                    _buildTitleInputField(ref, expenseState, theme),
+                    const SizedBox(height: 12),
+                    _buildAmountInputField(ref, expenseState, theme),
+                    const SizedBox(height: 16),
+                    StyledText.titleSmall(theme, "Категорія витрати"),
+                    _buildCategoryDropdown(ref, expenseState, theme),
+                    const SizedBox(height: 16),
+                    StyledText.titleSmall(theme, "Дата витрати"),
+                    _buildDatePickerButton(
+                        context, ref, expenseState, isDarkMode, theme),
+                  ]
+                : [
+                    Row(
+                      children: [
+                        Expanded(
+                            child: _buildTitleInputField(
+                                ref, expenseState, theme)),
+                        const SizedBox(width: 12),
+                        Expanded(
+                            child: _buildAmountInputField(
+                                ref, expenseState, theme)),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Column(children: [
+                          StyledText.titleSmall(theme, "Категорія витрати"),
+                          _buildCategoryDropdown(ref, expenseState, theme)
+                        ])),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              StyledText.titleSmall(theme, "Дата витрати"),
+                              _buildDatePickerButton(context, ref, expenseState,
+                                  isDarkMode, theme),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+          ),
+        );
+      },
     );
   }
 
@@ -113,7 +159,7 @@ class NewExpense extends ConsumerWidget {
           const SizedBox(width: 12),
           Text(
             expenseState.date == null
-                ? 'Виберіть дату'
+                ? 'Немає дати, оберіть'
                 : 'Дата: ${expenseState.date!.toLocal()}',
             style: theme.textTheme.bodyLarge?.copyWith(
                 color: expenseState.date == null

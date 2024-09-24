@@ -18,7 +18,8 @@ class IsarService {
 
   // Отримання всіх витрат з бази даних
   Future<List<ExpenseModel>> getAllExpenses() async {
-    final dbExpenses = await isar.dBExpenseModels.where().findAll();
+    final dbExpenses =
+        await isar.dBExpenseModels.where().sortByDateDesc().findAll();
     return dbExpenses
         .map((dbExpense) => ExpenseModel.fromDBModel(dbExpense))
         .toList();

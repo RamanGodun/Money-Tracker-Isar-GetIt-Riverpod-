@@ -1,126 +1,107 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_it/get_it.dart';
+import 'package:money_tracker/DATA/constants/app_text_styling.dart';
 import '../../DATA/providers/expenses_provider.dart';
 import '../../DATA/providers/gen_data_provider.dart';
 import '../../DATA/providers/input_data_provider.dart';
+import '../../DATA/themes_set/themes_provider.dart';
 import '../../DOMAIN/Services/_service_locator.dart';
-import '../../DOMAIN/Services/animation_controller_service.dart';
 import '../../DOMAIN/Services/dialogs_service.dart';
-import '../../DATA/helpers/helpers.dart';
 import '../../DOMAIN/models/expense_model.dart';
 import '../components/chart/_chart.dart';
 import '../components/chart/chart_alt.dart';
 import '../components/custom_dialog/custom_dialog.dart';
 import '../components/expenses_list/expenses_list.dart';
-import '../components/mini_widgets.dart';
 import 'new_expense.dart';
 import 'settings_widget.dart';
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends ConsumerWidget {
   const MainScreen({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Оновлюємо розмір екрана при зміні залежностей
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final mediaQuery = MediaQuery.of(context);
+      ref.read(generalDataProvider.notifier).updateMediaQuery(mediaQuery);
+    });
 
-class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
-  late AnimationService animationService;
-  late bool isDarkTheme;
-  late ThemeData theme;
-  late Size deviceSize;
+    final generalData = ref.watch(generalDataProvider);
+    final isFirstChart = generalData.isFirstChart;
+    final deviceSize = generalData.deviceSize;
+    final theme = ref.watch(themeDataProvider);
+    final isDarkTheme = theme.brightness == Brightness.dark;
+    final expensesState = ref.watch(expensesNotifierProvider);
 
-  @override
-  void initState() {
-    super.initState();
-    animationService = GetIt.instance<AnimationService>();
-    animationService.init(this);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    isDarkTheme = Helpers.isDarkMode(context);
-    theme = Helpers.themeGet(context);
-    deviceSize = Helpers.deviceSizeGet(context);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, ref, child) {
-        final expensesState = ref.watch(expensesNotifierProvider);
-        final generalData = ref.watch(generalDataProvider);
-        // final isFirstChart = ref.watch(chartTypeProvider);
-        final isFirstChart = generalData.isFirstChart;
-
-        return Scaffold(
-          appBar: AppBar(
-            title: const Padding(
-              padding: EdgeInsets.only(left: 18.0),
-              child: Text('Трекер витрат'),
-            ),
-            actions: [
-              IconButton(
-                  onPressed: () =>
-                      _openSettingsDialog(context, theme, isDarkTheme),
-                  icon: const Icon(Icons.settings)),
-              const SizedBox(width: 20)
-            ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Padding(
+          padding: EdgeInsets.only(left: 18.0),
+          child: Text('Трекер витрат'),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => _openSettingsDialog(context, theme, isDarkTheme),
+            icon: const Icon(Icons.settings),
           ),
-          body: SafeArea(
-            child: expensesState.isLoading
-                ? const Center(child: CircularProgressIndicator.adaptive())
-                : expensesState.error != null
-                    ? Center(child: Text('Error: ${expensesState.error}'))
-                    : deviceSize.width < 600
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _getGraphicsTitleWidget(
-                                  isFirstChart: isFirstChart),
-                              _getChartWidget(isFirstChart, expensesState),
-                              _getGraphicsTitleWidget(
-                                  isListTitle: true,
-                                  isFirstChart: isFirstChart),
-                              Expanded(
-                                child: ExpensesList(
-                                    expenses: expensesState.expenses),
-                              ),
-                            ],
-                          )
-                        : Row(
-                            children: [
-                              Expanded(
-                                child: _getChartWidget(
-                                    isFirstChart, expensesState),
-                              ),
-                              Expanded(
-                                child: ExpensesList(
-                                    expenses: expensesState.expenses),
-                              ),
-                            ],
+          const SizedBox(width: 20),
+        ],
+      ),
+      body: SafeArea(
+        child: expensesState.isLoading
+            ? const Center(child: CircularProgressIndicator.adaptive())
+            : expensesState.error != null
+                ? Center(child: Text('Error: ${expensesState.error}'))
+                : deviceSize.width < 600
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _getGraphicsTitleWidget(theme,
+                              isFirstChart: isFirstChart),
+                          _getChartWidget(
+                              isFirstChart, expensesState, deviceSize),
+                          _getGraphicsTitleWidget(
+                            theme,
+                            isListTitle: true,
+                            isFirstChart: isFirstChart,
                           ),
-          ),
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 80.0, right: 15),
-            child: FloatingActionButton(
-              backgroundColor: theme.colorScheme.primary.withOpacity(0.7),
-              onPressed: () => _showCustomAddExpenseDialog(context, ref, theme),
-              child: const Icon(Icons.add, size: 30),
-            ),
-          ),
-        );
-      },
+                          Expanded(
+                            child:
+                                ExpensesList(expenses: expensesState.expenses),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          Expanded(
+                            child: _getChartWidget(
+                                isFirstChart, expensesState, deviceSize),
+                          ),
+                          Expanded(
+                            child:
+                                ExpensesList(expenses: expensesState.expenses),
+                          ),
+                        ],
+                      ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 80.0, right: 15),
+        child: FloatingActionButton(
+          backgroundColor: theme.colorScheme.primary.withOpacity(0.7),
+          onPressed: () =>
+              _showCustomAddExpenseDialog(context, ref, theme, isDarkTheme),
+          child: const Icon(Icons.add, size: 30),
+        ),
+      ),
     );
   }
 
-  Padding _getGraphicsTitleWidget(
+  Padding _getGraphicsTitleWidget(ThemeData theme,
       {bool? isListTitle, required bool isFirstChart}) {
     return Padding(
       padding: const EdgeInsets.only(right: 20, left: 20, top: 25),
       child: (isListTitle != null)
-          ? AppMiniWidgets.smallTitle(theme, 'Список витрат')
+          ? StyledText.titleSmall(theme, 'Список витрат')
           : isFirstChart
               ? Text(
                   'Витрати по категоріям',
@@ -137,7 +118,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     );
   }
 
-  SizedBox _getChartWidget(bool isFirstChart, expensesState) {
+  SizedBox _getChartWidget(bool isFirstChart, expensesState, Size deviceSize) {
     return SizedBox(
       height: deviceSize.height * 0.26,
       child: isFirstChart
@@ -159,7 +140,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   void _showCustomAddExpenseDialog(
-      BuildContext context, WidgetRef ref, ThemeData theme) {
+      BuildContext context, WidgetRef ref, ThemeData theme, bool isDarkTheme) {
     showDialog(
       context: context,
       barrierColor:
@@ -190,11 +171,5 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    animationService.dispose();
-    super.dispose();
   }
 }

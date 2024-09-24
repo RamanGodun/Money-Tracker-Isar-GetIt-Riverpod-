@@ -47,13 +47,4 @@ backDropFilter
 //
 //
 // TEXTS WIDGETS
-
-  static Widget smallTitle(ThemeData theme, String content) {
-    return Text(
-      content,
-      style: theme.textTheme.titleSmall?.copyWith(
-        color: theme.colorScheme.onSurface.withOpacity(0.7),
-      ),
-    );
-  }
 }

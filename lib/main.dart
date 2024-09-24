@@ -1,8 +1,11 @@
 /*
     In this app will be used Isar DB for local storage, RiverPod for theme changing, GetIt for DIs
  */
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'DATA/helpers/error.dart';
+import 'DATA/providers/gen_data_provider.dart';
 import 'UI/pages/main_screen.dart';
 import 'DATA/themes_set/app_themes/app_themes.dart';
 import 'DATA/themes_set/themes_provider.dart';
@@ -11,16 +14,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   try {
     await initializeApp();
-    runApp(const ProviderScope(child: MoneyTrackerApp()));
+
+    // Отримуємо MediaQuery після ініціалізації
+    final mediaQueryData =
+        MediaQueryData.fromView(PlatformDispatcher.instance.views.first);
+
+    runApp(
+      ProviderScope(
+        overrides: [
+          generalDataProvider.overrideWith((ref) =>
+              GeneralDataNotifier(mediaQueryData)), // Передаємо MediaQueryData
+        ],
+        child: const MoneyTrackerApp(),
+      ),
+    );
   } catch (e) {
-    runApp(ErrorApp(errorMessage: e.toString())); // Логування
+    runApp(ErrorApp(errorMessage: e.toString())); // Логування помилок
   }
 }
 
 Future<void> initializeApp() async {
-  WidgetsFlutterBinding.ensureInitialized();
   await DIServiceLocator.instance.setupDependencies();
 }
 
