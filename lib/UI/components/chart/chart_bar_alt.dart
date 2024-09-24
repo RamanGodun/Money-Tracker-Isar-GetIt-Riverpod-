@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_tracker/DATA/constants/app_text_styling.dart';
 import '../../../DATA/themes_set/themes_provider.dart';
+import '../text_widgets.dart';
 
 class ChartBarAlt extends ConsumerWidget {
   final String label;

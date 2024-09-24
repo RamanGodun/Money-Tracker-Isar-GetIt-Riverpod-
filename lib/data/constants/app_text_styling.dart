@@ -1,129 +1,74 @@
 import 'package:flutter/material.dart';
 
-abstract class StyledText {
-  /* General text styles */
-  static Widget titleMedium(ThemeData theme, String text) {
-    return Text(
-      text,
-      style: theme.textTheme.titleSmall?.copyWith(
-        color: theme.colorScheme.onSurface.withOpacity(0.7),
-      ),
+class TextStyling {
+  static TextStyle titleMedium(ThemeData theme) {
+    return theme.textTheme.titleSmall!.copyWith(
+      color: theme.colorScheme.onSurface.withOpacity(0.7),
     );
   }
 
-  static Widget titleSmall(ThemeData theme, String text,
-      {Color? color, TextAlign? align}) {
-    return Text(
-      text,
-      textAlign: align ?? TextAlign.start,
-      style: theme.textTheme.titleSmall?.copyWith(
-        color: color ?? theme.colorScheme.onSurface.withOpacity(0.7),
-      ),
+  static TextStyle titleSmall(ThemeData theme, {Color? color}) {
+    return theme.textTheme.titleSmall!.copyWith(
+      color: color ?? theme.colorScheme.onSurface.withOpacity(0.7),
     );
   }
 
-  static Widget bodyLarge(ThemeData theme, String text,
-      {Color? color, TextAlign? align}) {
-    return Text(
-      text,
-      style: theme.textTheme.bodyLarge?.copyWith(
-        color: theme.colorScheme.onSurface,
-      ),
+  static TextStyle bodyLarge(ThemeData theme, {Color? color}) {
+    return theme.textTheme.bodyLarge!.copyWith(
+      color: color ?? theme.colorScheme.onSurface,
     );
   }
 
-  static Widget bodyMedium(ThemeData theme, String text,
-      {Color? color, TextAlign? align}) {
-    return Text(
-      text,
-      style: theme.textTheme.bodyMedium?.copyWith(
-        color: theme.colorScheme.onSurface.withOpacity(0.7),
-      ),
+  static TextStyle bodyMedium(ThemeData theme, {Color? color}) {
+    return theme.textTheme.bodyMedium!.copyWith(
+      color: color ?? theme.colorScheme.onSurface.withOpacity(0.7),
     );
   }
 
-  static Widget bodySmall(ThemeData theme, String text,
-      {Color? color, TextAlign? align}) {
-    return Text(
-      text,
-      style: theme.textTheme.bodySmall?.copyWith(
-        color: theme.colorScheme.onSurface.withOpacity(0.7),
-      ),
+  static TextStyle bodySmall(ThemeData theme, {Color? color}) {
+    return theme.textTheme.bodySmall!.copyWith(
+      color: color ?? theme.colorScheme.onSurface.withOpacity(0.7),
     );
   }
 
-  // Загальний стиль тексту для кнопок
   static TextStyle forButtons(ThemeData theme) {
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
-    return textTheme.titleMedium!.copyWith(
+    return theme.textTheme.titleMedium!.copyWith(
       fontWeight: FontWeight.w500,
       fontSize: 17,
       letterSpacing: 1.04,
       wordSpacing: 1.96,
-      color: colorScheme.onPrimary,
+      color: theme.colorScheme.onPrimary,
+    );
+  }
+
+  static TextStyle errorText(ThemeData theme) {
+    return theme.textTheme.labelMedium!.copyWith(
+      color: theme.colorScheme.error,
     );
   }
 
   // Стиль тексту для текстових полів
   static TextStyle forTextField(ThemeData theme) {
-    TextStyle textStyle = theme.textTheme.displayMedium!.copyWith(
+    return theme.textTheme.displayMedium!.copyWith(
       fontSize: 17.5,
       fontStyle: FontStyle.italic,
       fontWeight: FontWeight.w300,
     );
-    return textStyle;
   }
 
   // Стиль тексту для дій
   static TextStyle forActionText(ThemeData theme) {
-    final TextStyle forActionText =
-        theme.textTheme.labelLarge!.copyWith(color: theme.colorScheme.primary);
-    return forActionText;
-  }
-
-  // Стиль тексту для великого тіла
-
-  // Стиль тексту для label
-  static TextStyle label(ThemeData theme) {
-    final textTheme = theme.textTheme;
-    final colorScheme = theme.colorScheme;
-    return textTheme.labelSmall!.copyWith(
-      color: colorScheme.onSurface,
-      height: 0.9,
-    );
-  }
-
-  // Стиль тексту для помилок
-  static TextStyle errorText(ThemeData theme) {
-    final textTheme = theme.textTheme;
-    final colorScheme = theme.colorScheme;
-    return textTheme.labelMedium!.copyWith(
-      color: colorScheme.error,
+    return theme.textTheme.labelLarge!.copyWith(
+      color: theme.colorScheme.primary,
     );
   }
 
   // Стиль тексту для текстових полів форми
   static TextStyle forTextFormField(ThemeData theme, double? textSize) {
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
-    final textStyle = textTheme.bodyMedium!.copyWith(
-      color: colorScheme.onSurface,
+    return theme.textTheme.bodyMedium!.copyWith(
+      color: theme.colorScheme.onSurface,
       fontSize: textSize ?? 17,
       fontWeight: FontWeight.w500,
-    );
-    return textStyle;
-  }
-
-  /* Common Material Button Style */
-
-  // Стиль тексту для кнопок Material
-  static TextStyle materialButtonStyle(BuildContext context,
-      {required Color color, FontWeight fontWeight = FontWeight.normal}) {
-    return TextStyle(
-      fontSize: 17,
-      fontWeight: fontWeight,
-      color: color,
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import '../../../data/constants/app_text_styling.dart';
+import '../../../DATA/constants/app_text_styling.dart';
 import '../../../DOMAIN/models/app_enums.dart';
 import '../../../DATA/helpers/helpers.dart';
 import '_buttons_styling.dart';
@@ -51,7 +51,7 @@ class AppDialogsButtons {
             )
           : AppButtonsStyling.forOutlinedButton(
               context,
-              textStyle: StyledText.forButtons(theme).copyWith(
+              textStyle: TextStyling.forButtons(theme).copyWith(
                   color: theme.colorScheme.error, fontWeight: fontWeight),
               onPressed: onPressed ?? () => Navigator.of(context).pop(),
               buttonText: buttonText,

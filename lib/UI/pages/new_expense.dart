@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_tracker/DATA/constants/app_text_styling.dart';
 import '../../DATA/providers/input_data_provider.dart';
 import '../../DATA/providers/gen_data_provider.dart';
 import '../../DATA/themes_set/app_themes/app_colors.dart';
 import '../../DATA/themes_set/themes_provider.dart';
 import '../../DOMAIN/models/app_enums.dart';
+import '../components/text_widgets.dart';
 
 class NewExpense extends ConsumerWidget {
   const NewExpense({super.key});

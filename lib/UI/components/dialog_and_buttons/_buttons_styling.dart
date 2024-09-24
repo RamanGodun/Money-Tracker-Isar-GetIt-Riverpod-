@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
 import '../../../DATA/constants/app_borders.dart';
 import '../../../DATA/constants/app_constants.dart';
-import '../../../DATA/constants/app_text_styling.dart';
 import '../../../DATA/helpers/helpers.dart';
 import '../../../DATA/themes_set/app_themes/app_colors.dart';
+import '../text_widgets.dart';
 
 abstract class AppButtonsStyling {
   static Widget firstDesign(
@@ -30,10 +31,7 @@ abstract class AppButtonsStyling {
           onPressed: onPressed,
           child: Padding(
             padding: AppConstants.horizontal8,
-            child: Text(
-              buttonText,
-              style: StyledText.forButtons(theme),
-            ),
+            child: StyledText.forButtons(theme, buttonText),
           ),
         ),
       ),
@@ -65,10 +63,7 @@ abstract class AppButtonsStyling {
             padding: AppConstants.commonPadding,
           ),
           onPressed: onPressed,
-          child: Text(
-            buttonText,
-            style: StyledText.forButtons(theme),
-          ),
+          child: StyledText.forButtons(theme, buttonText),
         ),
       ),
     );
@@ -83,7 +78,7 @@ abstract class AppButtonsStyling {
   }) {
     final theme = Helpers.themeGet(context);
     final isDark = Helpers.isDarkTheme(theme);
-    final textStyleForButton = textStyle ?? StyledText.forButtons(theme);
+
     return Material(
       color: AppColors.transparent,
       child: SizedBox(
@@ -101,10 +96,7 @@ abstract class AppButtonsStyling {
           ),
           onPressed: onPressed,
           child: Center(
-            child: Text(
-              buttonText,
-              style: textStyleForButton,
-            ),
+            child: StyledText.forButtons(theme, buttonText),
           ),
         ),
       ),

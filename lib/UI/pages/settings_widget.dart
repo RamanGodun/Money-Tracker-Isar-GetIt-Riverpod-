@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../DATA/constants/app_text_styling.dart';
 import '../../DATA/providers/gen_data_provider.dart';
-import '../../DATA/themes_set/app_themes/app_colors.dart';
 import '../../DATA/themes_set/themes_provider.dart';
+import '../components/text_widgets.dart';
 
 class SettingsWidget extends ConsumerWidget {
   const SettingsWidget({super.key});
@@ -15,37 +14,33 @@ class SettingsWidget extends ConsumerWidget {
     final isDarkMode = theme.brightness == Brightness.dark;
     final textTheme = theme.textTheme;
 
-    return Material(
-      color: theme.colorScheme.surface.withOpacity(0.2),
-      borderRadius: BorderRadius.circular(12),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildSwitchRow(
-              context: context,
-              text: 'Темна тема',
-              value: isDarkMode,
-              onChanged: (value) {
-                ref.read(themeProvider.notifier).toggleTheme(value);
-              },
-              textTheme: textTheme,
-              theme: theme,
-            ),
-            const SizedBox(height: 20),
-            _buildSwitchRow(
-              context: context,
-              text: 'Основний чарт',
-              value: dataProvider.isFirstChart,
-              onChanged: (value) {
-                ref.read(generalDataProvider.notifier).toggleChart(value);
-              },
-              textTheme: textTheme,
-              theme: theme,
-            ),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildSwitchRow(
+            context: context,
+            text: 'Темна тема',
+            value: isDarkMode,
+            onChanged: (value) {
+              ref.read(themeProvider.notifier).toggleTheme(value);
+            },
+            textTheme: textTheme,
+            theme: theme,
+          ),
+          const SizedBox(height: 20),
+          _buildSwitchRow(
+            context: context,
+            text: 'Основний чарт',
+            value: dataProvider.isFirstChart,
+            onChanged: (value) {
+              ref.read(generalDataProvider.notifier).toggleChart(value);
+            },
+            textTheme: textTheme,
+            theme: theme,
+          ),
+        ],
       ),
     );
   }
@@ -58,15 +53,16 @@ class SettingsWidget extends ConsumerWidget {
     required TextTheme textTheme,
     required ThemeData theme,
   }) {
+    final colorScheme = theme.colorScheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        StyledText.bodyLarge(theme, text),
+        StyledText.bodyLarge(theme, text, color: colorScheme.secondary),
         Switch.adaptive(
           value: value,
           onChanged: onChanged,
           activeColor: theme.colorScheme.primary,
-          inactiveTrackColor: AppColors.cupertinoBlackColor.withOpacity(0.2),
+          inactiveTrackColor: colorScheme.shadow.withOpacity(0.3),
         ),
       ],
     );

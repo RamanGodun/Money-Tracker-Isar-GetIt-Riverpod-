@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../DATA/constants/app_constants.dart';
-import '../../../DATA/constants/app_text_styling.dart';
 import '../../../DATA/providers/gen_data_provider.dart';
 import '../../../DATA/themes_set/themes_provider.dart';
 import '../../../DOMAIN/models/app_enums.dart';
 import '../../../DOMAIN/models/expense_model.dart';
 import '../../../DOMAIN/models/expenses_bucket_model.dart';
+import '../text_widgets.dart';
 import '_chart_bar.dart';
 
 class Chart extends ConsumerWidget {

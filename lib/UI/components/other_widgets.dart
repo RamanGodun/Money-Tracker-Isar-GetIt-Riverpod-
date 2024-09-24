@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../DATA/constants/app_constants.dart';
 import '../../DATA/helpers/helpers.dart';
+import '../../DOMAIN/models/app_enums.dart';
 
 class AppMiniWidgets {
 /* Custom Dividers
@@ -44,6 +45,29 @@ backDropFilter
       ),
     );
   }
+
+  static Widget onlyPadding(Widget child, Side side, double padding) {
+    return Padding(
+      padding: _getPaddingForSide(side, padding),
+      child: child,
+    );
+  }
+
+  static EdgeInsets _getPaddingForSide(Side side, double padding) {
+    switch (side) {
+      case Side.top:
+        return EdgeInsets.only(top: padding);
+      case Side.left:
+        return EdgeInsets.only(left: padding);
+      case Side.right:
+        return EdgeInsets.only(right: padding);
+      case Side.bottom:
+        return EdgeInsets.only(bottom: padding);
+      default:
+        return const EdgeInsets.all(0);
+    }
+  }
+
 //
 //
 // TEXTS WIDGETS

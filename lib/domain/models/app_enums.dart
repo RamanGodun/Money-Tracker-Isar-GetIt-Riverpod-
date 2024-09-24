@@ -69,3 +69,10 @@ extension CategoryExtension on Category {
     }
   }
 }
+
+enum Side {
+  top,
+  left,
+  right,
+  bottom,
+}

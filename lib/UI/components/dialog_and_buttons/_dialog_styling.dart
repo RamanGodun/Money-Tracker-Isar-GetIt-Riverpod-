@@ -35,12 +35,13 @@ abstract class AppDialogsStyling {
             width: width,
             height: height,
             padding: AppConstants.zeroPadding,
-            decoration: AppBoxDecorations.withShadows(theme),
+            decoration: AppBoxDecorations.inGlassMorphismStyle(theme),
             child: Stack(
               children: [
                 AppMiniWidgets.backDropFilter(
                   child: Container(
-                      decoration: AppBoxDecorations.withoutShadows(theme)),
+                      decoration:
+                          AppBoxDecorations.inGlassMorphismStyle(theme)),
                 ),
                 Container(
                   padding: AppConstants.zeroPadding,

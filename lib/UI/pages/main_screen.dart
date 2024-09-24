@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_tracker/DATA/constants/app_text_styling.dart';
+import 'package:money_tracker/UI/components/other_widgets.dart';
+import '../../DATA/constants/strings_4_app.dart';
 import '../../DATA/providers/expenses_provider.dart';
 import '../../DATA/providers/gen_data_provider.dart';
 import '../../DATA/providers/input_data_provider.dart';
 import '../../DATA/themes_set/themes_provider.dart';
 import '../../DOMAIN/Services/_service_locator.dart';
 import '../../DOMAIN/Services/dialogs_service.dart';
+import '../../DOMAIN/models/app_enums.dart';
 import '../../DOMAIN/models/expense_model.dart';
 import '../components/chart/_chart.dart';
 import '../components/chart/chart_alt.dart';
 import '../components/dialog_and_buttons/custom_dialog.dart';
 import '../components/expenses_list/expenses_list.dart';
+import '../components/text_widgets.dart';
 import 'new_expense.dart';
 import 'settings_widget.dart';
 
@@ -35,24 +38,25 @@ class MainScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Padding(
-          padding: EdgeInsets.only(left: 18.0),
-          child: Text('Трекер витрат'),
-        ),
+        title: AppMiniWidgets.onlyPadding(
+            const Text(AppStrings.appTitle), Side.left, 18),
         actions: [
           IconButton(
             onPressed: () => _openSettingsDialog(context, theme, isDarkTheme),
             icon: const Icon(Icons.settings),
           ),
-          const SizedBox(width: 20),
+          const SizedBox(width: 16),
         ],
       ),
       body: SafeArea(
         child: expensesState.isLoading
             ? const Center(child: CircularProgressIndicator.adaptive())
             : expensesState.error != null
-                ? Center(child: Text('Error: ${expensesState.error}'))
+                ? Center(
+                    child: StyledText.errorText(
+                        theme, 'Error: ${expensesState.error}'))
                 : generalData.isPortraitMode
+                    // Next Portrait mode
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -65,11 +69,11 @@ class MainScreen extends ConsumerWidget {
                             isFirstChart: isFirstChart,
                           ),
                           Expanded(
-                            child:
-                                ExpensesList(expenses: expensesState.expenses),
-                          ),
+                              child: ExpensesList(
+                                  expenses: expensesState.expenses)),
                         ],
                       )
+                    // Next Portrait mode
                     : Row(
                         children: [
                           Expanded(
@@ -82,6 +86,7 @@ class MainScreen extends ConsumerWidget {
                         ],
                       ),
       ),
+      // floatingActionButton
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 80.0, right: 15),
         child: FloatingActionButton(
@@ -97,9 +102,9 @@ class MainScreen extends ConsumerWidget {
   Padding _getGraphicsTitleWidget(ThemeData theme,
       {bool? isListTitle, required bool isFirstChart}) {
     return Padding(
-      padding: const EdgeInsets.only(right: 20, left: 20, top: 25),
+      padding: const EdgeInsets.only(right: 20, left: 40, top: 25),
       child: (isListTitle != null)
-          ? StyledText.titleSmall(theme, 'Список витрат')
+          ? StyledText.titleSmall(theme, AppStrings.purchasesList)
           : isFirstChart
               ? Text(
                   'Витрати по категоріям',
@@ -132,7 +137,7 @@ class MainScreen extends ConsumerWidget {
     final dialogService = DIServiceLocator.instance.get<CustomDialogService>();
     dialogService.showCustomDialog(
       context: context,
-      title: 'Налаштування',
+      title: AppStrings.settings,
       content: const SettingsWidget(),
       theme: theme,
       isDarkTheme: isDarkTheme,

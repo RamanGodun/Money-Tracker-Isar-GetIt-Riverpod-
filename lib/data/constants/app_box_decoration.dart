@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'app_constants.dart';
+
 import '../helpers/helpers.dart';
-import 'app_borders.dart';
 import 'app_box_shadows.dart';
+import 'app_constants.dart';
+
+import 'dart:ui';
 
 abstract class AppBoxDecorations {
-  /* BoxDecoration для кнопок у стилі "GLASS MORPHISM" */
+  /* BoxDecoration для елементів у стилі "GLASS MORPHISM" з ефектом розмиття */
   static BoxDecoration inGlassMorphismStyle(ThemeData theme) {
     final isDark = Helpers.isDarkTheme(theme);
     final colorScheme = theme.colorScheme;
     return BoxDecoration(
-      color: colorScheme.primary.withOpacity(isDark ? 0.35 : 0.6),
+      color: colorScheme.primary.withOpacity(isDark ? 0.15 : 0.3),
       borderRadius: AppConstants.commonBorderRadius,
       border: Border.all(
         color: colorScheme.onSurface.withOpacity(0.1),
@@ -19,30 +21,17 @@ abstract class AppBoxDecorations {
         AppBoxShadows.forGlassMorphism1(theme, isDark),
         AppBoxShadows.forGlassMorphism2(theme, isDark),
       ],
+      backgroundBlendMode: BlendMode.overlay,
     );
   }
 
-  /* BoxDecoration для Android Dialog */
-  static BoxDecoration withShadows(ThemeData theme) {
-    return BoxDecoration(
-      color: theme.colorScheme.surface.withOpacity(0.4),
-      borderRadius: AppConstants.radius12,
-      border: AppBordersStyling.forAndroidBoxDecoration(theme),
-      boxShadow: [
-        AppBoxShadows.forDialog1(theme, false),
-        AppBoxShadows.forDialog2(theme, false),
-      ],
-    );
-  }
-
-  /* BoxDecoration для низьких контейнерів */
-  static BoxDecoration withoutShadows(ThemeData theme) {
-    final colorScheme = theme.colorScheme;
-    return BoxDecoration(
-      color: colorScheme.surface.withOpacity(0.6),
-      borderRadius: AppConstants.radius12,
-      border: Border.all(
-        color: colorScheme.inverseSurface.withOpacity(0.1),
+  /* Метод для додавання BackdropFilter */
+  static Widget withBlurEffect({required Widget child, required double blur}) {
+    return ClipRRect(
+      borderRadius: AppConstants.commonBorderRadius,
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
+        child: child,
       ),
     );
   }
