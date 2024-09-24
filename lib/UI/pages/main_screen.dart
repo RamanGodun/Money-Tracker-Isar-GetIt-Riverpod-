@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_tracker/UI/components/other_widgets.dart';
 import '../../DATA/constants/strings_4_app.dart';
-import '../../DATA/helpers/helpers.dart';
-import '../../DATA/providers/expenses_provider.dart';
-import '../../DATA/providers/gen_data_provider.dart';
-import '../../DATA/providers/input_data_provider.dart';
-import '../../DATA/themes_set/themes_provider.dart';
 import '../../DOMAIN/Services/_service_locator.dart';
 import '../../DOMAIN/Services/dialogs_service.dart';
+import '../../DOMAIN/Services/exp_dialog_service.dart';
 import '../../DOMAIN/models/app_enums.dart';
-import '../../DOMAIN/models/expense_model.dart';
+import '../../UI/components/other_widgets.dart';
+import '../../DATA/providers/expenses_provider.dart';
+import '../../DATA/providers/gen_data_provider.dart';
+import '../../DATA/themes_set/themes_provider.dart';
 import '../components/chart/_chart.dart';
 import '../components/chart/chart_alt.dart';
-import '../components/dialog_and_buttons/custom_dialog.dart';
 import '../components/expenses_list/expenses_list.dart';
 import '../components/text_widgets.dart';
-import 'new_expense.dart';
 import 'settings_widget.dart';
 
 class MainScreen extends ConsumerWidget {
@@ -55,7 +51,6 @@ class MainScreen extends ConsumerWidget {
                 ? Center(
                     child: StyledText.errorText(theme,
                         '${AppStrings.errorMessage}${expensesState.error}'))
-                // Next Portrait mode
                 : generalData.isPortraitMode
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +68,6 @@ class MainScreen extends ConsumerWidget {
                                   expenses: expensesState.expenses)),
                         ],
                       )
-                    // Next Landscape mode
                     : Row(
                         children: [
                           Expanded(
@@ -107,7 +101,11 @@ class MainScreen extends ConsumerWidget {
         padding: const EdgeInsets.only(bottom: 80.0, right: 15),
         child: FloatingActionButton(
           backgroundColor: theme.colorScheme.primary.withOpacity(0.7),
-          onPressed: () => _showCustomAddExpenseDialog(context, ref),
+          onPressed: () {
+            final dialogService =
+                DIServiceLocator.instance.get<ExpenseDialogService>();
+            dialogService.showAddExpenseDialog(context, ref);
+          },
           child: const Icon(Icons.add, size: 30),
         ),
       ),
@@ -147,39 +145,5 @@ class MainScreen extends ConsumerWidget {
       isDarkTheme: isDarkTheme,
     );
   }
-
-  void _showCustomAddExpenseDialog(BuildContext context, WidgetRef ref) {
-    final theme = Helpers.themeGet(context);
-    final isDarkTheme = Helpers.isDarkTheme(theme);
-    showDialog(
-      context: context,
-      barrierColor:
-          theme.colorScheme.shadow.withOpacity(isDarkTheme ? 0.8 : 0.74),
-      builder: (context) {
-        return CustomDialog(
-          contentWidget: const NewExpense(),
-          onActionPressed: () {
-            final expenseNotifier = ref.read(newExpenseProvider.notifier);
-
-            if (expenseNotifier.validateData()) {
-              final expenseData = expenseNotifier.state;
-              ref.read(expensesNotifierProvider.notifier).addExpense(
-                    ExpenseModel(
-                      title: expenseData.title,
-                      amount: double.parse(expenseData.amount),
-                      date: expenseData.date!,
-                      category: expenseData.category,
-                    ),
-                  );
-              Navigator.of(context).pop();
-            }
-          },
-          onCancelPressed: () => Navigator.of(context).pop(),
-          dialogTitle: AppStrings.addNewExpense,
-          actionButtonText: AppStrings.save,
-          cancelButtonText: AppStrings.cancel,
-        );
-      },
-    );
-  }
+//
 }

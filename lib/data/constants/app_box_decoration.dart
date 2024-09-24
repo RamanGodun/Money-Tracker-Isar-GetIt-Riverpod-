@@ -5,11 +5,15 @@ import 'app_constants.dart';
 import 'dart:ui';
 
 abstract class AppBoxDecorations {
+  // Стилізація для гласморфізму
   static BoxDecoration inGlassMorphismStyle(ThemeData theme) {
     final isDark = Helpers.isDarkTheme(theme);
     final colorScheme = theme.colorScheme;
+
     return BoxDecoration(
-      color: colorScheme.primary.withOpacity(isDark ? 0.15 : 0.3),
+      color: isDark
+          ? colorScheme.onSurface.withOpacity(0.2)
+          : colorScheme.surfaceContainer.withOpacity(0.3),
       borderRadius: AppConstants.commonBorderRadius,
       border: Border.all(
         color: colorScheme.onSurface.withOpacity(0.1),
@@ -22,6 +26,7 @@ abstract class AppBoxDecorations {
     );
   }
 
+  // Ефект розмиття з врахуванням форми
   static Widget withBlurEffect({required Widget child, required double blur}) {
     return ClipRRect(
       borderRadius: AppConstants.commonBorderRadius,
@@ -32,6 +37,7 @@ abstract class AppBoxDecorations {
     );
   }
 
+  // Стилізація для графіків
   static BoxDecoration forGraphics(ThemeData theme, bool isMainChart) {
     final isDarkMode = theme.brightness == Brightness.dark;
     return BoxDecoration(
@@ -42,5 +48,4 @@ abstract class AppBoxDecorations {
           : theme.canvasColor.withOpacity(isDarkMode ? 0.5 : 0.4),
     );
   }
-//
 }

@@ -8,15 +8,15 @@ import '../text_widgets.dart';
 
 abstract class AppButtonsStyling {
   static Widget firstDesign(
-    BuildContext context, {
+    BuildContext context,
+    ThemeData theme, {
     void Function()? onPressed,
     required String buttonText,
   }) {
-    final theme = Helpers.themeGet(context);
     final isDark = Helpers.isDarkTheme(theme);
     final colorScheme = theme.colorScheme;
+
     return Material(
-      color: AppColors.transparent,
       child: SizedBox(
         width: double.infinity,
         height: AppConstants.buttonsHeight,
@@ -31,7 +31,7 @@ abstract class AppButtonsStyling {
           onPressed: onPressed,
           child: Padding(
             padding: AppConstants.horizontal8,
-            child: StyledText.forButtons(theme, buttonText),
+            child: StyledText.forButtons(theme, buttonText, true),
           ),
         ),
       ),
@@ -63,7 +63,7 @@ abstract class AppButtonsStyling {
             padding: AppConstants.commonPadding,
           ),
           onPressed: onPressed,
-          child: StyledText.forButtons(theme, buttonText),
+          child: StyledText.forButtons(theme, buttonText, true),
         ),
       ),
     );
@@ -71,13 +71,13 @@ abstract class AppButtonsStyling {
 
   /* Стиль для обведеної кнопки */
   static Widget forOutlinedButton(
-    BuildContext context, {
+    BuildContext context,
+    ThemeData theme, {
     void Function()? onPressed,
     required String buttonText,
     TextStyle? textStyle,
   }) {
-    final theme = Helpers.themeGet(context);
-    final isDark = Helpers.isDarkTheme(theme);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Material(
       color: AppColors.transparent,
@@ -96,7 +96,7 @@ abstract class AppButtonsStyling {
           ),
           onPressed: onPressed,
           child: Center(
-            child: StyledText.forButtons(theme, buttonText),
+            child: StyledText.forButtons(theme, buttonText, false),
           ),
         ),
       ),

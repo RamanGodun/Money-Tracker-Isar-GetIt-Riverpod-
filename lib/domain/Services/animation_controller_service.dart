@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class AnimationService {
-  late AnimationController controller;
+  final AnimationController controller;
 
-  void init(TickerProvider vsync) {
-    controller = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: vsync,
-    );
+  AnimationService({required this.controller});
+
+  void forward() {
+    controller.forward();
   }
 
-  void dispose() {
-    controller.dispose();
+  void reverse() {
+    controller.reverse();
   }
 
   Animation<double> get animation => controller;

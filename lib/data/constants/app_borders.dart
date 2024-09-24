@@ -9,7 +9,7 @@ abstract class AppBordersStyling {
     return Border.all(
       color: isDarkMode
           ? AppColors.cupertinoBlackColor.withOpacity(0.15)
-          : theme.colorScheme.inverseSurface.withOpacity(0.05),
+          : theme.colorScheme.shadow.withOpacity(0.05),
       width: 0.2,
     );
   }
@@ -26,7 +26,7 @@ abstract class AppBordersStyling {
     return RoundedRectangleBorder(
       borderRadius: borderRadius ?? AppConstants.radius12,
       side: BorderSide(
-        color: theme.colorScheme.onSurface.withOpacity(0.05),
+        color: theme.colorScheme.shadow.withOpacity(0.05),
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'animation_controller_service.dart';
 import 'dialogs_service.dart';
+import 'exp_dialog_service.dart';
 import 'isar_service.dart';
 import 'sh_prefs_service.dart';
 import 'text_validation_service.dart';
@@ -15,9 +15,10 @@ class DIServiceLocator {
   Future<void> setupDependencies() async {
     await _setupIsarService();
     await _setupSharedPreferences();
-    _setupAnimationService();
+    // _setupAnimationService();
     _setupTextValidation();
     _setupCustomDialogService();
+    _setupAddExpenseDialogService();
   }
 
   Future<void> _setupIsarService() async {
@@ -29,6 +30,12 @@ class DIServiceLocator {
         isarService,
         dispose: (isarService) => isarService.closeIsar(),
       );
+    }
+  }
+
+  void _setupAddExpenseDialogService() {
+    if (!_getIt.isRegistered<ExpenseDialogService>()) {
+      _getIt.registerSingleton<ExpenseDialogService>(ExpenseDialogService());
     }
   }
 
@@ -64,13 +71,13 @@ class DIServiceLocator {
     }
   }
 
-  void _setupAnimationService() {
-    if (!_getIt.isRegistered<AnimationService>()) {
-      _getIt.registerSingleton<AnimationService>(
-        AnimationService(),
-      );
-    }
-  }
+  // void _setupAnimationService() {
+  //   if (!_getIt.isRegistered<AnimationService>()) {
+  //     _getIt.registerSingleton<AnimationService>(
+  //       AnimationService(),
+  //     );
+  //   }
+  // }
 
   T get<T extends Object>() {
     return _getIt.get<T>();

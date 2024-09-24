@@ -17,22 +17,19 @@ void main() async {
 
   try {
     await initializeApp();
-
-    // Отримуємо MediaQuery після ініціалізації
     final mediaQueryData =
         MediaQueryData.fromView(PlatformDispatcher.instance.views.first);
-
     runApp(
       ProviderScope(
         overrides: [
-          generalDataProvider.overrideWith((ref) =>
-              GeneralDataNotifier(mediaQueryData)), // Передаємо MediaQueryData
+          generalDataProvider
+              .overrideWith((ref) => GeneralDataNotifier(mediaQueryData)),
         ],
         child: const MoneyTrackerApp(),
       ),
     );
   } catch (e) {
-    runApp(ErrorApp(errorMessage: e.toString())); // Логування помилок
+    runApp(ErrorApp(errorMessage: e.toString()));
   }
 }
 

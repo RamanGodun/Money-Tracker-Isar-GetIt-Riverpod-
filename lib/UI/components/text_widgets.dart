@@ -42,11 +42,11 @@ abstract class StyledText {
     );
   }
 
-  static Widget forButtons(ThemeData theme, String text,
+  static Widget forButtons(ThemeData theme, String text, bool isActionButton,
       {Color? color, TextAlign? align}) {
     return Text(
       text,
-      style: TextStyling.forButtons(theme),
+      style: TextStyling.forButtons(theme, isActionButton),
     );
   }
 

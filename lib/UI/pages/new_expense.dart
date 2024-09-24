@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:money_tracker/UI/components/other_widgets.dart';
 import '../../DATA/constants/app_borders.dart';
 import '../../DATA/constants/app_constants.dart';
 import '../../DATA/constants/app_text_styling.dart';
@@ -31,10 +33,29 @@ class NewExpense extends ConsumerWidget {
                 const SizedBox(height: 12),
                 _buildAmountInputField(ref, expenseState, theme),
                 const SizedBox(height: 16),
-                StyledText.titleSmall(theme, AppStrings.category),
+                AppMiniWidgets.onlyPadding(
+                    StyledText.bodyLarge(
+                      theme,
+                      AppStrings.category,
+                      color: isDarkMode
+                          ? AppColors.glassSurfaceLight
+                          : AppColors.glassSurfaceDark,
+                    ),
+                    Side.left,
+                    20),
                 _buildCategoryDropdown(ref, expenseState, context),
                 const SizedBox(height: 16),
-                StyledText.titleSmall(theme, AppStrings.expenseDate),
+                AppMiniWidgets.onlyPadding(
+                    StyledText.bodyLarge(
+                      theme,
+                      AppStrings.expenseDate,
+                      color: isDarkMode
+                          ? AppColors.glassSurfaceLight
+                          : AppColors.glassSurfaceDark,
+                    ),
+                    Side.left,
+                    20),
+                const SizedBox(height: 3),
                 _buildDatePickerButton(
                     context, ref, expenseState, isDarkMode, theme),
               ]
@@ -54,7 +75,16 @@ class NewExpense extends ConsumerWidget {
                   children: [
                     Expanded(
                         child: Column(children: [
-                      StyledText.titleSmall(theme, AppStrings.category),
+                      AppMiniWidgets.onlyPadding(
+                          StyledText.bodyLarge(
+                            theme,
+                            AppStrings.category,
+                            color: isDarkMode
+                                ? AppColors.glassSurfaceLight
+                                : AppColors.glassSurfaceDark,
+                          ),
+                          Side.left,
+                          20),
                       _buildCategoryDropdown(ref, expenseState, context)
                     ])),
                     const SizedBox(width: 12),
@@ -62,7 +92,16 @@ class NewExpense extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          StyledText.titleSmall(theme, AppStrings.expenseDate),
+                          AppMiniWidgets.onlyPadding(
+                              StyledText.bodyLarge(
+                                theme,
+                                AppStrings.expenseDate,
+                                color: isDarkMode
+                                    ? AppColors.glassSurfaceLight
+                                    : AppColors.glassSurfaceDark,
+                              ),
+                              Side.left,
+                              20),
                           _buildDatePickerButton(
                               context, ref, expenseState, isDarkMode, theme),
                         ],
@@ -76,60 +115,72 @@ class NewExpense extends ConsumerWidget {
   }
 
   Widget _buildTitleInputField(WidgetRef ref, expenseState, ThemeData theme) {
-    return TextField(
-      decoration: InputDecoration(
-        labelText: AppStrings.expenseTitle,
-        labelStyle: TextStyling.bodyLarge(theme),
-        filled: true,
-        fillColor: theme.colorScheme.surface.withOpacity(0.3),
-        border: AppBordersStyling.inputFieldBorder(theme),
-        errorText:
-            expenseState.title.isEmpty ? AppStrings.emptyFieldError : null,
+    return SizedBox(
+      height: 60,
+      child: TextField(
+        decoration: InputDecoration(
+          labelText: AppStrings.expenseTitle,
+          labelStyle: TextStyling.bodyMedium(theme),
+          filled: true,
+          fillColor: theme.colorScheme.surface.withOpacity(0.3),
+          border: AppBordersStyling.inputFieldBorder(theme),
+          errorText:
+              expenseState.title.isEmpty ? AppStrings.emptyFieldError : null,
+        ),
+        onChanged: (value) =>
+            ref.read(newExpenseProvider.notifier).updateTitle(value),
       ),
-      onChanged: (value) =>
-          ref.read(newExpenseProvider.notifier).updateTitle(value),
     );
   }
 
   Widget _buildAmountInputField(WidgetRef ref, expenseState, ThemeData theme) {
-    return TextField(
-      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      decoration: InputDecoration(
-        labelText: AppStrings.amountSpent,
-        labelStyle: TextStyling.bodyLarge(theme),
-        filled: true,
-        fillColor: theme.colorScheme.surface.withOpacity(0.3),
-        border: AppBordersStyling.inputFieldBorder(theme),
-        errorText:
-            expenseState.amount.isEmpty ? AppStrings.emptyFieldError : null,
+    return SizedBox(
+      height: 60,
+      child: TextField(
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        decoration: InputDecoration(
+          labelText: AppStrings.amountSpent,
+          labelStyle: TextStyling.bodyMedium(theme),
+          filled: true,
+          fillColor: theme.colorScheme.surface.withOpacity(0.3),
+          border: AppBordersStyling.inputFieldBorder(theme),
+          errorText:
+              expenseState.amount.isEmpty ? AppStrings.emptyFieldError : null,
+        ),
+        onChanged: (value) =>
+            ref.read(newExpenseProvider.notifier).updateAmount(value),
       ),
-      onChanged: (value) =>
-          ref.read(newExpenseProvider.notifier).updateAmount(value),
     );
   }
 
   Widget _buildCategoryDropdown(
       WidgetRef ref, expenseState, BuildContext context) {
     final theme = Helpers.themeGet(context);
-    return DropdownButton<Category>(
-      value: expenseState.category,
-      items: Category.values
-          .map((category) => DropdownMenuItem(
-                value: category,
-                child:
-                    StyledText.titleSmall(theme, category.name.toUpperCase()),
-              ))
-          .toList(),
-      onChanged: (value) {
-        if (value != null) {
-          ref.read(newExpenseProvider.notifier).updateCategory(value);
-        }
-      },
-      borderRadius: AppConstants.radius12,
-      style: theme.textTheme.titleMedium,
-      iconEnabledColor: theme.colorScheme.primary,
-      dropdownColor: theme.colorScheme.surfaceContainer,
-    );
+    return AppMiniWidgets.onlyPadding(
+        DropdownButton<Category>(
+          isDense: true,
+          elevation: 3,
+          value: expenseState.category,
+          items: Category.values
+              .map((category) => DropdownMenuItem(
+                    value: category,
+                    child: StyledText.titleSmall(
+                        theme, category.name.toUpperCase(),
+                        color: theme.colorScheme.primary),
+                  ))
+              .toList(),
+          onChanged: (value) {
+            if (value != null) {
+              ref.read(newExpenseProvider.notifier).updateCategory(value);
+            }
+          },
+          borderRadius: AppConstants.radius12,
+          style: theme.textTheme.titleSmall,
+          iconEnabledColor: theme.colorScheme.primary,
+          dropdownColor: theme.colorScheme.surfaceContainer.withOpacity(0.6),
+        ),
+        Side.left,
+        20);
   }
 
   Widget _buildDatePickerButton(BuildContext context, WidgetRef ref,
@@ -139,8 +190,8 @@ class NewExpense extends ConsumerWidget {
       style: TextButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         backgroundColor: isDarkMode
-            ? AppColors.glassSurfaceDark
-            : AppColors.glassSurfaceLight,
+            ? AppColors.glassSurfaceDark.withOpacity(0.4)
+            : AppColors.glassSurfaceLight.withOpacity(0.25),
         shape: AppBordersStyling.roundedRectangleBorder(theme),
       ),
       child: Row(
@@ -150,8 +201,8 @@ class NewExpense extends ConsumerWidget {
           Text(
             expenseState.date == null
                 ? AppStrings.noDateSelected
-                : '${AppStrings.selectedDate}: ${expenseState.date!.toLocal()}',
-            style: TextStyling.bodyLarge(theme).copyWith(
+                : '${AppStrings.selectedDate}: ${DateFormat('dd.MM.yyyy').format(expenseState.date!)}',
+            style: TextStyling.bodyMedium(theme).copyWith(
                 color: expenseState.date == null
                     ? theme.colorScheme.error
                     : theme.colorScheme.secondary),

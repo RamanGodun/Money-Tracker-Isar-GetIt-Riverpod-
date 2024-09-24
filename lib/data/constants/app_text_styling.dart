@@ -31,13 +31,15 @@ class TextStyling {
     );
   }
 
-  static TextStyle forButtons(ThemeData theme) {
+  static TextStyle forButtons(ThemeData theme, bool isActionButton) {
     return theme.textTheme.titleMedium!.copyWith(
       fontWeight: FontWeight.w500,
       fontSize: 17,
       letterSpacing: 1.04,
       wordSpacing: 1.96,
-      color: theme.colorScheme.onPrimary,
+      color: isActionButton
+          ? theme.colorScheme.onPrimary
+          : theme.colorScheme.error,
     );
   }
 

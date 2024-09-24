@@ -18,6 +18,7 @@ abstract class ThisAppColorSchemes {
     onSecondary: AppColors.kLightAndroidOnPrimary,
     onSurface: AppColors.kLightAndroidOnSurface,
     onError: AppColors.kLightAndroidOnPrimary,
+    // shadow: AppColors.cupertinoBlackColor.withOpacity(0.2),
   );
 
   /*  DARK color Scheme */
