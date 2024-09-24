@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_tracker/DATA/Theme_configuration/Themes_provider/themes_provider.dart';
-import '../../DATA/Theme_configuration/app_colors/app_colors.dart';
+import 'package:money_tracker/DATA/themes_set/themes_provider.dart';
+import '../../DATA/providers/gen_data_provider.dart';
+import '../../DATA/themes_set/app_themes/app_colors.dart';
 import '../../DATA/helpers/helpers.dart';
-import '../../DATA/providers/chart_type_provider.dart';
 
 class SettingsWidget extends ConsumerWidget {
   const SettingsWidget({super.key});
@@ -11,7 +11,9 @@ class SettingsWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDarkMode = ref.watch(themeProvider) == ThemeMode.dark;
-    final isFirstChart = ref.watch(chartTypeProvider);
+    final generalData = ref.watch(generalDataProvider);
+    // final isFirstChart = ref.watch(chartTypeProvider);
+    final isFirstChart = generalData.isFirstChart;
     ThemeData theme = Helpers.themeGet(context);
     TextTheme textTheme = Helpers.textThemeGet(context);
 
@@ -39,7 +41,7 @@ class SettingsWidget extends ConsumerWidget {
               text: 'Основний чарт',
               value: isFirstChart,
               onChanged: (value) {
-                ref.read(chartTypeProvider.notifier).toggleChartType(value);
+                ref.read(generalDataProvider.notifier).toggleChart(value);
               },
               textTheme: textTheme,
               theme: theme,

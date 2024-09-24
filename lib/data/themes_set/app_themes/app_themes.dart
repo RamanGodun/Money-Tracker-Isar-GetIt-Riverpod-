@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../app_colors/app_color_schemes.dart';
-import '../app_colors/app_colors.dart';
-import 'themes_builder.dart';
+import 'app_colors_schemes.dart';
+import 'app_colors.dart';
+import 'app_themes_builder.dart';
 
 class ThisAppThemes {
   static final ThemeData kLightTheme = ThisAppThemesBuilder.buildThemeData(

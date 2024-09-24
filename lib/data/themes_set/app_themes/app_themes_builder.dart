@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../app_colors/app_colors.dart';
-import '../text_styles_for_themes.dart';
+import 'app_colors.dart';
+import 'text_styles.dart';
 
 class ThisAppThemesBuilder {
   static ThemeData buildThemeData({

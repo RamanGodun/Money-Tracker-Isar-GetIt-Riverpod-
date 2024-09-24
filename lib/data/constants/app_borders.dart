@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'app_styling_constants.dart';
 import '../helpers/helpers.dart';
-import '../Theme_configuration/app_colors/app_colors.dart';
+import '../themes_set/app_themes/app_colors.dart';
 
 abstract class AppBordersStyling {
   static Border forAndroidBoxDecoration(ThemeData theme) {

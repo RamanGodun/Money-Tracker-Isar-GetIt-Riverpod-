@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../DATA/Theme_configuration/app_colors/app_colors.dart';
+import '../../../DATA/themes_set/app_themes/app_colors.dart';
 import '../../../DATA/constants/app_box_decoration.dart';
 import '../../../data/constants/app_styling_constants.dart';
 import '../../../data/constants/app_borders.dart';

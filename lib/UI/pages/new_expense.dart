@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../DATA/Theme_configuration/app_colors/app_colors.dart';
+import '../../DATA/themes_set/app_themes/app_colors.dart';
 import '../../DATA/helpers/helpers.dart';
 import '../../DATA/providers/input_data_provider.dart';
 import '../../DOMAIN/models/app_enums.dart';

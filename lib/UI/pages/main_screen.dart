@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
-import '../../DATA/providers/chart_type_provider.dart';
 import '../../DATA/providers/expenses_provider.dart';
+import '../../DATA/providers/gen_data_provider.dart';
 import '../../DATA/providers/input_data_provider.dart';
 import '../../DOMAIN/Services/_service_locator.dart';
 import '../../DOMAIN/Services/animation_controller_service.dart';
@@ -50,7 +50,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     return Consumer(
       builder: (context, ref, child) {
         final expensesState = ref.watch(expensesNotifierProvider);
-        final isFirstChart = ref.watch(chartTypeProvider);
+        final generalData = ref.watch(generalDataProvider);
+        // final isFirstChart = ref.watch(chartTypeProvider);
+        final isFirstChart = generalData.isFirstChart;
 
         return Scaffold(
           appBar: AppBar(

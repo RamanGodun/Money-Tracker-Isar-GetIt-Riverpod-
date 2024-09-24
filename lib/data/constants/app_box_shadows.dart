@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../helpers/helpers.dart';
-import '../Theme_configuration/app_colors/app_colors.dart';
+import '../themes_set/app_themes/app_colors.dart';
 
 abstract class AppBoxShadows {
   /* Головні тіні для діалогів у стилі гласморфізму */
