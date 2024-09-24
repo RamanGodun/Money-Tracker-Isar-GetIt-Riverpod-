@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../DATA/themes_set/app_themes/app_colors.dart';
-import '../../../DATA/constants/app_styling_constants.dart';
+import '../../../DATA/constants/app_constants.dart';
 import '../../../DATA/constants/app_borders.dart';
 import '../../../DATA/constants/app_text_styling.dart';
 import '../../../DATA/helpers/helpers.dart';

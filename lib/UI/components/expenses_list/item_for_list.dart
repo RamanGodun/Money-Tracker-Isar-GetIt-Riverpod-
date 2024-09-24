@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../DATA/constants/app_constants.dart';
 import '../../../DATA/helpers/helpers.dart';
 import '../../../DOMAIN/models/expense_model.dart';
-import '../../../DOMAIN/models/category_model.dart';
 import 'package:money_tracker/DATA/providers/expenses_provider.dart';
 
 class ExpenseItemForList extends ConsumerWidget {

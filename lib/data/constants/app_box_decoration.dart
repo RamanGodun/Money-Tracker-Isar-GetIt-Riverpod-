@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'app_styling_constants.dart';
+import 'app_constants.dart';
 import '../helpers/helpers.dart';
 import 'app_borders.dart';
 import 'app_box_shadows.dart';

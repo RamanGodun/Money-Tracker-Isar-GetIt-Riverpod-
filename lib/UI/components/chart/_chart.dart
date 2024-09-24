@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../DATA/constants/app_constants.dart';
 import '../../../DATA/helpers/helpers.dart';
 import '../../../DOMAIN/models/app_enums.dart';
-import '../../../DOMAIN/models/category_model.dart';
 import '../../../DOMAIN/models/expenses_bucket_model.dart';
 import '../../../DOMAIN/models/expense_model.dart';
 import '_chart_bar.dart';

@@ -4,7 +4,6 @@ import '../../DATA/themes_set/app_themes/app_colors.dart';
 import '../../DATA/helpers/helpers.dart';
 import '../../DATA/providers/input_data_provider.dart';
 import '../../DOMAIN/models/app_enums.dart';
-import '../../DOMAIN/models/category_model.dart';
 
 class NewExpense extends ConsumerWidget {
   const NewExpense({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../../DATA/constants/app_constants.dart';
 import '../../../DATA/themes_set/app_themes/app_colors.dart';
 import '../../../DATA/constants/app_box_decoration.dart';
-import '../../../data/constants/app_styling_constants.dart';
 import '../../../data/constants/app_borders.dart';
 import '../../../DOMAIN/models/app_enums.dart';
 import '../../../DATA/helpers/helpers.dart';

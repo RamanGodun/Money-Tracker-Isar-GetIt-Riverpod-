@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../../DATA/constants/app_styling_constants.dart';
+import '../../DATA/constants/app_constants.dart';
 import '../../DATA/helpers/helpers.dart';
 
 class AppMiniWidgets {
