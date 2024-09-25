@@ -12,7 +12,7 @@ import '../../DOMAIN/models/expense_model.dart';
 import '../../DOMAIN/models/expenses_input_state.dart';
 
 class NewOrEditExpense extends ConsumerStatefulWidget {
-  final ExpenseModel? initialExpense; // Передача витрати, якщо це редагування
+  final ExpenseModel? initialExpense;
 
   const NewOrEditExpense({super.key, this.initialExpense});
 
@@ -49,24 +49,23 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
   Widget build(BuildContext context) {
     final expenseState = ref.watch(expensesInputDataProvider);
     final theme = ref.watch(themeDataProvider);
+    final isDarkMode = theme.brightness == Brightness.dark;
 
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth < 600) {
-          // Версія для малих екранів (портретна орієнтація)
           return Padding(
             padding: AppConstants.paddingCommon,
             child: ListView(
               children: [
                 _buildTextFieldsWidgets(ref, expenseState, theme),
                 const SizedBox(height: 16),
-                _buildCategoryAndDateWidgets(context, ref, expenseState, theme,
-                    theme.brightness == Brightness.dark),
+                _buildCategoryAndDateWidgets(
+                    context, ref, expenseState, theme, isDarkMode),
               ],
             ),
           );
         } else {
-          // Версія для великих екранів (ландшафтна орієнтація)
           return Padding(
             padding: AppConstants.paddingCommon,
             child: Row(
@@ -75,8 +74,8 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
                     child: _buildTextFieldsWidgets(ref, expenseState, theme)),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: _buildCategoryAndDateWidgets(context, ref,
-                      expenseState, theme, theme.brightness == Brightness.dark),
+                  child: _buildCategoryAndDateWidgets(
+                      context, ref, expenseState, theme, isDarkMode),
                 ),
               ],
             ),
