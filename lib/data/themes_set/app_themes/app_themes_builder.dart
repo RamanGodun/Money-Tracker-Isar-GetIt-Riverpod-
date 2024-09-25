@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'app_colors.dart';
 import 'text_styles.dart';
 
-class ThisAppThemesBuilder {
+abstract class ThisAppThemesBuilder {
   static ThemeData buildThemeData({
     required bool isDark,
     required ColorScheme colorScheme,
@@ -19,7 +20,7 @@ class ThisAppThemesBuilder {
     return ThemeData(
       brightness: isDark ? Brightness.dark : Brightness.light,
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      // primarySwatch: AppColors.kPrimarySwatch,
+      primarySwatch: AppColors.kPrimarySwatch,
       colorScheme: colorScheme,
       textTheme: TextStyles4ThisAppThemes.kTextThemeData(isDark),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -65,6 +66,87 @@ class ThisAppThemesBuilder {
         ),
         filled: true,
         fillColor: colorScheme.surface.withOpacity(0.15),
+        errorStyle: TextStyle(color: colorScheme.error),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.3),
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: colorScheme.primary,
+            width: 2.0,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: colorScheme.error,
+            width: 1.5,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: colorScheme.error,
+            width: 2.0,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      // Стилізація для DropdownMenu у стилі гласморфізму
+      dropdownMenuTheme: DropdownMenuThemeData(
+        inputDecorationTheme: InputDecorationTheme(
+          fillColor: colorScheme.surface.withOpacity(isDark ? 0.15 : 0.25),
+          filled: true,
+          border: OutlineInputBorder(
+            borderSide:
+                BorderSide(color: colorScheme.onSurface.withOpacity(0.2)),
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        menuStyle: MenuStyle(
+          backgroundColor: WidgetStateProperty.all(
+            colorScheme.surface.withOpacity(isDark ? 0.2 : 0.5),
+          ),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          shadowColor: WidgetStateProperty.all(
+            colorScheme.shadow.withOpacity(0.1),
+          ),
+          elevation: WidgetStateProperty.all(5),
+        ),
+      ),
+      // Стилізація для DatePicker у стилі гласморфізму
+      datePickerTheme: DatePickerThemeData(
+        backgroundColor: colorScheme.surface.withOpacity(isDark ? 0.15 : 0.3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        dayStyle: TextStyle(color: colorScheme.onSurface),
+        todayBorder: BorderSide(color: colorScheme.primary),
+        headerBackgroundColor: colorScheme.primary,
+        headerForegroundColor: colorScheme.onPrimary,
+      ),
+
+      // Стилізація для DialogTheme у стилі гласморфізму
+      dialogTheme: DialogTheme(
+        backgroundColor: colorScheme.surface.withOpacity(0.9),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        elevation: 10,
+        titleTextStyle: TextStyles4ThisAppThemes.kTextThemeData(isDark)
+            .titleMedium
+            ?.copyWith(
+              color: colorScheme.onSurface,
+            ),
+        contentTextStyle:
+            TextStyles4ThisAppThemes.kTextThemeData(isDark).bodyMedium,
       ),
 
       cardTheme: CardTheme(

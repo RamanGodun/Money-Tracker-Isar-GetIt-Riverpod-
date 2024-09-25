@@ -118,14 +118,8 @@ class NewExpense extends ConsumerWidget {
     return SizedBox(
       height: 60,
       child: TextField(
-        decoration: InputDecoration(
-          labelText: AppStrings.expenseTitle,
-          labelStyle: TextStyling.bodyMedium(theme),
-          filled: true,
-          fillColor: theme.colorScheme.surface.withOpacity(0.3),
-          border: AppBordersStyling.inputFieldBorder(theme),
-          errorText:
-              expenseState.title.isEmpty ? AppStrings.emptyFieldError : null,
+        decoration: const InputDecoration(
+          labelText: AppStrings.amountSpent,
         ),
         onChanged: (value) =>
             ref.read(expensesInputDataProvider.notifier).updateTitle(value),
@@ -138,14 +132,8 @@ class NewExpense extends ConsumerWidget {
       height: 60,
       child: TextField(
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        decoration: InputDecoration(
-          labelText: AppStrings.amountSpent,
-          labelStyle: TextStyling.bodyMedium(theme),
-          filled: true,
-          fillColor: theme.colorScheme.surface.withOpacity(0.3),
-          border: AppBordersStyling.inputFieldBorder(theme),
-          errorText:
-              expenseState.amount.isEmpty ? AppStrings.emptyFieldError : null,
+        decoration: const InputDecoration(
+          labelText: AppStrings.expenseTitle,
         ),
         onChanged: (value) =>
             ref.read(expensesInputDataProvider.notifier).updateAmount(value),

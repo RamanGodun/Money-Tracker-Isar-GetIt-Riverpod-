@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:money_tracker/DATA/constants/app_borders.dart';
 import '../../../DATA/constants/app_constants.dart';
 import '../../../DATA/themes_set/themes_provider.dart';
@@ -54,8 +55,11 @@ class ExpenseItemForList extends ConsumerWidget {
           title: StyledText.titleSmall(theme, expense.title),
           subtitle: Row(
             children: [
-              StyledText.bodyMedium(
-                  theme, '\$${expense.amount.toStringAsFixed(2)}'),
+              FittedBox(
+                fit: BoxFit.fitWidth,
+                child: StyledText.bodyMedium(
+                    theme, '\$${expense.amount.toStringAsFixed(2)}'),
+              ),
               const Spacer(),
               Row(
                 children: [
@@ -64,7 +68,9 @@ class ExpenseItemForList extends ConsumerWidget {
                     color: colorScheme.secondary.withOpacity(0.6),
                   ),
                   const SizedBox(width: 8),
-                  StyledText.bodySmall(theme, expense.formattedDate),
+//
+                  StyledText.bodySmall(
+                      theme, DateFormat('dd.MM.yyyy').format(expense.date)),
                 ],
               ),
             ],

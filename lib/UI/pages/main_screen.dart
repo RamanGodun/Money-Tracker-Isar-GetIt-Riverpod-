@@ -127,7 +127,7 @@ class MainScreen extends ConsumerWidget {
     return SizedBox(
       height: generalData.isPortraitMode
           ? generalData.deviceSize.height * 0.26
-          : generalData.deviceSize.height * 0.6,
+          : generalData.deviceSize.height * 0.7,
       child: generalData.isFirstChart
           ? Chart(expenses: expensesState.expenses)
           : ChartAlt(expensesState.expenses),

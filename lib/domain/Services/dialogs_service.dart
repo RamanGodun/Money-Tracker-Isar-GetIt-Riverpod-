@@ -45,7 +45,7 @@ class _AnimatedSettingsDialog extends HookWidget {
       duration: const Duration(milliseconds: 200),
     )..forward();
 
-    final theme = Theme.of(context);
+    final theme = Helpers.themeGet(context);
     final isDarkMode = Helpers.isDarkTheme(theme);
 
     return ScaleTransition(
