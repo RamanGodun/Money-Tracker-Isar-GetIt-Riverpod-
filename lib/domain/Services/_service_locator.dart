@@ -39,13 +39,6 @@ class DIServiceLocator {
     }
   }
 
-  // Future<void> _setupSharedPreferences() async {
-  //   if (!_getIt.isRegistered<SharedPreferences>()) {
-  //     final prefs = await SharedPreferences.getInstance();
-  //     _getIt.registerSingleton<SharedPreferences>(prefs);
-  //   }
-  // }
-
   Future<void> _setupSharedPreferences() async {
     if (!_getIt.isRegistered<SharedPreferencesService>()) {
       final prefs = await SharedPreferences.getInstance();

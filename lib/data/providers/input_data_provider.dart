@@ -1,7 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../DOMAIN/models/app_enums.dart';
+import '../../DOMAIN/models/expenses_input_state.dart';
 
-final newExpenseProvider =
+final expensesInputDataProvider =
     StateNotifierProvider<NewExpenseNotifier, NewExpenseState>(
   (ref) => NewExpenseNotifier(),
 );
@@ -35,33 +36,5 @@ class NewExpenseNotifier extends StateNotifier<NewExpenseState> {
 
   NewExpenseState getExpenseData() {
     return state;
-  }
-}
-
-class NewExpenseState {
-  final String title;
-  final String amount;
-  final Category category;
-  final DateTime? date;
-
-  NewExpenseState({
-    this.title = '',
-    this.amount = '',
-    this.category = Category.leisure,
-    this.date,
-  });
-
-  NewExpenseState copyWith({
-    String? title,
-    String? amount,
-    Category? category,
-    DateTime? date,
-  }) {
-    return NewExpenseState(
-      title: title ?? this.title,
-      amount: amount ?? this.amount,
-      category: category ?? this.category,
-      date: date ?? this.date,
-    );
   }
 }

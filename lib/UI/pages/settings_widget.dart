@@ -58,7 +58,7 @@ class SettingsWidget extends ConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        StyledText.bodyLarge(theme, text, color: colorScheme.secondary),
+        StyledText.titleSmall(theme, text, color: colorScheme.onSurface),
         Switch.adaptive(
           value: value,
           onChanged: onChanged,

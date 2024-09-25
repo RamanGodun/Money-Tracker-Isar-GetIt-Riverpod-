@@ -115,7 +115,7 @@ class MainScreen extends ConsumerWidget {
   Padding _getGraphicsTitleWidget(ThemeData theme,
       {bool? isListTitle, required bool isFirstChart}) {
     return Padding(
-        padding: const EdgeInsets.only(right: 20, left: 40, top: 25),
+        padding: const EdgeInsets.only(right: 20, left: 40, top: 10),
         child: (isListTitle != null)
             ? StyledText.titleSmall(theme, AppStrings.purchasesList)
             : isFirstChart

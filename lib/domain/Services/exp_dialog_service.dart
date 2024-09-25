@@ -37,7 +37,8 @@ class ExpenseDialogService {
               animationService:
                   AnimationService(controller: animationController),
               onActionPressed: () {
-                final expenseNotifier = ref.read(newExpenseProvider.notifier);
+                final expenseNotifier =
+                    ref.read(expensesInputDataProvider.notifier);
 
                 if (expenseNotifier.validateData()) {
                   final expenseData = expenseNotifier.state;

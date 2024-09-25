@@ -47,7 +47,7 @@ abstract class AppButtonsStyling {
     final isDark = Helpers.isDarkTheme(theme);
     final colorScheme = theme.colorScheme;
     final backgroundColor =
-        colorScheme.primary.withOpacity(isDark ? 0.45 : 0.7);
+        colorScheme.primary.withOpacity(isDark ? 0.85 : 0.9);
     final foregroundColor = colorScheme.onPrimary;
     return Material(
       color: AppColors.transparent,

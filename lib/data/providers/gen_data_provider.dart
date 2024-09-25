@@ -16,10 +16,13 @@ class GeneralDataNotifier extends StateNotifier<GeneralDataModel> {
       : super(
           GeneralDataModel(
             deviceSize: mediaQuery.size,
-            isFirstChart: true,
+            isFirstChart: true, // Початкове значення типу чарту
             isPortraitMode: mediaQuery.orientation == Orientation.portrait,
           ),
-        );
+        ) {
+    // Завантажуємо тип чарту з SharedPreferences під час ініціалізації
+    loadChartPreference();
+  }
 
   // Метод для оновлення MediaQuery
   void updateMediaQuery(MediaQueryData mediaQuery) {
@@ -40,7 +43,6 @@ class GeneralDataNotifier extends StateNotifier<GeneralDataModel> {
     if (state.isFirstChart == isFirstChart) {
       return;
     }
-// Перевіряємо чи дійсно потрібне оновлення
     state = GeneralDataModel(
       deviceSize: state.deviceSize,
       isFirstChart: isFirstChart,
@@ -61,16 +63,19 @@ class GeneralDataNotifier extends StateNotifier<GeneralDataModel> {
 
   // Завантаження типу чарту з SharedPreferences
   Future<void> loadChartPreference() async {
-    final prefs = await SharedPreferences.getInstance();
-    final isFirstChart = prefs.getBool(_chartPreferenceKey) ?? true;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final isFirstChart = prefs.getBool(_chartPreferenceKey) ?? true;
 
-    if (state.isFirstChart == isFirstChart) return; // Уникаємо зайвих оновлень
-
-    state = GeneralDataModel(
-      deviceSize: state.deviceSize,
-      isFirstChart: isFirstChart,
-      isPortraitMode: state.isPortraitMode,
-    );
+      if (state.isFirstChart != isFirstChart) {
+        state = GeneralDataModel(
+          deviceSize: state.deviceSize,
+          isFirstChart: isFirstChart,
+          isPortraitMode: state.isPortraitMode,
+        );
+      }
+    } catch (e) {
+      debugPrint('Failed to load chart preference: $e');
+    }
   }
-//
 }

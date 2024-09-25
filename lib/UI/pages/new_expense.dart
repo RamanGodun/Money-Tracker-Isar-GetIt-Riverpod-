@@ -19,7 +19,7 @@ class NewExpense extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final expenseState = ref.watch(newExpenseProvider);
+    final expenseState = ref.watch(expensesInputDataProvider);
     final theme = ref.watch(themeDataProvider);
     final isDarkMode = theme.brightness == Brightness.dark;
     final generalData = ref.watch(generalDataProvider);
@@ -128,7 +128,7 @@ class NewExpense extends ConsumerWidget {
               expenseState.title.isEmpty ? AppStrings.emptyFieldError : null,
         ),
         onChanged: (value) =>
-            ref.read(newExpenseProvider.notifier).updateTitle(value),
+            ref.read(expensesInputDataProvider.notifier).updateTitle(value),
       ),
     );
   }
@@ -148,7 +148,7 @@ class NewExpense extends ConsumerWidget {
               expenseState.amount.isEmpty ? AppStrings.emptyFieldError : null,
         ),
         onChanged: (value) =>
-            ref.read(newExpenseProvider.notifier).updateAmount(value),
+            ref.read(expensesInputDataProvider.notifier).updateAmount(value),
       ),
     );
   }
@@ -171,7 +171,9 @@ class NewExpense extends ConsumerWidget {
               .toList(),
           onChanged: (value) {
             if (value != null) {
-              ref.read(newExpenseProvider.notifier).updateCategory(value);
+              ref
+                  .read(expensesInputDataProvider.notifier)
+                  .updateCategory(value);
             }
           },
           borderRadius: AppConstants.radius12,
@@ -220,6 +222,6 @@ class NewExpense extends ConsumerWidget {
       firstDate: DateTime(now.year - 1),
       lastDate: now,
     );
-    ref.read(newExpenseProvider.notifier).updateDate(pickedDate);
+    ref.read(expensesInputDataProvider.notifier).updateDate(pickedDate);
   }
 }
