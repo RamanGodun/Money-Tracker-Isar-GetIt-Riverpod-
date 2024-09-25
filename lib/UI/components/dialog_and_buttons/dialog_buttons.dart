@@ -46,7 +46,7 @@ class AppDialogsButtons {
     final deviceWidth = Helpers.deviceWidthGet(context);
     final isPortraitMode = deviceWidth < 600;
     return SizedBox(
-      width: deviceWidth * (isPortraitMode ? 0.43 : 0.35),
+      width: deviceWidth * (isPortraitMode ? 0.43 : 0.31),
       child: isActionButton
           ? AppButtonsStyling.firstDesign(
               context,

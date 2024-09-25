@@ -30,24 +30,29 @@ class CustomDialog extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaleTransition(
-      scale: animationService.animation,
-      child: Center(
-        child: ClipRRect(
-          borderRadius: AppConstants.borderRadiusCommon,
-          child: AppDialogsStyling.customAndroidDialogStyle(
-            context: context,
-            theme: theme,
-            dialogTitle: dialogTitle,
-            contentWidget: contentWidget,
-            contentPadding: contentPadding,
-            onActionPressed: onActionPressed,
-            onCancelPressed: onCancelPressed,
-            actionButtonText: actionButtonText,
-            cancelButtonText: cancelButtonText,
+    return AnimatedBuilder(
+      animation: animationService.controller,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: animationService.controller.value,
+          child: Center(
+            child: ClipRRect(
+              borderRadius: AppConstants.borderRadiusCommon,
+              child: AppDialogsStyling.customAndroidDialogStyle(
+                context: context,
+                theme: theme,
+                dialogTitle: dialogTitle,
+                contentWidget: contentWidget,
+                contentPadding: contentPadding,
+                onActionPressed: onActionPressed,
+                onCancelPressed: onCancelPressed,
+                actionButtonText: actionButtonText,
+                cancelButtonText: cancelButtonText,
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

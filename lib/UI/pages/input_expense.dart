@@ -49,31 +49,40 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
   Widget build(BuildContext context) {
     final expenseState = ref.watch(expensesInputDataProvider);
     final theme = ref.watch(themeDataProvider);
-    final isDarkMode = theme.brightness == Brightness.dark;
-    final isPortraitMode = Helpers.deviceWidthGet(context) < 600;
 
-    return Padding(
-      padding: AppConstants.paddingCommon,
-      child: isPortraitMode
-          ? ListView(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 600) {
+          // Версія для малих екранів (портретна орієнтація)
+          return Padding(
+            padding: AppConstants.paddingCommon,
+            child: ListView(
               children: [
                 _buildTextFieldsWidgets(ref, expenseState, theme),
                 const SizedBox(height: 16),
-                _buildCategoryAndDateWidgets(
-                    context, ref, expenseState, theme, isDarkMode),
+                _buildCategoryAndDateWidgets(context, ref, expenseState, theme,
+                    theme.brightness == Brightness.dark),
               ],
-            )
-          : Row(
+            ),
+          );
+        } else {
+          // Версія для великих екранів (ландшафтна орієнтація)
+          return Padding(
+            padding: AppConstants.paddingCommon,
+            child: Row(
               children: [
                 Expanded(
                     child: _buildTextFieldsWidgets(ref, expenseState, theme)),
-                const SizedBox(height: 16),
+                const SizedBox(width: 16),
                 Expanded(
-                  child: _buildCategoryAndDateWidgets(
-                      context, ref, expenseState, theme, isDarkMode),
+                  child: _buildCategoryAndDateWidgets(context, ref,
+                      expenseState, theme, theme.brightness == Brightness.dark),
                 ),
               ],
             ),
+          );
+        }
+      },
     );
   }
 
@@ -81,6 +90,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
       WidgetRef ref, NewExpenseState expenseState, ThemeData theme) {
     return Column(
       children: [
+        const SizedBox(height: 15),
         _buildTitleInputField(ref, expenseState, theme),
         const SizedBox(height: 12),
         _buildAmountInputField(ref, expenseState, theme),
@@ -191,7 +201,6 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
     ref.read(expensesInputDataProvider.notifier).updateDate(pickedDate);
   }
 
-//
   @override
   void dispose() {
     _titleController.dispose();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../DATA/constants/strings_4_app.dart';
+import '../../DATA/helpers/helpers.dart';
 import '../../DOMAIN/Services/_service_locator.dart';
 import '../../DOMAIN/Services/dialogs_service.dart';
 import '../../DOMAIN/Services/exp_dialog_service.dart';
@@ -31,6 +32,7 @@ class MainScreen extends ConsumerWidget {
     final theme = ref.watch(themeDataProvider);
     final isDarkTheme = theme.brightness == Brightness.dark;
     final expensesState = ref.watch(expensesNotifierProvider);
+    final isPortraitMode = (Helpers.deviceWidthGet(context) < 600);
 
     return Scaffold(
       appBar: AppBar(
@@ -41,65 +43,36 @@ class MainScreen extends ConsumerWidget {
             onPressed: () => _openSettingsDialog(context, theme, isDarkTheme),
             icon: const Icon(Icons.settings),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 36),
         ],
       ),
       body: SafeArea(
-        child: expensesState.isLoading
-            ? const Center(child: CircularProgressIndicator.adaptive())
-            : expensesState.error != null
-                ? Center(
-                    child: StyledText.errorText(theme,
-                        '${AppStrings.errorMessage}${expensesState.error}'))
-                : generalData.isPortraitMode
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _getGraphicsTitleWidget(theme,
-                              isFirstChart: isFirstChart),
-                          _getChartWidget(generalData, expensesState),
-                          _getGraphicsTitleWidget(
-                            theme,
-                            isListTitle: true,
-                            isFirstChart: isFirstChart,
-                          ),
-                          Expanded(
-                              child: ExpensesList(
-                                  expenses: expensesState.expenses)),
-                        ],
-                      )
-                    : Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                _getGraphicsTitleWidget(theme,
-                                    isFirstChart: isFirstChart),
-                                _getChartWidget(generalData, expensesState),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                _getGraphicsTitleWidget(
-                                  theme,
-                                  isListTitle: true,
-                                  isFirstChart: isFirstChart,
-                                ),
-                                Expanded(
-                                    child: ExpensesList(
-                                        expenses: expensesState.expenses)),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (expensesState.isLoading) {
+              return const Center(child: CircularProgressIndicator.adaptive());
+            } else if (expensesState.error != null) {
+              return Center(
+                child: StyledText.errorText(
+                    theme, '${AppStrings.errorMessage}${expensesState.error}'),
+              );
+            } else if (constraints.maxWidth < 600) {
+              return _buildSmallLayout(
+                  generalData, expensesState, theme, isFirstChart);
+            } else {
+              return _buildLargeLayout(
+                  generalData, expensesState, theme, isFirstChart);
+            }
+          },
+        ),
       ),
-      // floatingActionButton
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 80.0, right: 15),
+        padding: EdgeInsets.only(
+            bottom:
+                isPortraitMode ? 100.0 : Helpers.deviceHeightGet(context) * 0.6,
+            right: 15),
         child: FloatingActionButton(
+          mini: true,
           backgroundColor: theme.colorScheme.primary.withOpacity(0.7),
           onPressed: () {
             final dialogService =
@@ -109,6 +82,53 @@ class MainScreen extends ConsumerWidget {
           child: const Icon(Icons.add, size: 30),
         ),
       ),
+    );
+  }
+
+  Widget _buildSmallLayout(
+      generalData, expensesState, ThemeData theme, bool isFirstChart) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _getGraphicsTitleWidget(theme, isFirstChart: isFirstChart),
+        _getChartWidget(generalData, expensesState),
+        _getGraphicsTitleWidget(
+          theme,
+          isListTitle: true,
+          isFirstChart: isFirstChart,
+        ),
+        Expanded(child: ExpensesList(expenses: expensesState.expenses)),
+      ],
+    );
+  }
+
+  Widget _buildLargeLayout(
+      generalData, expensesState, ThemeData theme, bool isFirstChart) {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _getGraphicsTitleWidget(theme, isFirstChart: isFirstChart),
+              _getChartWidget(generalData, expensesState),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _getGraphicsTitleWidget(
+                theme,
+                isListTitle: true,
+                isFirstChart: isFirstChart,
+              ),
+              Expanded(child: ExpensesList(expenses: expensesState.expenses)),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -128,9 +148,17 @@ class MainScreen extends ConsumerWidget {
       height: generalData.isPortraitMode
           ? generalData.deviceSize.height * 0.26
           : generalData.deviceSize.height * 0.7,
-      child: generalData.isFirstChart
-          ? Chart(expenses: expensesState.expenses)
-          : ChartAlt(expensesState.expenses),
+      child: FutureBuilder(
+        future: Future.delayed(const Duration(milliseconds: 10)),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return generalData.isFirstChart
+              ? Chart(expenses: expensesState.expenses)
+              : ChartAlt(expensesState.expenses);
+        },
+      ),
     );
   }
 
@@ -145,5 +173,4 @@ class MainScreen extends ConsumerWidget {
       isDarkTheme: isDarkTheme,
     );
   }
-//
 }

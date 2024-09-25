@@ -15,6 +15,21 @@ class SettingsWidget extends ConsumerWidget {
     final isDarkMode = theme.brightness == Brightness.dark;
     final textTheme = theme.textTheme;
 
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 600) {
+          return _buildSmallLayout(
+              context, ref, theme, isDarkMode, dataProvider, textTheme);
+        } else {
+          return _buildLargeLayout(
+              context, ref, theme, isDarkMode, dataProvider, textTheme);
+        }
+      },
+    );
+  }
+
+  Widget _buildSmallLayout(BuildContext context, WidgetRef ref, ThemeData theme,
+      bool isDarkMode, dataProvider, TextTheme textTheme) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
       child: Column(
@@ -41,6 +56,40 @@ class SettingsWidget extends ConsumerWidget {
             textTheme: textTheme,
             theme: theme,
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLargeLayout(BuildContext context, WidgetRef ref, ThemeData theme,
+      bool isDarkMode, dataProvider, TextTheme textTheme) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 100),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildSwitchRow(
+            context: context,
+            text: AppStrings.darkTheme,
+            value: isDarkMode,
+            onChanged: (value) {
+              ref.read(themeProvider.notifier).toggleTheme(value);
+            },
+            textTheme: textTheme,
+            theme: theme,
+          ),
+          const SizedBox(height: 20),
+          _buildSwitchRow(
+            context: context,
+            text: AppStrings.isMainChart,
+            value: dataProvider.isFirstChart,
+            onChanged: (value) {
+              ref.read(generalDataProvider.notifier).toggleChart(value);
+            },
+            textTheme: textTheme,
+            theme: theme,
+          ),
+          const SizedBox(height: 10),
         ],
       ),
     );

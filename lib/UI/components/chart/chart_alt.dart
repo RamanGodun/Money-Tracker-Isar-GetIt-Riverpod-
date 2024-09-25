@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
 import '../../../DOMAIN/models/expense_model.dart';
 import 'chart_bar_alt.dart';
 
-class ChartAlt extends ConsumerWidget {
+class ChartAlt extends HookWidget {
   final List<ExpenseModel> expenses;
   const ChartAlt(this.expenses, {super.key});
 
-  List<Map<String, dynamic>> get groupedTransactionValues {
+  List<Map<String, dynamic>> _generateGroupedTransactionValues() {
     return List.generate(7, (index) {
       final weekDay = DateTime.now().subtract(
         Duration(days: index),
@@ -31,14 +31,18 @@ class ChartAlt extends ConsumerWidget {
     }).reversed.toList();
   }
 
-  double get totalSpending {
-    return groupedTransactionValues.fold(0.0, (sum, item) {
-      return sum + (item['spentMoney']);
-    });
-  }
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    // Мемоізуємо дані для графіка
+    final groupedTransactionValues = useMemoized(
+      () => _generateGroupedTransactionValues(),
+      [expenses],
+    );
+
+    final totalSpending = groupedTransactionValues.fold(0.0, (sum, item) {
+      return sum + (item['spentMoney'] ?? 0.0);
+    });
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(15),
