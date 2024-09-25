@@ -39,12 +39,15 @@ class ExpenseDialogService {
               animationService:
                   AnimationService(controller: animationController),
               onActionPressed: () {
-                final expenseData = ref.read(expensesInputDataProvider);
-
                 final expenseNotifier =
                     ref.read(expensesInputDataProvider.notifier);
 
+                // Встановлюємо прапор "isSubmitted" після натискання на кнопку збереження
+                expenseNotifier.markSubmitted();
+
                 if (expenseNotifier.validateData()) {
+                  final expenseData = ref.read(expensesInputDataProvider);
+
                   ref.read(expensesNotifierProvider.notifier).addExpense(
                         ExpenseModel(
                           title: expenseData.title,

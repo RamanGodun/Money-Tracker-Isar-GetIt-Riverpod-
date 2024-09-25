@@ -27,31 +27,39 @@ class NewExpenseNotifier extends StateNotifier<NewExpenseState> {
     state = state.copyWith(date: date);
   }
 
+  // Валідація даних
   bool validateData() {
     bool isValid = true;
-    // Валідація назви
     if (TextFieldValidationService.validateString(state.title, false, 3) !=
         null) {
       isValid = false;
     }
-    // ВTextFieldValidationService
     if (TextFieldValidationService.validateDouble(state.amount, 1) != null) {
       isValid = false;
     }
-    // Валідація дати
     if (state.date == null) {
       isValid = false;
     }
     return isValid;
   }
 
-  // Очищення полів (скидання стану до початкового)
+  // Встановлює прапор, що була спроба зберегти
+  void markSubmitted() {
+    state = state.copyWith(isSubmitted: true);
+  }
+
+  // Скидання стану до початкового
   void reset() {
     state = NewExpenseState();
   }
 
-  String? get titleError =>
-      TextFieldValidationService.validateString(state.title, false, 3);
-  String? get amountError =>
-      TextFieldValidationService.validateDouble(state.amount, 1);
+  String? get titleError {
+    if (!state.isSubmitted) return null;
+    return TextFieldValidationService.validateString(state.title, false, 3);
+  }
+
+  String? get amountError {
+    if (!state.isSubmitted) return null;
+    return TextFieldValidationService.validateDouble(state.amount, 1);
+  }
 }

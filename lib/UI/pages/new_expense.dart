@@ -69,7 +69,7 @@ class NewExpense extends ConsumerWidget {
 
   Widget _buildTitleInputField(
       WidgetRef ref, NewExpenseState expenseState, ThemeData theme) {
-    final errorText = ref.read(expensesInputDataProvider.notifier).titleError;
+    final errorText = ref.watch(expensesInputDataProvider.notifier).titleError;
 
     return SizedBox(
       height: AppConstants.heightForComponent,
@@ -87,15 +87,17 @@ class NewExpense extends ConsumerWidget {
 
   Widget _buildAmountInputField(
       WidgetRef ref, NewExpenseState expenseState, ThemeData theme) {
-    final errorText = ref.read(expensesInputDataProvider.notifier).amountError;
+    final errorText = ref.watch(expensesInputDataProvider.notifier).amountError;
+
     return SizedBox(
       height: AppConstants.heightForComponent,
       child: TextField(
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         decoration: InputDecoration(
-            labelText: AppStrings.amountSpent,
-            errorText: errorText,
-            labelStyle: TextStyling.labelForTextField(theme, errorText)),
+          labelText: AppStrings.amountSpent,
+          errorText: errorText,
+          labelStyle: TextStyling.labelForTextField(theme, errorText),
+        ),
         onChanged: (value) =>
             ref.read(expensesInputDataProvider.notifier).updateAmount(value),
       ),
