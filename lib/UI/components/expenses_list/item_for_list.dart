@@ -27,7 +27,7 @@ class ExpenseItemForList extends ConsumerWidget {
           SlidableAction(
             backgroundColor: colorScheme.surface.withOpacity(0.1),
             foregroundColor: colorScheme.primary,
-            borderRadius: AppConstants.commonBorderRadius,
+            borderRadius: AppConstants.borderRadiusCommon,
             onPressed: (_) {
               // Можна додати додаткові дії
             },
@@ -36,7 +36,7 @@ class ExpenseItemForList extends ConsumerWidget {
           SlidableAction(
             backgroundColor: colorScheme.surface.withOpacity(0.1),
             foregroundColor: colorScheme.error,
-            borderRadius: AppConstants.commonBorderRadius,
+            borderRadius: AppConstants.borderRadiusCommon,
             onPressed: (_) {
               ref
                   .read(expensesNotifierProvider.notifier)
@@ -48,7 +48,7 @@ class ExpenseItemForList extends ConsumerWidget {
       ),
       child: Card(
         color: colorScheme.surface.withOpacity(isDarkTheme ? 0.8 : 0.2),
-        shape: AppBordersStyling.rectangleBorder(theme),
+        shape: AppBordersStyling.appShapeBorder(colorScheme),
         elevation: 5,
         shadowColor: theme.shadowColor.withOpacity(0.2),
         child: ListTile(

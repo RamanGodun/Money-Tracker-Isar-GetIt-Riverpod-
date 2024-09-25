@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../../DATA/constants/app_constants.dart';
+import '../../../DATA/constants/strings_4_app.dart';
 import '../../../DOMAIN/Services/animation_controller_service.dart';
 import '_dialog_styling.dart';
 
@@ -21,9 +22,9 @@ class CustomDialog extends HookWidget {
     required this.theme,
     required this.animationService,
     this.contentPadding = const EdgeInsets.symmetric(horizontal: 8),
-    this.dialogTitle = 'Custom Dialog title',
-    this.actionButtonText = 'ОК',
-    this.cancelButtonText = 'Відміна',
+    this.dialogTitle = AppStrings.customDialogTitle,
+    this.actionButtonText = AppStrings.ok,
+    this.cancelButtonText = AppStrings.cancel,
     this.isIOSStyle = false,
   });
 
@@ -33,7 +34,7 @@ class CustomDialog extends HookWidget {
       scale: animationService.animation,
       child: Center(
         child: ClipRRect(
-          borderRadius: AppConstants.commonBorderRadius,
+          borderRadius: AppConstants.borderRadiusCommon,
           child: AppDialogsStyling.customAndroidDialogStyle(
             context: context,
             theme: theme,

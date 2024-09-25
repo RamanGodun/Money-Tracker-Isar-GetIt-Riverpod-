@@ -4,7 +4,7 @@ import '../helpers/helpers.dart';
 import '../themes_set/app_themes/app_colors.dart';
 
 abstract class AppBordersStyling {
-  static Border forBoxDecoration(ThemeData theme) {
+  static Border appBorder(ThemeData theme) {
     final isDarkMode = Helpers.isDarkTheme(theme);
     return Border.all(
       color: isDarkMode
@@ -14,29 +14,31 @@ abstract class AppBordersStyling {
     );
   }
 
-  static RoundedRectangleBorder roundedRectangleBorder(ThemeData theme) {
+  static RoundedRectangleBorder appRoundedRectangleBorder(
+      ColorScheme colorScheme) {
     return RoundedRectangleBorder(
-      borderRadius: AppConstants.commonBorderRadius,
-      side: BorderSide(color: theme.colorScheme.primary.withOpacity(0.1)),
+      borderRadius: AppConstants.borderRadiusCommon,
+      side: BorderSide(color: colorScheme.primary.withOpacity(0.1)),
     );
   }
 
-  static ShapeBorder rectangleBorder(ThemeData theme,
+  static ShapeBorder appShapeBorder(ColorScheme colorScheme,
       {BorderRadius? borderRadius}) {
     return RoundedRectangleBorder(
-      borderRadius: borderRadius ?? AppConstants.radius12,
+      borderRadius: borderRadius ?? AppConstants.borderRadiusCommon,
       side: BorderSide(
-        color: theme.colorScheme.shadow.withOpacity(0.05),
+        color: colorScheme.shadow.withOpacity(0.05),
       ),
     );
   }
 
   // Новий метод для повернення OutlineInputBorder
-  static OutlineInputBorder inputFieldBorder(ThemeData theme) {
+  static OutlineInputBorder appOutlineInputBorder(ColorScheme colorScheme) {
     return OutlineInputBorder(
-      borderRadius: AppConstants.radius12,
+      borderRadius: AppConstants.borderRadiusCommon,
       borderSide: BorderSide(
-        color: theme.colorScheme.primary.withOpacity(0.3),
+        color: colorScheme.primary,
+        width: 1.0,
       ),
     );
   }

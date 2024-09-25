@@ -19,18 +19,18 @@ abstract class AppButtonsStyling {
     return Material(
       child: SizedBox(
         width: double.infinity,
-        height: AppConstants.buttonsHeight,
+        height: AppConstants.heightForComponent,
         child: ElevatedButton(
           style: ButtonStyle(
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                AppBordersStyling.roundedRectangleBorder(theme)),
+                AppBordersStyling.appRoundedRectangleBorder(colorScheme)),
             backgroundColor: WidgetStateProperty.all(
               colorScheme.primary.withOpacity(isDark ? 0.45 : 0.7),
             ),
           ),
           onPressed: onPressed,
           child: Padding(
-            padding: AppConstants.horizontal8,
+            padding: AppConstants.paddingHorizontal8,
             child: StyledText.forButtons(theme, buttonText, true),
           ),
         ),
@@ -53,14 +53,14 @@ abstract class AppButtonsStyling {
       color: AppColors.transparent,
       child: SizedBox(
         width: double.infinity,
-        height: AppConstants.buttonsHeight,
+        height: AppConstants.heightForComponent,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: backgroundColor,
             foregroundColor: foregroundColor,
-            shape: AppBordersStyling.roundedRectangleBorder(theme),
-            elevation: AppConstants.elevation,
-            padding: AppConstants.commonPadding,
+            shape: AppBordersStyling.appRoundedRectangleBorder(colorScheme),
+            elevation: AppConstants.elevationCommon,
+            padding: AppConstants.paddingCommon,
           ),
           onPressed: onPressed,
           child: StyledText.forButtons(theme, buttonText, true),
@@ -83,7 +83,7 @@ abstract class AppButtonsStyling {
       color: AppColors.transparent,
       child: SizedBox(
         width: double.infinity,
-        height: AppConstants.buttonsHeight,
+        height: AppConstants.heightForComponent,
         child: OutlinedButton(
           style: OutlinedButton.styleFrom(
             backgroundColor:
@@ -92,7 +92,8 @@ abstract class AppButtonsStyling {
               color: theme.colorScheme.primary.withOpacity(0.3),
               width: 1.0,
             ),
-            shape: AppBordersStyling.roundedRectangleBorder(theme),
+            shape:
+                AppBordersStyling.appRoundedRectangleBorder(theme.colorScheme),
           ),
           onPressed: onPressed,
           child: Center(

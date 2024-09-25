@@ -53,7 +53,7 @@ class _AnimatedSettingsDialog extends HookWidget {
       child: Dialog(
         backgroundColor:
             theme.colorScheme.surface.withOpacity(isDarkMode ? 1 : 0.6),
-        shape: AppBordersStyling.rectangleBorder(theme),
+        shape: AppBordersStyling.appShapeBorder(theme.colorScheme),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 16),
           child: Column(

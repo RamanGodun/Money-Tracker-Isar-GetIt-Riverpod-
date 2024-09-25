@@ -28,7 +28,6 @@ class ExpenseDialogService {
             final animationController = useAnimationController(
               duration: const Duration(milliseconds: 250),
             );
-
             animationController.forward();
 
             return CustomDialog(
@@ -40,8 +39,9 @@ class ExpenseDialogService {
                 final expenseNotifier =
                     ref.read(expensesInputDataProvider.notifier);
 
+                // Використовуємо getExpenseData для доступу до даних
+                final expenseData = expenseNotifier.getExpenseData();
                 if (expenseNotifier.validateData()) {
-                  final expenseData = expenseNotifier.state;
                   ref.read(expensesNotifierProvider.notifier).addExpense(
                         ExpenseModel(
                           title: expenseData.title,

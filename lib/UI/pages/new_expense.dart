@@ -119,7 +119,7 @@ class NewExpense extends ConsumerWidget {
       height: 60,
       child: TextField(
         decoration: const InputDecoration(
-          labelText: AppStrings.amountSpent,
+          labelText: AppStrings.expenseTitle,
         ),
         onChanged: (value) =>
             ref.read(expensesInputDataProvider.notifier).updateTitle(value),
@@ -133,7 +133,7 @@ class NewExpense extends ConsumerWidget {
       child: TextField(
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         decoration: const InputDecoration(
-          labelText: AppStrings.expenseTitle,
+          labelText: AppStrings.amountSpent,
         ),
         onChanged: (value) =>
             ref.read(expensesInputDataProvider.notifier).updateAmount(value),
@@ -164,7 +164,7 @@ class NewExpense extends ConsumerWidget {
                   .updateCategory(value);
             }
           },
-          borderRadius: AppConstants.radius12,
+          borderRadius: AppConstants.borderRadiusCommon,
           style: theme.textTheme.titleSmall,
           iconEnabledColor: theme.colorScheme.primary,
           dropdownColor: theme.colorScheme.surfaceContainer.withOpacity(0.6),
@@ -182,7 +182,7 @@ class NewExpense extends ConsumerWidget {
         backgroundColor: isDarkMode
             ? AppColors.glassSurfaceDark.withOpacity(0.4)
             : AppColors.glassSurfaceLight.withOpacity(0.25),
-        shape: AppBordersStyling.roundedRectangleBorder(theme),
+        shape: AppBordersStyling.appRoundedRectangleBorder(theme.colorScheme),
       ),
       child: Row(
         children: [

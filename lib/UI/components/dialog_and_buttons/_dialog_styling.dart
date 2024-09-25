@@ -30,14 +30,14 @@ abstract class AppDialogsStyling {
     return Stack(
       children: [
         Dialog(
-          clipBehavior: Clip.hardEdge, // Додаємо clipBehavior для заокруглення
-          shape: AppBordersStyling.rectangleBorder(theme),
+          clipBehavior: Clip.hardEdge,
+          shape: AppBordersStyling.appShapeBorder(theme.colorScheme),
           child: ClipRRect(
-            borderRadius: AppConstants.commonBorderRadius,
+            borderRadius: AppConstants.borderRadiusCommon,
             child: Container(
               width: width,
               height: height,
-              padding: AppConstants.zeroPadding,
+              padding: AppConstants.allPadding0,
               decoration: AppBoxDecorations.inGlassMorphismStyle(theme),
               child: Material(
                 child: Stack(
@@ -49,7 +49,7 @@ abstract class AppDialogsStyling {
                               AppBoxDecorations.inGlassMorphismStyle(theme)),
                     ),
                     Container(
-                      padding: AppConstants.zeroPadding,
+                      padding: AppConstants.allPadding0,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -61,7 +61,7 @@ abstract class AppDialogsStyling {
                               dialogTitle,
                               maxLines: 2,
                               textAlign: TextAlign.center,
-                              style: theme.textTheme.titleMedium,
+                              style: theme.textTheme.titleSmall,
                             ),
                           ),
                           const Divider(),
@@ -101,7 +101,7 @@ abstract class AppDialogsStyling {
                 ),
                 const SizedBox(width: 10),
                 ClipRRect(
-                  borderRadius: AppConstants.commonBorderRadius,
+                  borderRadius: AppConstants.borderRadiusCommon,
                   child: AppDialogsButtons.custom(
                     theme,
                     context: context,
