@@ -21,17 +21,26 @@ class NewOrEditExpense extends ConsumerStatefulWidget {
 }
 
 class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
+  late TextEditingController _titleController;
+  late TextEditingController _amountController;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController();
+    _amountController = TextEditingController();
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    // Якщо це редагування витрати
     if (widget.initialExpense != null) {
-      // Оновлюємо стан провайдера тільки при редагуванні
       Future(() {
         ref
             .read(expensesInputDataProvider.notifier)
             .setInitialExpense(widget.initialExpense!);
+        _titleController.text = widget.initialExpense!.title;
+        _amountController.text = widget.initialExpense!.amount.toString();
       });
     }
   }
@@ -103,14 +112,15 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
     return SizedBox(
       height: AppConstants.heightForComponent,
       child: TextField(
-        controller: TextEditingController(text: expenseState.title),
+        controller: _titleController,
         decoration: InputDecoration(
           labelText: AppStrings.expenseTitle,
           errorText: errorText,
           labelStyle: TextStyling.labelForTextField(theme, errorText),
         ),
-        onChanged: (value) =>
-            ref.read(expensesInputDataProvider.notifier).updateTitle(value),
+        onChanged: (value) {
+          ref.read(expensesInputDataProvider.notifier).updateTitle(value);
+        },
       ),
     );
   }
@@ -122,15 +132,16 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
     return SizedBox(
       height: AppConstants.heightForComponent,
       child: TextField(
-        controller: TextEditingController(text: expenseState.amount),
+        controller: _amountController,
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         decoration: InputDecoration(
           labelText: AppStrings.amountSpent,
           errorText: errorText,
           labelStyle: TextStyling.labelForTextField(theme, errorText),
         ),
-        onChanged: (value) =>
-            ref.read(expensesInputDataProvider.notifier).updateAmount(value),
+        onChanged: (value) {
+          ref.read(expensesInputDataProvider.notifier).updateAmount(value);
+        },
       ),
     );
   }
@@ -178,5 +189,13 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
       lastDate: now,
     );
     ref.read(expensesInputDataProvider.notifier).updateDate(pickedDate);
+  }
+
+//
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _amountController.dispose();
+    super.dispose();
   }
 }
