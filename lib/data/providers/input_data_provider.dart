@@ -11,9 +11,6 @@ final expensesInputDataProvider =
 class NewExpenseNotifier extends StateNotifier<NewExpenseState> {
   NewExpenseNotifier() : super(NewExpenseState());
 
-  // final TextFieldValidationService _validationService =
-  //     TextFieldValidationService();
-
   void updateTitle(String title) {
     state = state.copyWith(title: title);
   }
@@ -32,24 +29,25 @@ class NewExpenseNotifier extends StateNotifier<NewExpenseState> {
 
   bool validateData() {
     bool isValid = true;
-
     // Валідація назви
     if (TextFieldValidationService.validateString(state.title, false, 3) !=
         null) {
       isValid = false;
     }
-
     // ВTextFieldValidationService
     if (TextFieldValidationService.validateDouble(state.amount, 1) != null) {
       isValid = false;
     }
-
     // Валідація дати
     if (state.date == null) {
       isValid = false;
     }
-
     return isValid;
+  }
+
+  // Очищення полів (скидання стану до початкового)
+  void reset() {
+    state = NewExpenseState();
   }
 
   String? get titleError =>

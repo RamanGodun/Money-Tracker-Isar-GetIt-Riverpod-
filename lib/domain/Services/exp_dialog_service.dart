@@ -14,6 +14,9 @@ class ExpenseDialogService {
     BuildContext context,
     WidgetRef ref,
   ) async {
+    // Скидаємо стан перед відкриттям діалогу
+    ref.read(expensesInputDataProvider.notifier).reset();
+
     final theme = Theme.of(context);
     final isDarkTheme = theme.brightness == Brightness.dark;
 
@@ -36,7 +39,6 @@ class ExpenseDialogService {
               animationService:
                   AnimationService(controller: animationController),
               onActionPressed: () {
-                // Отримуємо стан напряму через ref.read
                 final expenseData = ref.read(expensesInputDataProvider);
 
                 final expenseNotifier =
