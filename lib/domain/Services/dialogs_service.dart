@@ -3,7 +3,7 @@ import 'package:money_tracker/DATA/constants/app_borders.dart';
 import 'package:money_tracker/DATA/constants/strings_4_app.dart';
 import 'package:money_tracker/UI/components/text_widgets.dart';
 import '../../DATA/helpers/helpers.dart';
-import '../../UI/components/dialog_and_buttons/_buttons_styling.dart';
+import '../../UI/components/dialog_and_buttons/buttons_styling.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SettingsDialogService {

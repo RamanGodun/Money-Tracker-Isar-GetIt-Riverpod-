@@ -70,4 +70,12 @@ class TextStyling {
       fontWeight: FontWeight.w500,
     );
   }
+
+  static TextStyle labelForTextField(ThemeData theme, String? errorText) {
+    return TextStyle(
+        color: errorText != null
+            ? theme.colorScheme.error
+            : theme.colorScheme.onSurface);
+  }
+/* */
 }

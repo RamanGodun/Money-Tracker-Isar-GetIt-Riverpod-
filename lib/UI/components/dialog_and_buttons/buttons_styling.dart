@@ -30,7 +30,7 @@ abstract class AppButtonsStyling {
           ),
           onPressed: onPressed,
           child: Padding(
-            padding: AppConstants.paddingHorizontal8,
+            padding: AppConstants.paddingHorizontal18,
             child: StyledText.forButtons(theme, buttonText, true),
           ),
         ),
@@ -87,7 +87,7 @@ abstract class AppButtonsStyling {
         child: OutlinedButton(
           style: OutlinedButton.styleFrom(
             backgroundColor:
-                theme.colorScheme.surface.withOpacity(isDark ? 0.1 : 0.01),
+                theme.colorScheme.surface.withOpacity(isDark ? 0.1 : 0.05),
             side: BorderSide(
               color: theme.colorScheme.primary.withOpacity(0.3),
               width: 1.0,

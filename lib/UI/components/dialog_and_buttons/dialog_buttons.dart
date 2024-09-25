@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../DATA/constants/app_text_styling.dart';
 import '../../../DOMAIN/models/app_enums.dart';
 import '../../../DATA/helpers/helpers.dart';
-import '_buttons_styling.dart';
+import 'buttons_styling.dart';
 
 class AppDialogsButtons {
   static Widget custom(
@@ -44,8 +44,9 @@ class AppDialogsButtons {
     required bool isActionButton,
   }) {
     final deviceWidth = Helpers.deviceWidthGet(context);
+    final isPortraitMode = deviceWidth < 600;
     return SizedBox(
-      width: deviceWidth * 0.4,
+      width: deviceWidth * (isPortraitMode ? 0.43 : 0.35),
       child: isActionButton
           ? AppButtonsStyling.firstDesign(
               context,

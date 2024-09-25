@@ -5,7 +5,7 @@ import '../../DATA/constants/strings_4_app.dart';
 import '../../DOMAIN/models/expense_model.dart';
 import '../../DATA/providers/expenses_provider.dart';
 import '../../DATA/providers/input_data_provider.dart';
-import '../../UI/components/dialog_and_buttons/custom_dialog.dart';
+import '../../UI/components/dialog_and_buttons/_custom_dialog.dart';
 import '../../UI/pages/new_expense.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -36,11 +36,12 @@ class ExpenseDialogService {
               animationService:
                   AnimationService(controller: animationController),
               onActionPressed: () {
+                // Отримуємо стан напряму через ref.read
+                final expenseData = ref.read(expensesInputDataProvider);
+
                 final expenseNotifier =
                     ref.read(expensesInputDataProvider.notifier);
 
-                // Використовуємо getExpenseData для доступу до даних
-                final expenseData = expenseNotifier.getExpenseData();
                 if (expenseNotifier.validateData()) {
                   ref.read(expensesNotifierProvider.notifier).addExpense(
                         ExpenseModel(

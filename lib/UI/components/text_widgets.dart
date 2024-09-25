@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../DATA/constants/app_text_styling.dart';
+import '../../DATA/constants/strings_4_app.dart';
+import '../../DOMAIN/models/expenses_input_state.dart';
 
 abstract class StyledText {
   static Widget titleMedium(ThemeData theme, String text) {
@@ -57,5 +60,17 @@ abstract class StyledText {
       textAlign: align ?? TextAlign.start,
       style: TextStyling.errorText(theme),
     );
+  }
+
+  static Widget datePickerText(ThemeData theme, NewExpenseState expenseState) {
+    return Text(
+        expenseState.date == null
+            ? AppStrings.noDateSelected
+            : DateFormat('dd.MM.yyyy').format(expenseState.date!),
+        style: TextStyle(
+          color: expenseState.date == null
+              ? theme.colorScheme.error
+              : theme.colorScheme.secondary,
+        ));
   }
 }

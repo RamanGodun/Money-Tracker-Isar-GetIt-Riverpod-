@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:money_tracker/UI/components/other_widgets.dart';
-import '../../DATA/constants/app_borders.dart';
+import 'package:money_tracker/UI/components/text_widgets.dart';
 import '../../DATA/constants/app_constants.dart';
 import '../../DATA/constants/app_text_styling.dart';
 import '../../DATA/constants/strings_4_app.dart';
 import '../../DATA/helpers/helpers.dart';
 import '../../DATA/providers/input_data_provider.dart';
-import '../../DATA/providers/gen_data_provider.dart';
-import '../../DATA/themes_set/app_themes/app_colors.dart';
 import '../../DATA/themes_set/themes_provider.dart';
 import '../../DOMAIN/models/app_enums.dart';
-import '../components/text_widgets.dart';
+import '../../DOMAIN/models/expenses_input_state.dart';
 
 class NewExpense extends ConsumerWidget {
   const NewExpense({super.key});
@@ -22,104 +18,66 @@ class NewExpense extends ConsumerWidget {
     final expenseState = ref.watch(expensesInputDataProvider);
     final theme = ref.watch(themeDataProvider);
     final isDarkMode = theme.brightness == Brightness.dark;
-    final generalData = ref.watch(generalDataProvider);
+    final isPortraitMode = Helpers.deviceWidthGet(context) < 600;
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ListView(
-        children: (generalData.deviceSize.width < 600)
-            ? [
-                _buildTitleInputField(ref, expenseState, theme),
-                const SizedBox(height: 12),
-                _buildAmountInputField(ref, expenseState, theme),
-                const SizedBox(height: 16),
-                AppMiniWidgets.onlyPadding(
-                    StyledText.bodyLarge(
-                      theme,
-                      AppStrings.category,
-                      color: isDarkMode
-                          ? AppColors.glassSurfaceLight
-                          : AppColors.glassSurfaceDark,
-                    ),
-                    Side.left,
-                    20),
-                _buildCategoryDropdown(ref, expenseState, context),
-                const SizedBox(height: 16),
-                AppMiniWidgets.onlyPadding(
-                    StyledText.bodyLarge(
-                      theme,
-                      AppStrings.expenseDate,
-                      color: isDarkMode
-                          ? AppColors.glassSurfaceLight
-                          : AppColors.glassSurfaceDark,
-                    ),
-                    Side.left,
-                    20),
-                const SizedBox(height: 3),
-                _buildDatePickerButton(
-                    context, ref, expenseState, isDarkMode, theme),
-              ]
-            : [
-                Row(
-                  children: [
-                    Expanded(
-                        child: _buildTitleInputField(ref, expenseState, theme)),
-                    const SizedBox(width: 12),
-                    Expanded(
-                        child:
-                            _buildAmountInputField(ref, expenseState, theme)),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                        child: Column(children: [
-                      AppMiniWidgets.onlyPadding(
-                          StyledText.bodyLarge(
-                            theme,
-                            AppStrings.category,
-                            color: isDarkMode
-                                ? AppColors.glassSurfaceLight
-                                : AppColors.glassSurfaceDark,
-                          ),
-                          Side.left,
-                          20),
-                      _buildCategoryDropdown(ref, expenseState, context)
-                    ])),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AppMiniWidgets.onlyPadding(
-                              StyledText.bodyLarge(
-                                theme,
-                                AppStrings.expenseDate,
-                                color: isDarkMode
-                                    ? AppColors.glassSurfaceLight
-                                    : AppColors.glassSurfaceDark,
-                              ),
-                              Side.left,
-                              20),
-                          _buildDatePickerButton(
-                              context, ref, expenseState, isDarkMode, theme),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+      padding: AppConstants.paddingCommon,
+      child: isPortraitMode
+          ? ListView(children: [
+              _buildTextFieldsWidgets(ref, expenseState, theme),
+              const SizedBox(height: 16),
+              _buildCategoryAndDateWidgets(
+                  context, ref, expenseState, theme, isDarkMode),
+            ])
+          : Row(children: [
+              _buildTextFieldsWidgets(ref, expenseState, theme),
+              const SizedBox(height: 16),
+              _buildCategoryAndDateWidgets(
+                  context, ref, expenseState, theme, isDarkMode),
+            ]),
+    );
+  }
+
+  Widget _buildTextFieldsWidgets(ref, expenseState, theme) {
+    return Expanded(
+      child: Column(
+        children: [
+          _buildTitleInputField(ref, expenseState, theme),
+          const SizedBox(height: 12),
+          _buildAmountInputField(ref, expenseState, theme),
+        ],
       ),
     );
   }
 
-  Widget _buildTitleInputField(WidgetRef ref, expenseState, ThemeData theme) {
+  Widget _buildCategoryAndDateWidgets(
+      context, ref, expenseState, theme, isDarkMode) {
+    return Padding(
+      padding: AppConstants.paddingHorizontal18,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          StyledText.bodyMedium(theme, AppStrings.category),
+          _buildCategoryDropdown(ref, expenseState, context),
+          const SizedBox(height: 16),
+          StyledText.bodyMedium(theme, AppStrings.expenseDate),
+          _buildDatePickerButton(context, ref, expenseState, isDarkMode, theme),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTitleInputField(
+      WidgetRef ref, NewExpenseState expenseState, ThemeData theme) {
+    final errorText = ref.read(expensesInputDataProvider.notifier).titleError;
+
     return SizedBox(
-      height: 60,
+      height: AppConstants.heightForComponent,
       child: TextField(
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           labelText: AppStrings.expenseTitle,
+          errorText: errorText,
+          labelStyle: TextStyling.labelForTextField(theme, errorText),
         ),
         onChanged: (value) =>
             ref.read(expensesInputDataProvider.notifier).updateTitle(value),
@@ -127,14 +85,17 @@ class NewExpense extends ConsumerWidget {
     );
   }
 
-  Widget _buildAmountInputField(WidgetRef ref, expenseState, ThemeData theme) {
+  Widget _buildAmountInputField(
+      WidgetRef ref, NewExpenseState expenseState, ThemeData theme) {
+    final errorText = ref.read(expensesInputDataProvider.notifier).amountError;
     return SizedBox(
-      height: 60,
+      height: AppConstants.heightForComponent,
       child: TextField(
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        decoration: const InputDecoration(
-          labelText: AppStrings.amountSpent,
-        ),
+        decoration: InputDecoration(
+            labelText: AppStrings.amountSpent,
+            errorText: errorText,
+            labelStyle: TextStyling.labelForTextField(theme, errorText)),
         onChanged: (value) =>
             ref.read(expensesInputDataProvider.notifier).updateAmount(value),
       ),
@@ -142,61 +103,34 @@ class NewExpense extends ConsumerWidget {
   }
 
   Widget _buildCategoryDropdown(
-      WidgetRef ref, expenseState, BuildContext context) {
+      WidgetRef ref, NewExpenseState expenseState, BuildContext context) {
     final theme = Helpers.themeGet(context);
-    return AppMiniWidgets.onlyPadding(
-        DropdownButton<Category>(
-          isDense: true,
-          elevation: 3,
-          value: expenseState.category,
-          items: Category.values
-              .map((category) => DropdownMenuItem(
-                    value: category,
-                    child: StyledText.titleSmall(
-                        theme, category.name.toUpperCase(),
-                        color: theme.colorScheme.primary),
-                  ))
-              .toList(),
-          onChanged: (value) {
-            if (value != null) {
-              ref
-                  .read(expensesInputDataProvider.notifier)
-                  .updateCategory(value);
-            }
-          },
-          borderRadius: AppConstants.borderRadiusCommon,
-          style: theme.textTheme.titleSmall,
-          iconEnabledColor: theme.colorScheme.primary,
-          dropdownColor: theme.colorScheme.surfaceContainer.withOpacity(0.6),
-        ),
-        Side.left,
-        20);
+    return DropdownButton<Category>(
+      value: expenseState.category,
+      items: Category.values.map((category) {
+        return DropdownMenuItem(
+          value: category,
+          child: StyledText.titleSmall(theme, category.name.toUpperCase(),
+              color: theme.colorScheme.secondary),
+        );
+      }).toList(),
+      onChanged: (value) {
+        if (value != null) {
+          ref.read(expensesInputDataProvider.notifier).updateCategory(value);
+        }
+      },
+    );
   }
 
   Widget _buildDatePickerButton(BuildContext context, WidgetRef ref,
-      expenseState, bool isDarkMode, ThemeData theme) {
+      NewExpenseState expenseState, bool isDarkMode, ThemeData theme) {
     return TextButton(
       onPressed: () => _presentDatePicker(context, ref),
-      style: TextButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        backgroundColor: isDarkMode
-            ? AppColors.glassSurfaceDark.withOpacity(0.4)
-            : AppColors.glassSurfaceLight.withOpacity(0.25),
-        shape: AppBordersStyling.appRoundedRectangleBorder(theme.colorScheme),
-      ),
       child: Row(
         children: [
           const Icon(Icons.calendar_month_outlined),
           const SizedBox(width: 12),
-          Text(
-            expenseState.date == null
-                ? AppStrings.noDateSelected
-                : '${AppStrings.selectedDate}: ${DateFormat('dd.MM.yyyy').format(expenseState.date!)}',
-            style: TextStyling.bodyMedium(theme).copyWith(
-                color: expenseState.date == null
-                    ? theme.colorScheme.error
-                    : theme.colorScheme.secondary),
-          ),
+          StyledText.datePickerText(theme, expenseState),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../DOMAIN/Services/text_validation_service.dart';
 import '../../DOMAIN/models/app_enums.dart';
 import '../../DOMAIN/models/expenses_input_state.dart';
 
@@ -9,6 +10,9 @@ final expensesInputDataProvider =
 
 class NewExpenseNotifier extends StateNotifier<NewExpenseState> {
   NewExpenseNotifier() : super(NewExpenseState());
+
+  // final TextFieldValidationService _validationService =
+  //     TextFieldValidationService();
 
   void updateTitle(String title) {
     state = state.copyWith(title: title);
@@ -28,13 +32,28 @@ class NewExpenseNotifier extends StateNotifier<NewExpenseState> {
 
   bool validateData() {
     bool isValid = true;
-    if (state.title.isEmpty || state.amount.isEmpty || state.date == null) {
+
+    // Валідація назви
+    if (TextFieldValidationService.validateString(state.title, false, 3) !=
+        null) {
       isValid = false;
     }
+
+    // ВTextFieldValidationService
+    if (TextFieldValidationService.validateDouble(state.amount, 1) != null) {
+      isValid = false;
+    }
+
+    // Валідація дати
+    if (state.date == null) {
+      isValid = false;
+    }
+
     return isValid;
   }
 
-  NewExpenseState getExpenseData() {
-    return state;
-  }
+  String? get titleError =>
+      TextFieldValidationService.validateString(state.title, false, 3);
+  String? get amountError =>
+      TextFieldValidationService.validateDouble(state.amount, 1);
 }
