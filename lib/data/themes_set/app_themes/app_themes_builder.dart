@@ -39,7 +39,8 @@ APPBAR
         iconTheme: IconThemeData(color: colorScheme.primary),
         titleTextStyle:
             TextStyles4ThisAppThemes.kTextThemeData(isDark, colorScheme)
-                .titleSmall,
+                .titleSmall
+                ?.copyWith(color: colorScheme.onSurface.withOpacity(0.7)),
         toolbarTextStyle:
             TextStyles4ThisAppThemes.kTextThemeData(isDark, colorScheme)
                 .bodyMedium,
@@ -51,7 +52,7 @@ CardTheme
  */
       cardTheme: CardTheme(
         color: isDark
-            ? colorScheme.inverseSurface.withOpacity(0.2)
+            ? colorScheme.inverseSurface.withOpacity(0.15)
             : colorScheme.surface.withOpacity(0.5),
         shadowColor: colorScheme.shadow.withOpacity(0.6),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

@@ -47,7 +47,9 @@ class ExpenseItemForList extends ConsumerWidget {
         ],
       ),
       child: Card(
-        color: colorScheme.surface.withOpacity(isDarkTheme ? 0.8 : 0.2),
+        color: isDarkTheme
+            ? colorScheme.inverseSurface.withOpacity(0.06)
+            : colorScheme.surface.withOpacity(0.2),
         shape: AppBordersStyling.appShapeBorder(colorScheme),
         elevation: 5,
         shadowColor: theme.shadowColor.withOpacity(0.2),

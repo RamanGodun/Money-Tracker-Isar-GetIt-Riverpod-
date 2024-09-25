@@ -7,7 +7,6 @@ import '../../UI/components/dialog_and_buttons/_buttons_styling.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SettingsDialogService {
-  // Змінюємо метод для відображення діалогу з новою темою
   void showCustomDialog({
     required BuildContext context,
     required String title,
@@ -47,12 +46,14 @@ class _AnimatedSettingsDialog extends HookWidget {
 
     final theme = Helpers.themeGet(context);
     final isDarkMode = Helpers.isDarkTheme(theme);
+    final deviceSize = Helpers.deviceSizeGet(context);
 
     return ScaleTransition(
       scale: animationController,
       child: Dialog(
-        backgroundColor:
-            theme.colorScheme.surface.withOpacity(isDarkMode ? 1 : 0.6),
+        backgroundColor: isDarkMode
+            ? theme.colorScheme.surfaceBright.withOpacity(0.9)
+            : theme.colorScheme.surface.withOpacity(0.75),
         shape: AppBordersStyling.appShapeBorder(theme.colorScheme),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 16),
@@ -63,7 +64,7 @@ class _AnimatedSettingsDialog extends HookWidget {
               content,
               const SizedBox(height: 20),
               SizedBox(
-                width: 200,
+                width: deviceSize.width * 0.6,
                 child: AppButtonsStyling.forElevatedButton(
                   context,
                   buttonText: AppStrings.close,
