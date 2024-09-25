@@ -8,13 +8,36 @@ import '../../DATA/helpers/helpers.dart';
 import '../../DATA/providers/input_data_provider.dart';
 import '../../DATA/themes_set/themes_provider.dart';
 import '../../DOMAIN/models/app_enums.dart';
+import '../../DOMAIN/models/expense_model.dart';
 import '../../DOMAIN/models/expenses_input_state.dart';
 
-class NewExpense extends ConsumerWidget {
-  const NewExpense({super.key});
+class NewOrEditExpense extends ConsumerStatefulWidget {
+  final ExpenseModel? initialExpense; // Передача витрати, якщо це редагування
+
+  const NewOrEditExpense({super.key, this.initialExpense});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<NewOrEditExpense> createState() => _NewOrEditExpenseState();
+}
+
+class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Якщо це редагування витрати
+    if (widget.initialExpense != null) {
+      // Оновлюємо стан провайдера тільки при редагуванні
+      Future(() {
+        ref
+            .read(expensesInputDataProvider.notifier)
+            .setInitialExpense(widget.initialExpense!);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final expenseState = ref.watch(expensesInputDataProvider);
     final theme = ref.watch(themeDataProvider);
     final isDarkMode = theme.brightness == Brightness.dark;
@@ -23,35 +46,41 @@ class NewExpense extends ConsumerWidget {
     return Padding(
       padding: AppConstants.paddingCommon,
       child: isPortraitMode
-          ? ListView(children: [
-              _buildTextFieldsWidgets(ref, expenseState, theme),
-              const SizedBox(height: 16),
-              _buildCategoryAndDateWidgets(
-                  context, ref, expenseState, theme, isDarkMode),
-            ])
-          : Row(children: [
-              _buildTextFieldsWidgets(ref, expenseState, theme),
-              const SizedBox(height: 16),
-              _buildCategoryAndDateWidgets(
-                  context, ref, expenseState, theme, isDarkMode),
-            ]),
+          ? ListView(
+              children: [
+                _buildTextFieldsWidgets(ref, expenseState, theme),
+                const SizedBox(height: 16),
+                _buildCategoryAndDateWidgets(
+                    context, ref, expenseState, theme, isDarkMode),
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(
+                    child: _buildTextFieldsWidgets(ref, expenseState, theme)),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: _buildCategoryAndDateWidgets(
+                      context, ref, expenseState, theme, isDarkMode),
+                ),
+              ],
+            ),
     );
   }
 
-  Widget _buildTextFieldsWidgets(ref, expenseState, theme) {
-    return Expanded(
-      child: Column(
-        children: [
-          _buildTitleInputField(ref, expenseState, theme),
-          const SizedBox(height: 12),
-          _buildAmountInputField(ref, expenseState, theme),
-        ],
-      ),
+  Widget _buildTextFieldsWidgets(
+      WidgetRef ref, NewExpenseState expenseState, ThemeData theme) {
+    return Column(
+      children: [
+        _buildTitleInputField(ref, expenseState, theme),
+        const SizedBox(height: 12),
+        _buildAmountInputField(ref, expenseState, theme),
+      ],
     );
   }
 
-  Widget _buildCategoryAndDateWidgets(
-      context, ref, expenseState, theme, isDarkMode) {
+  Widget _buildCategoryAndDateWidgets(BuildContext context, WidgetRef ref,
+      NewExpenseState expenseState, ThemeData theme, bool isDarkMode) {
     return Padding(
       padding: AppConstants.paddingHorizontal18,
       child: Column(
@@ -74,6 +103,7 @@ class NewExpense extends ConsumerWidget {
     return SizedBox(
       height: AppConstants.heightForComponent,
       child: TextField(
+        controller: TextEditingController(text: expenseState.title),
         decoration: InputDecoration(
           labelText: AppStrings.expenseTitle,
           errorText: errorText,
@@ -92,6 +122,7 @@ class NewExpense extends ConsumerWidget {
     return SizedBox(
       height: AppConstants.heightForComponent,
       child: TextField(
+        controller: TextEditingController(text: expenseState.amount),
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         decoration: InputDecoration(
           labelText: AppStrings.amountSpent,

@@ -6,10 +6,10 @@ final DateFormat formatter = DateFormat.yMd();
 
 class ExpenseModel {
   int id;
-  final String title;
-  final double amount;
-  final DateTime date;
-  final Category category;
+  String title;
+  double amount;
+  DateTime date;
+  Category category;
 
   ExpenseModel({
     this.id = -1,
@@ -19,9 +19,7 @@ class ExpenseModel {
     required this.category,
   });
 
-  String get formattedDate => formatter.format(date);
-
-  // Конвертація з UI-моделі в модель БД
+  // Конвертація в DB-модель
   DBExpenseModel toDBModel() {
     return DBExpenseModel(
       title: title,
@@ -31,7 +29,7 @@ class ExpenseModel {
     );
   }
 
-  // Фабрика для створення ExpenseModel на основі моделі з БД
+  // Конвертація з DB-моделі в UI-модель
   factory ExpenseModel.fromDBModel(DBExpenseModel dbExpense) {
     final category = CategoryExtension.fromName(dbExpense.category);
     return ExpenseModel(

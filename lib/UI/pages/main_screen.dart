@@ -104,7 +104,7 @@ class MainScreen extends ConsumerWidget {
           onPressed: () {
             final dialogService =
                 DIServiceLocator.instance.get<ExpenseDialogService>();
-            dialogService.showAddExpenseDialog(context, ref);
+            dialogService.showAddOrEditExpenseDialog(context, ref);
           },
           child: const Icon(Icons.add, size: 30),
         ),

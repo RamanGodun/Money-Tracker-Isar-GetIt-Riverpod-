@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../DOMAIN/Services/text_validation_service.dart';
 import '../../DOMAIN/models/app_enums.dart';
+import '../../DOMAIN/models/expense_model.dart';
 import '../../DOMAIN/models/expenses_input_state.dart';
 
 final expensesInputDataProvider =
@@ -10,6 +11,16 @@ final expensesInputDataProvider =
 
 class NewExpenseNotifier extends StateNotifier<NewExpenseState> {
   NewExpenseNotifier() : super(NewExpenseState());
+
+  // Встановлюємо початкові дані для редагування витрати
+  void setInitialExpense(ExpenseModel expense) {
+    state = state.copyWith(
+      title: expense.title,
+      amount: expense.amount.toString(),
+      date: expense.date,
+      category: expense.category,
+    );
+  }
 
   void updateTitle(String title) {
     state = state.copyWith(title: title);
@@ -27,7 +38,6 @@ class NewExpenseNotifier extends StateNotifier<NewExpenseState> {
     state = state.copyWith(date: date);
   }
 
-  // Валідація даних
   bool validateData() {
     bool isValid = true;
     if (TextFieldValidationService.validateString(state.title, false, 3) !=
@@ -43,12 +53,10 @@ class NewExpenseNotifier extends StateNotifier<NewExpenseState> {
     return isValid;
   }
 
-  // Встановлює прапор, що була спроба зберегти
   void markSubmitted() {
     state = state.copyWith(isSubmitted: true);
   }
 
-  // Скидання стану до початкового
   void reset() {
     state = NewExpenseState();
   }

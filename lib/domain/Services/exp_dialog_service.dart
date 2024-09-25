@@ -1,4 +1,7 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:money_tracker/DOMAIN/Services/animation_controller_service.dart';
 import '../../DATA/constants/strings_4_app.dart';
@@ -6,16 +9,31 @@ import '../../DOMAIN/models/expense_model.dart';
 import '../../DATA/providers/expenses_provider.dart';
 import '../../DATA/providers/input_data_provider.dart';
 import '../../UI/components/dialog_and_buttons/_custom_dialog.dart';
-import '../../UI/pages/new_expense.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import '../../UI/pages/input_expense.dart';
 
 class ExpenseDialogService {
-  Future<void> showAddExpenseDialog(
+  Future<void> showAddOrEditExpenseDialog(
     BuildContext context,
-    WidgetRef ref,
-  ) async {
-    // Скидаємо стан перед відкриттям діалогу
-    ref.read(expensesInputDataProvider.notifier).reset();
+    WidgetRef ref, {
+    ExpenseModel? expenseToEdit,
+  }) async {
+    print("Opening dialog...");
+    ref
+        .read(expensesInputDataProvider.notifier)
+        .reset(); // Спочатку скидаємо стан
+
+    if (expenseToEdit != null) {
+      print("Editing expense with ID: ${expenseToEdit.id}");
+      ref.read(expensesNotifierProvider.notifier).updateExpense(
+            ExpenseModel(
+              id: expenseToEdit.id,
+              title: expenseToEdit.title,
+              amount: double.parse(expenseToEdit.amount.toString()),
+              date: expenseToEdit.date,
+              category: expenseToEdit.category,
+            ),
+          );
+    }
 
     final theme = Theme.of(context);
     final isDarkTheme = theme.brightness == Brightness.dark;
@@ -34,7 +52,7 @@ class ExpenseDialogService {
             animationController.forward();
 
             return CustomDialog(
-              contentWidget: const NewExpense(),
+              contentWidget: NewOrEditExpense(initialExpense: expenseToEdit),
               theme: theme,
               animationService:
                   AnimationService(controller: animationController),
@@ -42,29 +60,50 @@ class ExpenseDialogService {
                 final expenseNotifier =
                     ref.read(expensesInputDataProvider.notifier);
 
-                // Встановлюємо прапор "isSubmitted" після натискання на кнопку збереження
                 expenseNotifier.markSubmitted();
+                print("Validating data...");
 
                 if (expenseNotifier.validateData()) {
                   final expenseData = ref.read(expensesInputDataProvider);
 
-                  ref.read(expensesNotifierProvider.notifier).addExpense(
-                        ExpenseModel(
-                          title: expenseData.title,
-                          amount: double.parse(expenseData.amount),
-                          date: expenseData.date!,
-                          category: expenseData.category,
-                        ),
-                      );
+                  if (expenseToEdit != null) {
+                    print("Updating expense with ID: ${expenseToEdit.id}");
+                    // Якщо це редагування, оновлюємо витрату
+                    ref.read(expensesNotifierProvider.notifier).updateExpense(
+                          ExpenseModel(
+                            id: expenseToEdit.id, // Зберігаємо ID витрати
+                            title: expenseData.title,
+                            amount: double.parse(expenseData.amount),
+                            date: expenseData.date!,
+                            category: expenseData.category,
+                          ),
+                        );
+                  } else {
+                    print("Adding a new expense");
+                    // Якщо це нова витрата, додаємо її
+                    ref.read(expensesNotifierProvider.notifier).addExpense(
+                          ExpenseModel(
+                            title: expenseData.title,
+                            amount: double.parse(expenseData.amount),
+                            date: expenseData.date!,
+                            category: expenseData.category,
+                          ),
+                        );
+                  }
+
                   animationController.reverse();
                   Navigator.of(context).pop();
+                } else {
+                  print("Validation failed");
                 }
               },
               onCancelPressed: () {
                 animationController.reverse();
                 Navigator.of(context).pop();
               },
-              dialogTitle: AppStrings.addNewExpense,
+              dialogTitle: expenseToEdit != null
+                  ? AppStrings.editExpense
+                  : AppStrings.addNewExpense,
               actionButtonText: AppStrings.save,
               cancelButtonText: AppStrings.cancel,
             );

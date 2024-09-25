@@ -29,7 +29,18 @@ class ExpensesNotifier extends StateNotifier<ExpensesState> {
   Future<void> addExpense(ExpenseModel expense) async {
     try {
       await _isarService.addExpense(expense);
-      loadExpenses(); // Перезавантажуємо список після додавання
+      loadExpenses();
+    } catch (e) {
+      state = state.copyWith(error: e.toString());
+    }
+  }
+
+  Future<void> updateExpense(ExpenseModel expense) async {
+    try {
+      // ignore: avoid_print
+      print("Оновлюємо витрату з ID: ${expense.id}");
+      await _isarService.updateExpenseItemOnDB(expense);
+      await loadExpenses(); // Завантажуємо оновлені дані після зміни
     } catch (e) {
       state = state.copyWith(error: e.toString());
     }
