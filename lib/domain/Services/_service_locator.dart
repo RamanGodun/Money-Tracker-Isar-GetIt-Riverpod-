@@ -33,12 +33,6 @@ class DIServiceLocator {
     }
   }
 
-  void _setupAddExpenseDialogService() {
-    if (!_getIt.isRegistered<ExpenseDialogService>()) {
-      _getIt.registerSingleton<ExpenseDialogService>(ExpenseDialogService());
-    }
-  }
-
   Future<void> _setupSharedPreferences() async {
     if (!_getIt.isRegistered<SharedPreferencesService>()) {
       final prefs = await SharedPreferences.getInstance();
@@ -56,13 +50,19 @@ class DIServiceLocator {
     }
   }
 
-  void _setupCustomDialogService() {
-    if (!_getIt.isRegistered<SettingsDialogService>()) {
-      _getIt.registerSingleton<SettingsDialogService>(
-        SettingsDialogService(),
-      );
-    }
-  }
+  // void _setupAddExpenseDialogService() {
+  //   if (!_getIt.isRegistered<ExpenseDialogService>()) {
+  //     _getIt.registerSingleton<ExpenseDialogService>(ExpenseDialogService());
+  //   }
+  // }
+
+  // void _setupCustomDialogService() {
+  //   if (!_getIt.isRegistered<SettingsDialogService>()) {
+  //     _getIt.registerSingleton<SettingsDialogService>(
+  //       SettingsDialogService(),
+  //     );
+  //   }
+  // }
 
   // void _setupAnimationService() {
   //   if (!_getIt.isRegistered<AnimationService>()) {
@@ -71,6 +71,19 @@ class DIServiceLocator {
   //     );
   //   }
   // }
+
+  // Other setup
+  void _setupAddExpenseDialogService() {
+    if (!_getIt.isRegistered<ExpenseDialogService>()) {
+      _getIt.registerLazySingleton(() => ExpenseDialogService());
+    }
+  }
+
+  void _setupCustomDialogService() {
+    if (!_getIt.isRegistered<SettingsDialogService>()) {
+      _getIt.registerLazySingleton(() => SettingsDialogService());
+    }
+  }
 
   T get<T extends Object>() {
     return _getIt.get<T>();

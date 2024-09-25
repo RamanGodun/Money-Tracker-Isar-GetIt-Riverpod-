@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,13 +15,11 @@ class ExpenseDialogService {
     WidgetRef ref, {
     ExpenseModel? expenseToEdit,
   }) async {
-    print("Opening dialog...");
     ref
         .read(expensesInputDataProvider.notifier)
         .reset(); // Спочатку скидаємо стан
 
     if (expenseToEdit != null) {
-      print("Editing expense with ID: ${expenseToEdit.id}");
       ref.read(expensesNotifierProvider.notifier).updateExpense(
             ExpenseModel(
               id: expenseToEdit.id,
@@ -61,17 +57,14 @@ class ExpenseDialogService {
                     ref.read(expensesInputDataProvider.notifier);
 
                 expenseNotifier.markSubmitted();
-                print("Validating data...");
 
                 if (expenseNotifier.validateData()) {
                   final expenseData = ref.read(expensesInputDataProvider);
 
                   if (expenseToEdit != null) {
-                    print("Updating expense with ID: ${expenseToEdit.id}");
-                    // Якщо це редагування, оновлюємо витрату
                     ref.read(expensesNotifierProvider.notifier).updateExpense(
                           ExpenseModel(
-                            id: expenseToEdit.id, // Зберігаємо ID витрати
+                            id: expenseToEdit.id,
                             title: expenseData.title,
                             amount: double.parse(expenseData.amount),
                             date: expenseData.date!,
@@ -79,8 +72,6 @@ class ExpenseDialogService {
                           ),
                         );
                   } else {
-                    print("Adding a new expense");
-                    // Якщо це нова витрата, додаємо її
                     ref.read(expensesNotifierProvider.notifier).addExpense(
                           ExpenseModel(
                             title: expenseData.title,
@@ -94,7 +85,7 @@ class ExpenseDialogService {
                   animationController.reverse();
                   Navigator.of(context).pop();
                 } else {
-                  print("Validation failed");
+//
                 }
               },
               onCancelPressed: () {

@@ -2,19 +2,17 @@
     In this app will be used Isar DB for local storage, RiverPod for theme changing, GetIt for DIs
  */
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'DATA/helpers/error_widget.dart';
 import 'DATA/providers/gen_data_provider.dart';
 import 'UI/pages/main_screen.dart';
 import 'DATA/themes_set/app_themes/app_themes.dart';
-import 'DATA/themes_set/themes_provider.dart';
+import 'DATA/providers/themes_provider.dart';
 import 'DOMAIN/Services/_service_locator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   try {
     await initializeApp();
     final mediaQueryData =

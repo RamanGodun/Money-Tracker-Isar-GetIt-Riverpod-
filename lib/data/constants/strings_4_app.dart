@@ -20,6 +20,6 @@ class AppStrings {
   static const close = 'Закрити';
   static const customDialogTitle = 'Custom Dialog title';
   static const ok = 'ОК';
-  static const editExpense = 'Правити';
+  static const editExpense = 'Редагування витрати';
   static const addFirstExpense = "Додайте свою першу витрату 👆🏼+";
 }

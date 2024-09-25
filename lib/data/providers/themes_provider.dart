@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../DOMAIN/Services/_service_locator.dart';
 import '../../DOMAIN/Services/sh_prefs_service.dart';
-import 'app_themes/app_themes.dart';
+import '../themes_set/app_themes/app_themes.dart';
 
 // StateNotifierProvider для управління темою
 final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>((ref) {
