@@ -11,9 +11,9 @@ class NewExpenseState {
     this.title = '',
     this.amount = '',
     this.category = Category.leisure,
-    this.date,
+    DateTime? date,
     this.isSubmitted = false,
-  });
+  }) : date = date ?? DateTime.now(); // дата за замовчуванням
 
   NewExpenseState copyWith({
     String? title,
