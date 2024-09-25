@@ -8,7 +8,7 @@ import '../../DOMAIN/models/app_enums.dart';
 import '../../UI/components/other_widgets.dart';
 import '../../DATA/providers/expenses_provider.dart';
 import '../../DATA/providers/gen_data_provider.dart';
-import '../../DATA/themes_set/themes_provider.dart';
+import '../../DATA/providers/themes_provider.dart';
 import '../components/chart/_chart.dart';
 import '../components/chart/chart_alt.dart';
 import '../components/expenses_list/expenses_list.dart';

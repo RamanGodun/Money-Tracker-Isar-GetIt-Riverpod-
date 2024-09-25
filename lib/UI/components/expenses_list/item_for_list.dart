@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:money_tracker/DATA/constants/app_borders.dart';
 import '../../../DATA/constants/app_constants.dart';
-import '../../../DATA/themes_set/themes_provider.dart';
+import '../../../DATA/providers/themes_provider.dart';
 import '../../../DOMAIN/Services/_service_locator.dart';
 import '../../../DOMAIN/Services/exp_dialog_service.dart';
 import '../../../DOMAIN/models/expense_model.dart';

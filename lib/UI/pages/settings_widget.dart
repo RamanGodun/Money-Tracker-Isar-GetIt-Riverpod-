@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../DATA/constants/strings_4_app.dart';
 import '../../DATA/providers/gen_data_provider.dart';
-import '../../DATA/themes_set/themes_provider.dart';
+import '../../DATA/providers/themes_provider.dart';
 import '../components/text_widgets.dart';
 
 class SettingsWidget extends ConsumerWidget {

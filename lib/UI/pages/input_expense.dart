@@ -6,7 +6,7 @@ import '../../DATA/constants/app_text_styling.dart';
 import '../../DATA/constants/strings_4_app.dart';
 import '../../DATA/helpers/helpers.dart';
 import '../../DATA/providers/input_data_provider.dart';
-import '../../DATA/themes_set/themes_provider.dart';
+import '../../DATA/providers/themes_provider.dart';
 import '../../DOMAIN/models/app_enums.dart';
 import '../../DOMAIN/models/expense_model.dart';
 import '../../DOMAIN/models/expenses_input_state.dart';
