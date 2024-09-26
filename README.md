@@ -7,7 +7,7 @@
 ### Author
 
 - **Roman Godun**
-- © 2024 All rights reserved.
+- Copyright © 2024 Roman Godun. All rights reserved.
 
 ## Features
 
@@ -27,7 +27,10 @@ This application follows a **Clean Architecture** approach, which separates the 
 - **[GetIt](https://pub.dev/packages/get_it)**: A service locator pattern used to manage global services such as database services, shared preferences, and more.
 - **[Flutter Hooks](https://pub.dev/packages/flutter_hooks)**: Utilized to manage animations and state within widgets, especially for memoization and the widget lifecycle.
 - **[SharedPreferences](https://pub.dev/packages/shared_preferences)**: Used to store persistent settings such as theme mode, so user preferences are saved between app sessions.
-- **Material & Cupertino UI Elements**: A mix of Material and Cupertino design is used to ensure a modern, responsive UI experience across both iOS and Android platforms.
+- **[Google Fonts](https://pub.dev/packages/google_fonts)**: To ensure consistency in typography across the application.
+- **[intl](https://pub.dev/packages/intl)**: For internationalization and formatting dates and numbers.
+- **[uuid](https://pub.dev/packages/uuid)**: For generating unique IDs for various app components.
+- **Code Generation for Isar**: The app uses code generation to create models and manage schema for the Isar database, ensuring efficient data storage and retrieval, enabling the app to automatically handle complex database structures efficiently.
 
 ### Key Components
 
@@ -36,25 +39,15 @@ This application follows a **Clean Architecture** approach, which separates the 
 3. **Persistent Storage**: Isar DB is used for local storage of expenses, and SharedPreferences handles lightweight settings storage (e.g., theme preferences).
 4. **Animations**: Flutter Hooks is used to add smooth and dynamic animations throughout the app, such as dialog transitions and list animations.
 
-## Getting Started
+### Repository:
 
-To get started with Money Tracker, clone the repository and follow the instructions below.
-
-### Prerequisites
-
-- **Flutter SDK**: Ensure you have Flutter installed. You can download it from [flutter.dev](https://flutter.dev/docs/get-started/install).
-- **Dart**: Make sure you have the Dart SDK set up, which comes bundled with Flutter.
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/money_tracker.git
-   ```
+... https://github.com/RamanGodun/Money-Tracker-Isar-GetIt-Riverpod-.git
 
 ### License
 
-This application is proprietary software. All rights are reserved © 2024 by Roman Godun. Redistribution and use in source or binary forms, with or without modification, are not permitted without explicit written permission from the author.
+Copyright © 2024 Roman Godun. All rights reserved.
+
+This code is provided **for educational and reference purposes only**. Redistribution, modification, or use of the code **for commercial purposes** is strictly prohibited without the explicit written permission of the author.
 
 ### Support
 

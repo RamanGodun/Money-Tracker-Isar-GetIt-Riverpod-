@@ -1,6 +1,8 @@
 /*
     Author: [Roman Godun]
-    © [2024] All rights reserved.
+    Copyright © 2024 Roman Godun. All rights reserved.
+This code is provided for educational and reference purposes only. 
+Redistribution, modification, or use of the code for commercial purposes is strictly prohibited without the explicit written permission of the author.
     
     Expenses Tracker Application: 
     This application is designed to help users track their daily expenses, categorize them, and display useful insights using a variety of UI components.
