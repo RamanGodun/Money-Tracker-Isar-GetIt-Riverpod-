@@ -11,6 +11,9 @@ import '../../DATA/models/app_enums.dart';
 import '../../DATA/models/expense_model.dart';
 import '../../DATA/models/expenses_input_state.dart';
 
+/// The `NewOrEditExpense` widget allows users to create a new expense or edit an existing one.
+/// It adapts its layout based on screen size (responsive design) and manages form fields
+/// dynamically depending on whether a new or existing expense is provided.
 class NewOrEditExpense extends ConsumerStatefulWidget {
   final ExpenseModel? initialExpense;
 
@@ -27,6 +30,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
   @override
   void initState() {
     super.initState();
+    // Initialize text controllers for title and amount input fields
     _titleController = TextEditingController();
     _amountController = TextEditingController();
   }
@@ -34,6 +38,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    // If editing an existing expense, pre-fill the fields with its data
     if (widget.initialExpense != null) {
       Future(() {
         ref
@@ -51,9 +56,11 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
     final theme = ref.watch(themeDataProvider);
     final isDarkMode = theme.brightness == Brightness.dark;
 
+    // Build a responsive layout based on screen width (portrait vs landscape modes)
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth < 600) {
+          // Small screen layout
           return Padding(
             padding: AppConstants.paddingCommon,
             child: ListView(
@@ -66,6 +73,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
             ),
           );
         } else {
+          // Large screen layout
           return Padding(
             padding: AppConstants.paddingCommon,
             child: Row(
@@ -85,6 +93,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
     );
   }
 
+  /// Builds text input fields for the expense title and amount.
   Widget _buildTextFieldsWidgets(
       WidgetRef ref, NewExpenseState expenseState, ThemeData theme) {
     return Column(
@@ -97,6 +106,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
     );
   }
 
+  /// Builds widgets for selecting the expense category and date.
   Widget _buildCategoryAndDateWidgets(BuildContext context, WidgetRef ref,
       NewExpenseState expenseState, ThemeData theme, bool isDarkMode) {
     return Padding(
@@ -114,6 +124,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
     );
   }
 
+  /// Builds the text input field for the expense title, including validation.
   Widget _buildTitleInputField(
       WidgetRef ref, NewExpenseState expenseState, ThemeData theme) {
     final errorText = ref.watch(expenseInputProvider.notifier).titleError;
@@ -134,6 +145,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
     );
   }
 
+  /// Builds the text input field for the expense amount, with validation.
   Widget _buildAmountInputField(
       WidgetRef ref, NewExpenseState expenseState, ThemeData theme) {
     final errorText = ref.watch(expenseInputProvider.notifier).amountError;
@@ -155,6 +167,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
     );
   }
 
+  /// Builds the dropdown menu for selecting a category.
   Widget _buildCategoryDropdown(
       WidgetRef ref, NewExpenseState expenseState, BuildContext context) {
     final theme = Helpers.getTheme(context);
@@ -175,6 +188,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
     );
   }
 
+  /// Builds the date picker button for selecting the expense date.
   Widget _buildDatePickerButton(BuildContext context, WidgetRef ref,
       NewExpenseState expenseState, bool isDarkMode, ThemeData theme) {
     return TextButton(
@@ -189,6 +203,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
     );
   }
 
+  /// Presents a date picker and updates the selected date in the form.
   void _presentDatePicker(BuildContext context, WidgetRef ref) async {
     final now = DateTime.now();
     final pickedDate = await showDatePicker(

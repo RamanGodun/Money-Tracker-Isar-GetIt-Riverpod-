@@ -9,28 +9,34 @@ import '../../../DOMAIN/Services/_service_locator.dart';
 import '../../../DOMAIN/Services/exp_dialog_service.dart';
 import '../../../DATA/models/expense_model.dart';
 import 'package:money_tracker/DOMAIN/providers/expenses_provider.dart';
-
 import '../text_widgets.dart';
 
-class ExpenseItemForList extends ConsumerWidget {
+/// A widget that represents a single expense item in the list.
+/// It supports sliding actions for editing and deleting an expense.
+class ExpenseListTile extends ConsumerWidget {
   final ExpenseModel expense;
-  const ExpenseItemForList({required this.expense, super.key});
+
+  const ExpenseListTile({required this.expense, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Get the current theme and color scheme
     final theme = ref.watch(themeDataProvider);
     final isDarkTheme = theme.brightness == Brightness.dark;
     final colorScheme = theme.colorScheme;
 
     return Slidable(
+      // Action pane with buttons for editing and deleting an expense
       endActionPane: ActionPane(
         motion: const StretchMotion(),
         children: [
+          // Slidable action for editing the expense
           SlidableAction(
             backgroundColor: colorScheme.surface.withOpacity(0.1),
             foregroundColor: colorScheme.primary,
             borderRadius: AppConstants.borderRadiusCommon,
             onPressed: (_) {
+              // Open the edit expense dialog
               final dialogService =
                   AppServiceLocator.instance.get<ExpenseDialogService>();
               dialogService.showAddOrEditExpenseDialog(context, ref,
@@ -38,11 +44,13 @@ class ExpenseItemForList extends ConsumerWidget {
             },
             icon: Icons.settings,
           ),
+          // Slidable action for deleting the expense
           SlidableAction(
             backgroundColor: colorScheme.surface.withOpacity(0.1),
             foregroundColor: colorScheme.error,
             borderRadius: AppConstants.borderRadiusCommon,
             onPressed: (_) {
+              // Remove the expense from the list
               ref
                   .read(expenseManagementProvider.notifier)
                   .removeExpense(expense);
@@ -51,6 +59,7 @@ class ExpenseItemForList extends ConsumerWidget {
           ),
         ],
       ),
+      // The main content of the expense item (inside the card)
       child: Card(
         color: isDarkTheme
             ? colorScheme.inverseSurface.withOpacity(0.06)
@@ -61,21 +70,22 @@ class ExpenseItemForList extends ConsumerWidget {
         child: ListTile(
           title: StyledText.titleSmall(theme, expense.title),
           subtitle: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // Display the amount of the expense
               FittedBox(
                 fit: BoxFit.fitWidth,
                 child: StyledText.bodyMedium(
                     theme, '\$${expense.amount.toStringAsFixed(2)}'),
               ),
-              const Spacer(),
+              // Display the category icon and date of the expense
               Row(
                 children: [
                   Icon(
-                    categoriesIcons[expense.category],
+                    expenseCategoryIcons[expense.category],
                     color: colorScheme.secondary.withOpacity(0.6),
                   ),
                   const SizedBox(width: 8),
-//
                   StyledText.bodySmall(
                       theme, DateFormat('dd.MM.yyyy').format(expense.date)),
                 ],

@@ -36,7 +36,7 @@ abstract class AppBoxDecorations {
       borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
       color: isMainChart
           ? theme.colorScheme.secondary.withOpacity(isDarkMode ? 0.8 : 0.6)
-          : theme.canvasColor.withOpacity(isDarkMode ? 0.5 : 0.4),
+          : theme.canvasColor.withOpacity(isDarkMode ? 0.4 : 0.15),
     );
   }
 

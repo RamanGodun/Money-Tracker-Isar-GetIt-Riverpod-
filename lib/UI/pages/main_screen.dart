@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../DATA/constants/app_strings.dart';
 import '../../DATA/helpers/helpers.dart';
+import '../../DATA/models/app_enums.dart';
 import '../../DOMAIN/Services/_service_locator.dart';
 import '../../DOMAIN/Services/dialogs_service.dart';
 import '../../DOMAIN/Services/exp_dialog_service.dart';
-import '../../DATA/models/app_enums.dart';
 import '../../UI/components/other_widgets.dart';
 import '../../DOMAIN/providers/expenses_provider.dart';
 import '../../DOMAIN/providers/gen_data_provider.dart';
@@ -14,14 +14,16 @@ import '../components/chart/_chart.dart';
 import '../components/chart/chart_alt.dart';
 import '../components/expenses_list/expenses_list.dart';
 import '../components/text_widgets.dart';
-import 'settings_widget.dart';
+import 'app_settings.dart';
 
+/// MainScreen is the entry point after the app starts.
+/// It displays the list of expenses and chart views, allowing the user to interact with expense data.
 class MainScreen extends ConsumerWidget {
   const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Оновлюємо розмір екрана при зміні залежностей
+    // Triggers screen size updates when the layout changes.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final mediaQuery = MediaQuery.of(context);
       ref.read(appGeneralDataProvider.notifier).updateMediaQuery(mediaQuery);
@@ -50,18 +52,23 @@ class MainScreen extends ConsumerWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             if (expensesState.isLoading) {
+              // Shows a loading indicator when data is being loaded
               return const Center(child: CircularProgressIndicator.adaptive());
             } else if (expensesState.error != null) {
+              // Displays an error message if the expense state contains an error
               return Center(
                 child: StyledText.errorText(
                     theme, '${AppStrings.errorMessage}${expensesState.error}'),
               );
-            } else if (constraints.maxWidth < 600) {
-              return _buildPortraitLayout(
-                  generalData, expensesState, theme, isFirstChart);
             } else {
-              return _buildAlbumLayout(
-                  generalData, expensesState, theme, isFirstChart);
+              // Builds the layout based on orientation (portrait or landscape)
+              return _buildResponsiveLayout(
+                isPortrait: constraints.maxWidth < 600,
+                generalData: generalData,
+                expensesState: expensesState,
+                theme: theme,
+                isFirstChart: isFirstChart,
+              );
             }
           },
         ),
@@ -85,69 +92,78 @@ class MainScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildPortraitLayout(
-      generalData, expensesState, ThemeData theme, bool isFirstChart) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _getGraphicsTitleWidget(theme, isFirstChart: isFirstChart),
-        _getChartWidget(generalData, expensesState),
-        _getGraphicsTitleWidget(
-          theme,
-          isListTitle: true,
-          isFirstChart: isFirstChart,
-        ),
-        Expanded(child: ExpensesList(expenses: expensesState.expenses)),
-      ],
-    );
-  }
-
-  Widget _buildAlbumLayout(
-      generalData, expensesState, ThemeData theme, bool isFirstChart) {
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
+  /// Builds the layout of the main screen, adjusting for both portrait and landscape modes.
+  /// It organizes the chart and expense list depending on the orientation.
+  Widget _buildResponsiveLayout({
+    required bool isPortrait,
+    required generalData,
+    required expensesState,
+    required ThemeData theme,
+    required bool isFirstChart,
+  }) {
+    return isPortrait
+        ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _getGraphicsTitleWidget(theme, isFirstChart: isFirstChart),
-              _getChartWidget(generalData, expensesState),
+              _buildHeader(theme, isFirstChart: isFirstChart),
+              _buildExpenseChart(generalData, expensesState),
+              _buildHeader(theme,
+                  isListTitle: true, isFirstChart: isFirstChart),
+              Expanded(
+                  child: ExpensesList(expensesList: expensesState.expenses)),
             ],
-          ),
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          )
+        : Row(
             children: [
-              _getGraphicsTitleWidget(
-                theme,
-                isListTitle: true,
-                isFirstChart: isFirstChart,
+              Flexible(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildHeader(theme, isFirstChart: isFirstChart),
+                    _buildExpenseChart(generalData, expensesState),
+                  ],
+                ),
               ),
-              Expanded(child: ExpensesList(expenses: expensesState.expenses)),
+              Flexible(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildHeader(theme,
+                        isListTitle: true, isFirstChart: isFirstChart),
+                    Expanded(
+                        child:
+                            ExpensesList(expensesList: expensesState.expenses)),
+                  ],
+                ),
+              ),
             ],
-          ),
-        ),
-      ],
+          );
+  }
+
+  /// Displays the title above the chart or expense list, depending on the context.
+  Padding _buildHeader(ThemeData theme,
+      {bool? isListTitle, required bool isFirstChart}) {
+    final titleText = (isListTitle == true)
+        ? AppStrings.purchasesList
+        : isFirstChart
+            ? AppStrings.categoryExpenses
+            : AppStrings.weeklyExpenses;
+    return Padding(
+      padding: const EdgeInsets.only(right: 20, left: 40, top: 10),
+      child: StyledText.titleSmall(theme, titleText),
     );
   }
 
-  Padding _getGraphicsTitleWidget(ThemeData theme,
-      {bool? isListTitle, required bool isFirstChart}) {
-    return Padding(
-        padding: const EdgeInsets.only(right: 20, left: 40, top: 10),
-        child: (isListTitle != null)
-            ? StyledText.titleSmall(theme, AppStrings.purchasesList)
-            : isFirstChart
-                ? StyledText.titleSmall(theme, AppStrings.categoryExpenses)
-                : StyledText.titleSmall(theme, AppStrings.weeklyExpenses));
-  }
-
-  SizedBox _getChartWidget(generalData, expensesState) {
+  /// Builds the chart widget, which adapts to show either category-based or weekly expenses.
+  /// The chart adjusts its height depending on the screen orientation.
+  SizedBox _buildExpenseChart(generalData, expensesState) {
+    final chartHeight = generalData.isPortraitMode
+        ? generalData.deviceSize.height * 0.26
+        : generalData.deviceSize.height * 0.7;
     return SizedBox(
-      height: generalData.isPortraitMode
-          ? generalData.deviceSize.height * 0.26
-          : generalData.deviceSize.height * 0.7,
+      height: chartHeight,
       child: FutureBuilder(
         future: Future.delayed(const Duration(milliseconds: 10)),
         builder: (context, snapshot) {
@@ -155,13 +171,14 @@ class MainScreen extends ConsumerWidget {
             return const Center(child: CircularProgressIndicator());
           }
           return generalData.isFirstChart
-              ? Chart(expenses: expensesState.expenses)
-              : ChartAlt(expensesState.expenses);
+              ? CategoryBasedChart(expenses: expensesState.expenses)
+              : Last7DaysChart(expensesState.expenses);
         },
       ),
     );
   }
 
+  /// Opens the settings dialog, allowing the user to adjust app settings, such as switching themes.
   void _openSettingsDialog(
       BuildContext context, ThemeData theme, bool isDarkTheme) {
     final dialogService =

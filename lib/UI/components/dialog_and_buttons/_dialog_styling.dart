@@ -63,7 +63,7 @@ abstract class AppDialogsStyling {
                                   style: theme.textTheme.titleSmall,
                                 ),
                               ),
-                              AppMiniWidgets.divider(theme),
+                              AppMiniWidgets.customDivider(theme),
                               const SizedBox(height: 7),
                               Expanded(
                                 child: Padding(

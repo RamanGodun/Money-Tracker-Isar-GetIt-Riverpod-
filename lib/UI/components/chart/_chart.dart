@@ -9,38 +9,29 @@ import '../../../DATA/models/expenses_bucket_model.dart';
 import '../text_widgets.dart';
 import '_chart_bar.dart';
 
-class Chart extends ConsumerWidget {
+/// Widget that displays a chart representing the total expenses per category.
+/// The chart is divided into bars where each bar corresponds to a category.
+/// The height of the bars reflects the total expenses for that category.
+class CategoryBasedChart extends ConsumerWidget {
   final List<ExpenseModel> expenses;
-  const Chart({super.key, required this.expenses});
 
-  static List<ExpensesBucket> _generateBuckets(List<ExpenseModel> expenses) {
-    return [
-      Category.food,
-      Category.leisure,
-      Category.transport,
-      Category.work,
-      Category.charity,
-      Category.health,
-      Category.other
-    ]
-        .map((category) => ExpensesBucket.forCategory(expenses, category))
-        .toList();
-  }
+  const CategoryBasedChart({super.key, required this.expenses});
 
-  static double _calculateMaxTotalExpense(List<ExpenseModel> expenses) {
+  /// Generates a list of `ExpensesBucket` objects for each category and calculates
+  /// the maximum total expense at the same time. Returns both the buckets and max expense.
+  static Map<String, dynamic> _prepareChartData(List<ExpenseModel> expenses) {
+    List<ExpensesBucket> buckets = [];
     double maxTotalExpense = 0;
-    final buckets = _generateBuckets(expenses);
-    for (final bucket in buckets) {
+
+    for (var category in Category.values) {
+      final bucket = ExpensesBucket.forCategory(expenses, category);
+      buckets.add(bucket);
       if (bucket.totalExpenses > maxTotalExpense) {
         maxTotalExpense = bucket.totalExpenses;
       }
     }
-    return maxTotalExpense;
-  }
 
-  static List<double> _calculateCategorySum(List<ExpenseModel> expenses) {
-    final buckets = _generateBuckets(expenses);
-    return buckets.map((bucket) => bucket.totalExpenses).toList();
+    return {'buckets': buckets, 'maxTotalExpense': maxTotalExpense};
   }
 
   @override
@@ -49,109 +40,86 @@ class Chart extends ConsumerWidget {
     final colorScheme = theme.colorScheme;
     final isDarkMode = theme.brightness == Brightness.dark;
 
-    return FutureBuilder<Map<String, dynamic>>(
-      future: _calculateChartData(expenses),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    final data = _prepareChartData(expenses);
+    final buckets = data['buckets'] as List<ExpensesBucket>;
+    final maxTotalExpense = data['maxTotalExpense'] as double;
 
-        if (snapshot.hasError || !snapshot.hasData) {
-          return const Center(
-            child: Text("Error loading chart data"),
-          );
-        }
-
-        final buckets = snapshot.data!['buckets'] as List<ExpensesBucket>;
-        final maxTotalExpense = snapshot.data!['maxTotalExpense'] as double;
-        final categorySum1 = snapshot.data!['categorySum1'] as List<double>;
-
-        final categorySum = {
-          Category.food: categorySum1[0],
-          Category.leisure: categorySum1[1],
-          Category.transport: categorySum1[2],
-          Category.work: categorySum1[3],
-          Category.charity: categorySum1[4],
-          Category.health: categorySum1[5],
-          Category.other: categorySum1[6],
-        };
-
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            return Container(
-              margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-              width: double.infinity,
-              height: constraints.maxHeight * 0.5,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                gradient: LinearGradient(
-                  colors: [
-                    colorScheme.secondary.withOpacity(0.3),
-                    colorScheme.secondary.withOpacity(0.0),
-                  ],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Container(
+          margin: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+          width: double.infinity,
+          height: constraints.maxHeight * 0.5,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            gradient: LinearGradient(
+              colors: [
+                colorScheme.secondary.withOpacity(0.3),
+                colorScheme.secondary.withOpacity(0.0),
+              ],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+            ),
+          ),
+          child: Column(
+            children: [
+              // Display the bars of the chart
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: _buildChartBars(buckets, maxTotalExpense),
                 ),
               ),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: buckets.map((bucket) {
-                        return ChartBar(
-                          fill: bucket.totalExpenses == 0
-                              ? 0
-                              : bucket.totalExpenses / maxTotalExpense,
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: buckets.map((bucket) {
-                      return Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 2),
-                          child: Column(
-                            children: [
-                              Icon(
-                                categoriesIcons[bucket.category],
-                                color: colorScheme.secondary
-                                    .withOpacity(isDarkMode ? 0.8 : 0.7),
-                              ),
-                              StyledText.bodySmall(
-                                theme,
-                                Helpers().formatAmount(
-                                    categorySum[bucket.category] ?? 0),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ],
+              const SizedBox(height: 12),
+              // Display icons and total expenses for each category
+              Row(
+                children:
+                    _buildCategoryIconsAndSums(buckets, theme, isDarkMode),
               ),
-            );
-          },
+            ],
+          ),
         );
       },
     );
   }
 
-  Future<Map<String, dynamic>> _calculateChartData(
-      List<ExpenseModel> expenses) async {
-    // Попереднє завантаження даних графіка
-    final buckets = _generateBuckets(expenses);
-    final maxTotalExpense = _calculateMaxTotalExpense(expenses);
-    final categorySum1 = _calculateCategorySum(expenses);
+  /// Builds the bars of the chart based on the total expenses for each category.
+  List<Widget> _buildChartBars(
+      List<ExpensesBucket> buckets, double maxTotalExpense) {
+    return buckets.map((bucket) {
+      return ChartBar(
+        fillRatio: bucket.totalExpenses == 0
+            ? 0
+            : bucket.totalExpenses / maxTotalExpense,
+      );
+    }).toList();
+  }
 
-    return {
-      'buckets': buckets,
-      'maxTotalExpense': maxTotalExpense,
-      'categorySum1': categorySum1,
-    };
+  /// Builds the icons and total expense text for each category.
+  List<Widget> _buildCategoryIconsAndSums(
+      List<ExpensesBucket> buckets, ThemeData theme, bool isDarkMode) {
+    final colorScheme = theme.colorScheme;
+
+    return buckets.map((bucket) {
+      return Expanded(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 2),
+          child: Column(
+            children: [
+              Icon(
+                expenseCategoryIcons[bucket.category],
+                color:
+                    colorScheme.secondary.withOpacity(isDarkMode ? 0.8 : 0.7),
+              ),
+              StyledText.bodySmall(
+                theme,
+                Helpers().formatAmount(bucket.totalExpenses),
+              ),
+            ],
+          ),
+        ),
+      );
+    }).toList();
   }
 }

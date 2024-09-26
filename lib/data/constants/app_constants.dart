@@ -20,7 +20,7 @@ abstract class AppConstants {
 
 /// A map that corresponds to expense categories and their icons.
 /// This is used to display appropriate icons based on the selected category.
-const categoriesIcons = {
+const expenseCategoryIcons = {
   Category.food: Icons.lunch_dining,
   Category.transport: Icons.flight_takeoff,
   Category.leisure: Icons.movie,

@@ -9,18 +9,18 @@ import 'text_styles.dart';
 abstract class ThisAppThemesBuilder {
   /// Builds ThemeData for the app by using custom color schemes, app bar styles, and UI components.
   static ThemeData buildThemeData({
-    required bool isDark, // Specifies if the theme is dark mode.
-    required ColorScheme colorScheme, // Custom color scheme for the theme.
-    required Color scaffoldBackgroundColor, // Background color for scaffold.
-    required Color appBarBackgroundColor, // App bar background color.
-    required Color barBackgroundColor, // Bar background color
-    required Color dividerColor, //  for dividers between UI elements.
-    required Color highlightColor, //  for highlighted UI elements.
-    required Color splashColor, // Splash effect color for buttons.
-    required Color tooltipColor, // Tooltip color.
-    required Color tabBarIndicatorColor, //  for the tab bar indicator.
-    required Color tabBarLabelColor, //  for active tab bar labels.
-    required Color tabBarUnselectedLabelColor, // for inactive tab bar labels.
+    required bool isDark,
+    required ColorScheme colorScheme,
+    required Color scaffoldBackgroundColor,
+    required Color appBarBackgroundColor,
+    required Color barBackgroundColor,
+    required Color dividerColor,
+    required Color highlightColor,
+    required Color splashColor,
+    required Color tooltipColor,
+    required Color tabBarIndicatorColor,
+    required Color tabBarLabelColor,
+    required Color tabBarUnselectedLabelColor,
   }) {
     return ThemeData(
       // General theme properties
