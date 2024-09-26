@@ -82,9 +82,10 @@ class _AnimatedSettingsDialog extends HookWidget {
               // Display the close button at the bottom of the dialog
               SizedBox(
                 width: deviceSize.width * 0.6,
-                child: AppButtonsStyling.forElevatedButton(
-                  context,
+                child: AppButtonsStyling.primaryButton(
+                  context: context,
                   buttonText: AppStrings.close,
+                  theme: theme,
                   onPressed: () {
                     // Reverse the animation and close the dialog
                     animationController.reverse().then((_) {

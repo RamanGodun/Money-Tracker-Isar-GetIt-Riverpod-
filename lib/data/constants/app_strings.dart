@@ -7,7 +7,7 @@ class AppStrings {
   static const purchasesList = 'Expenses list';
   static const categoryExpenses = 'Category-based expenses';
   static const weeklyExpenses = 'Weekly expenses';
-  static const addNewExpense = 'Add new eExpense';
+  static const addNewExpense = 'Add new expense';
   static const save = 'Save';
   static const cancel = 'Cancel';
   static const expenseTitle = 'expense title';

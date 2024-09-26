@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import '../../../DATA/constants/app_text_styling.dart';
 import '../../../DATA/models/app_enums.dart';
 import '../../../DATA/helpers/helpers.dart';
 import 'buttons_styling.dart';
 
+/// `AppDialogsButtons` is responsible for rendering custom dialog buttons
+/// with styles tailored for different dialog button types (e.g., action button, cancel button).
 class AppDialogsButtons {
+  /// Creates a custom dialog button based on the provided `DialogButtonType`.
+  /// This method switches between action buttons (for confirmation) and cancel buttons.
   static Widget custom(
     ThemeData theme, {
     required BuildContext context,
@@ -31,10 +34,13 @@ class AppDialogsButtons {
           buttonText: buttonText,
         );
       default:
-        return const SizedBox.shrink();
+        return const SizedBox.shrink(); //empty widget if no type is provided
     }
   }
 
+  /// Builds a Material-style dialog button with custom styling.
+  /// The button adapts its size based on screen orientation and applies
+  /// specific styles for action and cancel buttons.
   static Widget _buildMaterialDialogAction({
     required BuildContext context,
     required ThemeData theme,
@@ -45,23 +51,22 @@ class AppDialogsButtons {
   }) {
     final deviceWidth = Helpers.getDeviceWidth(context);
     final isPortraitMode = deviceWidth < 600;
+
+    // Return a styled button with different designs for action and cancel buttons
     return SizedBox(
-      width: deviceWidth * (isPortraitMode ? 0.43 : 0.31),
-      child: isActionButton
-          ? AppButtonsStyling.firstDesign(
-              context,
-              theme,
-              onPressed: onPressed ?? () => Navigator.of(context).pop(),
-              buttonText: buttonText,
-            )
-          : AppButtonsStyling.forOutlinedButton(
-              context,
-              theme,
-              textStyle: TextStyling.forButtons(theme, false).copyWith(
-                  color: theme.colorScheme.error, fontWeight: fontWeight),
-              onPressed: onPressed ?? () => Navigator.of(context).pop(),
-              buttonText: buttonText,
-            ),
-    );
+        width: deviceWidth * (isPortraitMode ? 0.43 : 0.31),
+        child: isActionButton
+            ? AppButtonsStyling.primaryButton(
+                context: context,
+                buttonText: buttonText,
+                theme: theme,
+                onPressed: onPressed ?? () => Navigator.of(context).pop(),
+              )
+            : AppButtonsStyling.secondaryButton(
+                context: context,
+                buttonText: buttonText,
+                theme: theme,
+                onPressed: onPressed ?? () => Navigator.of(context).pop(),
+              ));
   }
 }
