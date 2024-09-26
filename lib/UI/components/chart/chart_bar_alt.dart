@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../DATA/constants/app_box_decoration.dart';
-import '../../../DATA/providers/themes_provider.dart';
+import '../../../DATA/helpers/helpers.dart';
+import '../../../DOMAIN/providers/themes_provider.dart';
 import '../text_widgets.dart';
 
 class ChartBarAlt extends ConsumerWidget {
@@ -20,21 +21,21 @@ class ChartBarAlt extends ConsumerWidget {
       return Column(
         children: <Widget>[
           SizedBox(
-            height: constraints.maxHeight * 0.15,
+            height: 20,
             child: Wrap(
               children: [
                 FittedBox(
                   child: StyledText.bodyMedium(
                     theme,
-                    "${spendingMoney.toStringAsFixed(0)} ₴",
+                    Helpers().formatAmount(spendingMoney),
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: constraints.maxHeight * 0.05),
+          const SizedBox(height: 5),
           SizedBox(
-            height: constraints.maxHeight * 0.6,
+            height: constraints.maxHeight * 0.7,
             width: 20,
             child: Stack(
               alignment: AlignmentDirectional.bottomCenter,
@@ -51,9 +52,9 @@ class ChartBarAlt extends ConsumerWidget {
               ],
             ),
           ),
-          SizedBox(height: constraints.maxHeight * 0.05),
+          const SizedBox(height: 5),
           SizedBox(
-            height: constraints.maxHeight * 0.15,
+            height: 20,
             child: StyledText.bodyMedium(theme, label,
                 color: theme.colorScheme.secondaryFixedDim),
           ),

@@ -3,8 +3,8 @@ import 'package:money_tracker/UI/components/other_widgets.dart';
 import '../../../DATA/constants/app_constants.dart';
 import '../../../DATA/constants/app_borders.dart';
 import '../../../DATA/constants/app_box_decoration.dart';
-import '../../../DATA/themes_set/app_themes/app_colors.dart';
-import '../../../DOMAIN/models/app_enums.dart';
+import '../../themes_configuration/app_colors.dart';
+import '../../../DATA/models/app_enums.dart';
 import 'dialog_buttons.dart';
 
 abstract class AppDialogsStyling {

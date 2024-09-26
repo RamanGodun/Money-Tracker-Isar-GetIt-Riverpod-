@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../DATA/constants/app_text_styling.dart';
-import '../../../DOMAIN/models/app_enums.dart';
+import '../../../DATA/models/app_enums.dart';
 import '../../../DATA/helpers/helpers.dart';
 import 'buttons_styling.dart';
 
@@ -43,7 +43,7 @@ class AppDialogsButtons {
     required VoidCallback? onPressed,
     required bool isActionButton,
   }) {
-    final deviceWidth = Helpers.deviceWidthGet(context);
+    final deviceWidth = Helpers.getDeviceWidth(context);
     final isPortraitMode = deviceWidth < 600;
     return SizedBox(
       width: deviceWidth * (isPortraitMode ? 0.43 : 0.31),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import '../../../DATA/constants/strings_4_app.dart';
+import '../../../DATA/constants/app_strings.dart';
 import '../../../DATA/helpers/helpers.dart';
-import '../../../DOMAIN/models/expense_model.dart';
+import '../../../DATA/models/expense_model.dart';
 import '../text_widgets.dart';
 import 'item_for_list.dart';
 
@@ -12,7 +12,7 @@ class ExpensesList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Helpers.themeGet(context);
+    final theme = Helpers.getTheme(context);
 /*
   Мемоізуємо кожен елемент витрат за допомогою useMemoized, 
   оновлюємо тільки при зміні списку витрат

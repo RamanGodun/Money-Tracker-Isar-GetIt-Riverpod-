@@ -27,7 +27,7 @@ class _ExpenseTextFieldState extends State<ExpenseTextField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return SizedBox(
-      height: AppConstants.heightForComponent,
+      height: AppConstants.heightCommon,
       child: TextField(
         controller: widget.controller,
         keyboardType: widget.keyboardType,

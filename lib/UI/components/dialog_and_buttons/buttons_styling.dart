@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../DATA/constants/app_borders.dart';
 import '../../../DATA/constants/app_constants.dart';
 import '../../../DATA/helpers/helpers.dart';
-import '../../../DATA/themes_set/app_themes/app_colors.dart';
+import '../../themes_configuration/app_colors.dart';
 import '../text_widgets.dart';
 
 abstract class AppButtonsStyling {
@@ -19,7 +19,7 @@ abstract class AppButtonsStyling {
     return Material(
       child: SizedBox(
         width: double.infinity,
-        height: AppConstants.heightForComponent,
+        height: AppConstants.heightCommon,
         child: ElevatedButton(
           style: ButtonStyle(
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -43,7 +43,7 @@ abstract class AppButtonsStyling {
     void Function()? onPressed,
     required String buttonText,
   }) {
-    final theme = Helpers.themeGet(context);
+    final theme = Helpers.getTheme(context);
     final isDark = Helpers.isDarkTheme(theme);
     final colorScheme = theme.colorScheme;
     final backgroundColor =
@@ -53,7 +53,7 @@ abstract class AppButtonsStyling {
       color: AppColors.transparent,
       child: SizedBox(
         width: double.infinity,
-        height: AppConstants.heightForComponent,
+        height: AppConstants.heightCommon,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: backgroundColor,
@@ -83,7 +83,7 @@ abstract class AppButtonsStyling {
       color: AppColors.transparent,
       child: SizedBox(
         width: double.infinity,
-        height: AppConstants.heightForComponent,
+        height: AppConstants.heightCommon,
         child: OutlinedButton(
           style: OutlinedButton.styleFrom(
             backgroundColor:

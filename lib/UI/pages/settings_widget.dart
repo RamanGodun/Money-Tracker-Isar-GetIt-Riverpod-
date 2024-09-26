@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../DATA/constants/strings_4_app.dart';
-import '../../DATA/providers/gen_data_provider.dart';
-import '../../DATA/providers/themes_provider.dart';
+import '../../DATA/constants/app_strings.dart';
+import '../../DOMAIN/providers/gen_data_provider.dart';
+import '../../DOMAIN/providers/themes_provider.dart';
 import '../components/text_widgets.dart';
 
 class SettingsWidget extends ConsumerWidget {
@@ -10,7 +10,7 @@ class SettingsWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dataProvider = ref.watch(generalDataProvider);
+    final dataProvider = ref.watch(appGeneralDataProvider);
     final theme = ref.watch(themeDataProvider);
     final isDarkMode = theme.brightness == Brightness.dark;
     final textTheme = theme.textTheme;
@@ -51,7 +51,7 @@ class SettingsWidget extends ConsumerWidget {
             text: AppStrings.isMainChart,
             value: dataProvider.isFirstChart,
             onChanged: (value) {
-              ref.read(generalDataProvider.notifier).toggleChart(value);
+              ref.read(appGeneralDataProvider.notifier).toggleChart(value);
             },
             textTheme: textTheme,
             theme: theme,
@@ -84,7 +84,7 @@ class SettingsWidget extends ConsumerWidget {
             text: AppStrings.isMainChart,
             value: dataProvider.isFirstChart,
             onChanged: (value) {
-              ref.read(generalDataProvider.notifier).toggleChart(value);
+              ref.read(appGeneralDataProvider.notifier).toggleChart(value);
             },
             textTheme: textTheme,
             theme: theme,

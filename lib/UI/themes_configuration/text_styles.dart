@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../helpers/helpers.dart';
+import '../../DATA/helpers/helpers.dart';
 
-abstract class TextStyles4ThisAppThemes {
+/// Provides text styles for the app based on the Google Montserrat font.
+/// Supports both light and dark themes.
+abstract class AppTextStyles {
+  /// Returns a custom TextTheme based on the Montserrat font.
+  /// Adjusts the styles depending on the current theme (light or dark).
   static TextTheme kTextThemeData(bool isDarkTheme, ColorScheme colorScheme) {
     return GoogleFonts.montserratTextTheme().copyWith(
       titleLarge: _getTextStyle(isDarkTheme, colorScheme, FontWeight.w700, 22),
@@ -24,6 +28,7 @@ abstract class TextStyles4ThisAppThemes {
     );
   }
 
+  /// Returns a custom TextStyle based on the specified parameters.
   static TextStyle _getTextStyle(bool isDarkTheme, ColorScheme colorScheme,
       FontWeight fontWeight, double fontSize) {
     return TextStyle(
@@ -35,8 +40,9 @@ abstract class TextStyles4ThisAppThemes {
     );
   }
 
+  /// Provides Cupertino-style text theme based on the current context.
   static CupertinoTextThemeData getCupertinoTextStyle(BuildContext context) {
-    final colorScheme = Helpers.colorSchemeGet(context);
+    final colorScheme = Helpers.getColorScheme(context);
     return CupertinoTextThemeData(
       primaryColor: colorScheme.onSurface,
       navTitleTextStyle: TextStyle(

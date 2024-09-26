@@ -4,8 +4,11 @@ import 'app_box_shadows.dart';
 import 'app_constants.dart';
 import 'dart:ui';
 
+/// A class to manage BoxDecoration styles used throughout the app.
+/// This includes glassmorphism, graphics styles, and blur effects.
+
 abstract class AppBoxDecorations {
-  // Стилізація для гласморфізму
+  /// Glassmorphism style background
   static BoxDecoration inGlassMorphismStyle(ThemeData theme) {
     final isDark = Helpers.isDarkTheme(theme);
     final colorScheme = theme.colorScheme;
@@ -25,7 +28,7 @@ abstract class AppBoxDecorations {
     );
   }
 
-  // Стилізація для графіків
+  /// Decoration style for charts and graphics
   static BoxDecoration forGraphics(ThemeData theme, bool isMainChart) {
     final isDarkMode = theme.brightness == Brightness.dark;
     return BoxDecoration(
@@ -37,7 +40,7 @@ abstract class AppBoxDecorations {
     );
   }
 
-  // Ефект розмиття з врахуванням форми
+  /// Blur effect for components
   static Widget withBlurEffect({required Widget child, required double blur}) {
     return ClipRRect(
       borderRadius: AppConstants.borderRadiusCommon,

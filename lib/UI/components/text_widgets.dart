@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../DATA/constants/app_text_styling.dart';
-import '../../DATA/constants/strings_4_app.dart';
-import '../../DOMAIN/models/expenses_input_state.dart';
+import '../../DATA/constants/app_strings.dart';
+import '../../DATA/models/expenses_input_state.dart';
 
 abstract class StyledText {
   static Widget titleMedium(ThemeData theme, String text) {

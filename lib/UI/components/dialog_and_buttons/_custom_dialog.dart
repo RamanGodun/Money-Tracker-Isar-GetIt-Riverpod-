@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../../DATA/constants/app_constants.dart';
-import '../../../DATA/constants/strings_4_app.dart';
+import '../../../DATA/constants/app_strings.dart';
 import '../../../DOMAIN/Services/animation_controller_service.dart';
 import '_dialog_styling.dart';
 

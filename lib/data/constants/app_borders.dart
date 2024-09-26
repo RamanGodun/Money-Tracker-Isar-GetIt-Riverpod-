@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'app_constants.dart';
 import '../helpers/helpers.dart';
-import '../themes_set/app_themes/app_colors.dart';
+import '../../UI/themes_configuration/app_colors.dart';
 
+/// A class to manage borders and shapes throughout the app.
+/// Centralized border styles improve consistency and make it easier to change later.
 abstract class AppBordersStyling {
+  /// Common border for components
   static Border appBorder(ThemeData theme) {
     final isDarkMode = Helpers.isDarkTheme(theme);
     return Border.all(
@@ -14,6 +17,7 @@ abstract class AppBordersStyling {
     );
   }
 
+  /// Rounded border for components
   static RoundedRectangleBorder appRoundedRectangleBorder(
       ColorScheme colorScheme) {
     return RoundedRectangleBorder(
@@ -22,6 +26,7 @@ abstract class AppBordersStyling {
     );
   }
 
+  /// Shape border for components, customizable with border radius
   static ShapeBorder appShapeBorder(ColorScheme colorScheme,
       {BorderRadius? borderRadius}) {
     return RoundedRectangleBorder(
@@ -32,7 +37,7 @@ abstract class AppBordersStyling {
     );
   }
 
-  // Новий метод для повернення OutlineInputBorder
+  /// Outline border for text fields
   static OutlineInputBorder appOutlineInputBorder(ColorScheme colorScheme) {
     return OutlineInputBorder(
       borderRadius: AppConstants.borderRadiusCommon,

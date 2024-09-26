@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../DATA/constants/strings_4_app.dart';
+import '../../DATA/constants/app_strings.dart';
 import '../../DATA/helpers/helpers.dart';
 import '../../DOMAIN/Services/_service_locator.dart';
 import '../../DOMAIN/Services/dialogs_service.dart';
 import '../../DOMAIN/Services/exp_dialog_service.dart';
-import '../../DOMAIN/models/app_enums.dart';
+import '../../DATA/models/app_enums.dart';
 import '../../UI/components/other_widgets.dart';
-import '../../DATA/providers/expenses_provider.dart';
-import '../../DATA/providers/gen_data_provider.dart';
-import '../../DATA/providers/themes_provider.dart';
+import '../../DOMAIN/providers/expenses_provider.dart';
+import '../../DOMAIN/providers/gen_data_provider.dart';
+import '../../DOMAIN/providers/themes_provider.dart';
 import '../components/chart/_chart.dart';
 import '../components/chart/chart_alt.dart';
 import '../components/expenses_list/expenses_list.dart';
@@ -24,15 +24,15 @@ class MainScreen extends ConsumerWidget {
     // Оновлюємо розмір екрана при зміні залежностей
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final mediaQuery = MediaQuery.of(context);
-      ref.read(generalDataProvider.notifier).updateMediaQuery(mediaQuery);
+      ref.read(appGeneralDataProvider.notifier).updateMediaQuery(mediaQuery);
     });
 
-    final generalData = ref.watch(generalDataProvider);
+    final generalData = ref.watch(appGeneralDataProvider);
     final isFirstChart = generalData.isFirstChart;
     final theme = ref.watch(themeDataProvider);
     final isDarkTheme = theme.brightness == Brightness.dark;
-    final expensesState = ref.watch(expensesNotifierProvider);
-    final isPortraitMode = (Helpers.deviceWidthGet(context) < 600);
+    final expensesState = ref.watch(expenseManagementProvider);
+    final isPortraitMode = (Helpers.getDeviceWidth(context) < 600);
 
     return Scaffold(
       appBar: AppBar(
@@ -57,10 +57,10 @@ class MainScreen extends ConsumerWidget {
                     theme, '${AppStrings.errorMessage}${expensesState.error}'),
               );
             } else if (constraints.maxWidth < 600) {
-              return _buildSmallLayout(
+              return _buildPortraitLayout(
                   generalData, expensesState, theme, isFirstChart);
             } else {
-              return _buildLargeLayout(
+              return _buildAlbumLayout(
                   generalData, expensesState, theme, isFirstChart);
             }
           },
@@ -69,14 +69,14 @@ class MainScreen extends ConsumerWidget {
       floatingActionButton: Padding(
         padding: EdgeInsets.only(
             bottom:
-                isPortraitMode ? 100.0 : Helpers.deviceHeightGet(context) * 0.6,
+                isPortraitMode ? 100.0 : Helpers.getDeviceHeight(context) * 0.6,
             right: 15),
         child: FloatingActionButton(
           mini: true,
           backgroundColor: theme.colorScheme.primary.withOpacity(0.7),
           onPressed: () {
             final dialogService =
-                DIServiceLocator.instance.get<ExpenseDialogService>();
+                AppServiceLocator.instance.get<ExpenseDialogService>();
             dialogService.showAddOrEditExpenseDialog(context, ref);
           },
           child: const Icon(Icons.add, size: 30),
@@ -85,7 +85,7 @@ class MainScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSmallLayout(
+  Widget _buildPortraitLayout(
       generalData, expensesState, ThemeData theme, bool isFirstChart) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,7 +102,7 @@ class MainScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildLargeLayout(
+  Widget _buildAlbumLayout(
       generalData, expensesState, ThemeData theme, bool isFirstChart) {
     return Row(
       children: [
@@ -165,7 +165,7 @@ class MainScreen extends ConsumerWidget {
   void _openSettingsDialog(
       BuildContext context, ThemeData theme, bool isDarkTheme) {
     final dialogService =
-        DIServiceLocator.instance.get<SettingsDialogService>();
+        AppServiceLocator.instance.get<SettingsDialogService>();
     dialogService.showCustomDialog(
       context: context,
       title: AppStrings.settings,

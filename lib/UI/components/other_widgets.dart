@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../DATA/helpers/helpers.dart';
-import '../../DOMAIN/models/app_enums.dart';
+import '../../DATA/models/app_enums.dart';
 
 class AppMiniWidgets {
 /* Custom Dividers

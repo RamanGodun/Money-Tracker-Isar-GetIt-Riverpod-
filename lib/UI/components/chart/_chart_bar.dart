@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../DATA/constants/app_box_decoration.dart';
-import '../../../DATA/providers/themes_provider.dart';
+import '../../../DOMAIN/providers/themes_provider.dart';
 
 class ChartBar extends ConsumerWidget {
   final double fill;

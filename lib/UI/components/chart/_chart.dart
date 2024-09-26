@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../DATA/constants/app_constants.dart';
-import '../../../DATA/providers/themes_provider.dart';
-import '../../../DOMAIN/models/app_enums.dart';
-import '../../../DOMAIN/models/expense_model.dart';
-import '../../../DOMAIN/models/expenses_bucket_model.dart';
+import '../../../DATA/helpers/helpers.dart';
+import '../../../DOMAIN/providers/themes_provider.dart';
+import '../../../DATA/models/app_enums.dart';
+import '../../../DATA/models/expense_model.dart';
+import '../../../DATA/models/expenses_bucket_model.dart';
 import '../text_widgets.dart';
 import '_chart_bar.dart';
 
@@ -112,7 +113,7 @@ class Chart extends ConsumerWidget {
                     children: buckets.map((bucket) {
                       return Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
                           child: Column(
                             children: [
                               Icon(
@@ -120,11 +121,11 @@ class Chart extends ConsumerWidget {
                                 color: colorScheme.secondary
                                     .withOpacity(isDarkMode ? 0.8 : 0.7),
                               ),
-                              StyledText.bodyMedium(
-                                  theme,
-                                  categorySum[bucket.category]
-                                          ?.toStringAsFixed(0) ??
-                                      '0'),
+                              StyledText.bodySmall(
+                                theme,
+                                Helpers().formatAmount(
+                                    categorySum[bucket.category] ?? 0),
+                              ),
                             ],
                           ),
                         ),

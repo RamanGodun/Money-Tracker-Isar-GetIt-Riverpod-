@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+/// A class to manage shadow styles in the app.
+/// Responsible for defining shadows for various components.
+
 abstract class AppBoxShadows {
+  /// First shadow for glassmorphism style
   static BoxShadow forGlassMorphism1(ThemeData theme, bool isDarkMode) {
     return BoxShadow(
       color: theme.colorScheme.shadow.withOpacity(isDarkMode ? 0.01 : 0.2),
@@ -10,6 +14,7 @@ abstract class AppBoxShadows {
     );
   }
 
+  /// Second shadow for glassmorphism style
   static BoxShadow forGlassMorphism2(ThemeData theme, bool isDarkMode) {
     return BoxShadow(
       color: theme.colorScheme.shadow.withOpacity(isDarkMode ? 0.01 : 0.1),

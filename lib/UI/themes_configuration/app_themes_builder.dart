@@ -1,55 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/DATA/constants/app_constants.dart';
-import '../../constants/app_borders.dart';
+import '../../DATA/constants/app_borders.dart';
 import 'app_colors.dart';
 import 'text_styles.dart';
 
+/// Builds the base theme data for both light and dark themes.
+/// Customizes the look and feel of the app through colors, typography, and UI components.
 abstract class ThisAppThemesBuilder {
+  /// Builds ThemeData for the app by using custom color schemes, app bar styles, and UI components.
   static ThemeData buildThemeData({
-    required bool isDark,
-    required ColorScheme colorScheme,
-    required Color scaffoldBackgroundColor,
-    required Color appBarBackgroundColor,
-    required Color barBackgroundColor,
-    required Color dividerColor,
-    required Color highlightColor,
-    required Color splashColor,
-    required Color tooltipColor,
-    required Color tabBarIndicatorColor,
-    required Color tabBarLabelColor,
-    required Color tabBarUnselectedLabelColor,
+    required bool isDark, // Specifies if the theme is dark mode.
+    required ColorScheme colorScheme, // Custom color scheme for the theme.
+    required Color scaffoldBackgroundColor, // Background color for scaffold.
+    required Color appBarBackgroundColor, // App bar background color.
+    required Color barBackgroundColor, // Bar background color
+    required Color dividerColor, //  for dividers between UI elements.
+    required Color highlightColor, //  for highlighted UI elements.
+    required Color splashColor, // Splash effect color for buttons.
+    required Color tooltipColor, // Tooltip color.
+    required Color tabBarIndicatorColor, //  for the tab bar indicator.
+    required Color tabBarLabelColor, //  for active tab bar labels.
+    required Color tabBarUnselectedLabelColor, // for inactive tab bar labels.
   }) {
     return ThemeData(
-/*
-GENERAL
- */
+      // General theme properties
       brightness: isDark ? Brightness.dark : Brightness.light,
-      primarySwatch: AppColors.kPrimarySwatch,
+      primarySwatch: AppColors.primarySwatch,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: scaffoldBackgroundColor,
-      textTheme: TextStyles4ThisAppThemes.kTextThemeData(isDark, colorScheme),
+      textTheme: AppTextStyles.kTextThemeData(isDark, colorScheme),
       visualDensity: VisualDensity.adaptivePlatformDensity,
 
-/*
-APPBAR
- */
+      // AppBar configuration
       appBarTheme: AppBarTheme(
         elevation: AppConstants.elevationCommon,
         centerTitle: false,
         iconTheme: IconThemeData(color: colorScheme.primary),
-        titleTextStyle:
-            TextStyles4ThisAppThemes.kTextThemeData(isDark, colorScheme)
-                .titleSmall
-                ?.copyWith(color: colorScheme.onSurface.withOpacity(0.7)),
+        titleTextStyle: AppTextStyles.kTextThemeData(isDark, colorScheme)
+            .titleSmall
+            ?.copyWith(color: colorScheme.onSurface.withOpacity(0.7)),
         toolbarTextStyle:
-            TextStyles4ThisAppThemes.kTextThemeData(isDark, colorScheme)
-                .bodyMedium,
+            AppTextStyles.kTextThemeData(isDark, colorScheme).bodyMedium,
         color: scaffoldBackgroundColor.withOpacity(0.2),
       ),
 
-/*
-CardTheme
- */
+      // Card configuration
       cardTheme: CardTheme(
         color: isDark
             ? colorScheme.inverseSurface.withOpacity(0.15)
@@ -60,9 +55,7 @@ CardTheme
         shape: AppBordersStyling.appRoundedRectangleBorder(colorScheme),
       ),
 
-/*
-DatePicker
- */
+      // DatePicker configuration
       datePickerTheme: DatePickerThemeData(
         backgroundColor: colorScheme.surface.withOpacity(isDark ? 0.25 : 0.6),
         shape: AppBordersStyling.appRoundedRectangleBorder(colorScheme),
@@ -72,24 +65,18 @@ DatePicker
         headerForegroundColor: colorScheme.onPrimary,
       ),
 
-/*
-DialogTheme
- */
+      // Dialog configuration
       dialogTheme: DialogTheme(
         backgroundColor: colorScheme.surface.withOpacity(0.9),
         shape: AppBordersStyling.appRoundedRectangleBorder(colorScheme),
         elevation: AppConstants.elevationCommon,
         titleTextStyle:
-            TextStyles4ThisAppThemes.kTextThemeData(isDark, colorScheme)
-                .titleMedium,
+            AppTextStyles.kTextThemeData(isDark, colorScheme).titleMedium,
         contentTextStyle:
-            TextStyles4ThisAppThemes.kTextThemeData(isDark, colorScheme)
-                .bodyMedium,
+            AppTextStyles.kTextThemeData(isDark, colorScheme).bodyMedium,
       ),
 
-/*
-DropdownMenu
- */
+      // DropdownMenu configuration
       dropdownMenuTheme: DropdownMenuThemeData(
         inputDecorationTheme: InputDecorationTheme(
           fillColor: colorScheme.surface.withOpacity(isDark ? 0.15 : 0.25),
@@ -111,9 +98,7 @@ DropdownMenu
         ),
       ),
 
-/*
-ELEVATED BUTTON 
- */
+      // ElevatedButton configuration
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.resolveWith<Color>(
@@ -133,30 +118,26 @@ ELEVATED BUTTON
             const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
           ),
           textStyle: WidgetStateProperty.all(
-            TextStyles4ThisAppThemes.kTextThemeData(isDark, colorScheme)
-                .labelLarge,
+            AppTextStyles.kTextThemeData(isDark, colorScheme).labelLarge,
           ),
           elevation: WidgetStateProperty.all(5),
         ),
       ),
 
-/*
-INPUT DECORATION
- */
+      // InputDecoration configuration
       inputDecorationTheme: InputDecorationTheme(
-        labelStyle: TextStyles4ThisAppThemes.kTextThemeData(isDark, colorScheme)
-            .labelMedium,
-        floatingLabelStyle:
-            TextStyles4ThisAppThemes.kTextThemeData(isDark, colorScheme)
-                .labelLarge
-                ?.copyWith(color: colorScheme.primary),
-        hintStyle: TextStyles4ThisAppThemes.kTextThemeData(isDark, colorScheme)
+        labelStyle:
+            AppTextStyles.kTextThemeData(isDark, colorScheme).labelMedium,
+        floatingLabelStyle: AppTextStyles.kTextThemeData(isDark, colorScheme)
+            .labelLarge
+            ?.copyWith(color: colorScheme.primary),
+        hintStyle: AppTextStyles.kTextThemeData(isDark, colorScheme)
             .bodySmall
             ?.copyWith(
               color: colorScheme.onSurface.withOpacity(0.5),
               fontStyle: FontStyle.italic,
             ),
-        errorStyle: TextStyles4ThisAppThemes.kTextThemeData(isDark, colorScheme)
+        errorStyle: AppTextStyles.kTextThemeData(isDark, colorScheme)
             .bodySmall
             ?.copyWith(
               color: colorScheme.error,
@@ -176,9 +157,6 @@ INPUT DECORATION
             .copyWith(
                 borderSide: BorderSide(color: colorScheme.error, width: 1.5)),
       ),
-
-/*
- */
     );
   }
 }

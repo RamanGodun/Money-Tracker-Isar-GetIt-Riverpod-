@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import '../../UI/themes_configuration/app_colors.dart';
 
-import '../themes_set/app_themes/app_colors.dart';
-
-class ErrorApp extends StatelessWidget {
-  final String errorMessage;
-
-  const ErrorApp({super.key, required this.errorMessage});
+/// A widget that displays a basic error screen.
+/// It is used to handle app crashes or critical errors by showing an error message.
+class ErrorScreen extends StatelessWidget {
+  final String errorDescription;
+  const ErrorScreen({super.key, required this.errorDescription});
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +13,8 @@ class ErrorApp extends StatelessWidget {
       home: Scaffold(
         body: Center(
           child: Text(
-            'Error occurred: $errorMessage',
-            style: const TextStyle(color: AppColors.kErrorColor, fontSize: 18),
+            'Error occurred: $errorDescription', // You could consider making this text translatable.
+            style: const TextStyle(color: AppColors.errorColor, fontSize: 18),
           ),
         ),
       ),

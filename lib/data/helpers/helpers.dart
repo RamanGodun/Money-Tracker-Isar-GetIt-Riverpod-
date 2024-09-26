@@ -2,28 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 
+/// A utility class that contains various helper methods used across the app.
+/// Provides easy access to theme-related data, device properties, formatting, and navigation utilities.
 class Helpers {
   /*
-  Here some useful methods, used across all app
+  Theme-related helpers
   */
+
   /// Get the current theme data.
-  static ThemeData themeGet(BuildContext context) {
+  static ThemeData getTheme(BuildContext context) {
     return Theme.of(context);
   }
 
   /// Get the color scheme from the current theme.
-  static ColorScheme colorSchemeGet(BuildContext context) {
-    return themeGet(context).colorScheme;
+  static ColorScheme getColorScheme(BuildContext context) {
+    return getTheme(context).colorScheme;
   }
 
   /// Get the text theme from the current theme.
-  static TextTheme textThemeGet(BuildContext context) {
-    return themeGet(context).textTheme;
+  static TextTheme getTextTheme(BuildContext context) {
+    return getTheme(context).textTheme;
   }
 
   /// Determine if the current theme is dark mode.
   static bool isDarkMode(BuildContext context) {
-    return themeGet(context).brightness == Brightness.dark;
+    return getTheme(context).brightness == Brightness.dark;
   }
 
   /// Determine if the given theme data is in dark mode.
@@ -31,32 +34,42 @@ class Helpers {
     return theme.brightness == Brightness.dark;
   }
 
-  /// Get the device size.
-  static Size deviceSizeGet(BuildContext context) {
+  /*
+  Device-related helpers
+  */
+
+  /// Get the size of the device screen.
+  static Size getDeviceSize(BuildContext context) {
     return MediaQuery.of(context).size;
   }
 
-  /// Get the device height.
-  static double deviceHeightGet(BuildContext context) {
-    return deviceSizeGet(context).height;
+  /// Get the height of the device screen.
+  static double getDeviceHeight(BuildContext context) {
+    return getDeviceSize(context).height;
   }
 
-  /// Get the device width.
-  static double deviceWidthGet(BuildContext context) {
-    return deviceSizeGet(context).width;
+  /// Get the width of the device screen.
+  static double getDeviceWidth(BuildContext context) {
+    return getDeviceSize(context).width;
   }
 
-/* Converting & formatting of data
-*/
+  /*
+  Data conversion & formatting
+  */
+
+  /// Converts a string to a double, returns 0 if parsing fails.
   double convertStringToDouble(String inputString) {
     double? amount = double.tryParse(inputString);
     return amount ?? 0;
   }
 
+  /// Formats a DateTime object to a readable string.
   String formattedTime(DateTime dateTime) {
     return DateFormat.yMMMMd().format(dateTime);
   }
 
+  /// Formats a double to a currency string.
+  /// If the value is above 1000, it formats it in a compact form with a currency symbol.
   String formatAmount(double inputAmount) {
     String formattedAmount;
     if (inputAmount >= 1000) {
@@ -74,29 +87,39 @@ class Helpers {
     return formattedAmount;
   }
 
-/* Navigation methods
-*/
+  /*
+  Navigation helpers
+  */
+
+  /// Navigates to the given page.
   static void push(BuildContext context, Widget page) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => page));
   }
 
+  /// Closes the current page.
   static void pop(BuildContext context) {
     Navigator.pop(context);
   }
 
-  void callSnackBar(
+  /// Displays a snackbar after a frame has finished rendering.
+  void triggerSnackBar(
       BuildContext context, String content, Color backgroundColor) {
     return SchedulerBinding.instance.addPostFrameCallback((_) {
       Helpers.showSnackBar(context, content, backgroundColor);
     });
   }
 
-/* Snackbars
-*/
+  /*
+  Snackbar helpers
+  */
+
+  /// Hides the current snackbar.
   static void clearSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 
+  /// Displays a custom snackbar.
+  /// Allows setting a background color or uses a default color based on the theme.
   static void showSnackBar(
       BuildContext ctx, String content, Color? backgroundColor) {
     bool isDarkTheme = Helpers.isDarkMode(ctx);
@@ -104,25 +127,22 @@ class Helpers {
       SnackBar(
         duration: const Duration(milliseconds: 2350),
         behavior: SnackBarBehavior.floating,
-        margin: EdgeInsets.only(bottom: Helpers.deviceHeightGet(ctx) * 0.85),
+        margin: EdgeInsets.only(bottom: Helpers.getDeviceHeight(ctx) * 0.85),
         backgroundColor: (backgroundColor != null)
             ? backgroundColor
             : isDarkTheme
-                ? colorSchemeGet(ctx).surface.withOpacity(0.75)
-                : colorSchemeGet(ctx).surface.withOpacity(0.9),
+                ? getColorScheme(ctx).surface.withOpacity(0.75)
+                : getColorScheme(ctx).surface.withOpacity(0.9),
         content: Padding(
           padding: const EdgeInsets.only(left: 50),
           child: Text(
             content,
-            style: Helpers.textThemeGet(ctx)
+            style: Helpers.getTextTheme(ctx)
                 .titleSmall!
-                .copyWith(color: Helpers.colorSchemeGet(ctx).secondary),
+                .copyWith(color: Helpers.getColorScheme(ctx).secondary),
           ),
         ),
       ),
     );
   }
-
-/*
- */
 }

@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:money_tracker/UI/components/text_widgets.dart';
 import '../../DATA/constants/app_constants.dart';
 import '../../DATA/constants/app_text_styling.dart';
-import '../../DATA/constants/strings_4_app.dart';
+import '../../DATA/constants/app_strings.dart';
 import '../../DATA/helpers/helpers.dart';
-import '../../DATA/providers/input_data_provider.dart';
-import '../../DATA/providers/themes_provider.dart';
-import '../../DOMAIN/models/app_enums.dart';
-import '../../DOMAIN/models/expense_model.dart';
-import '../../DOMAIN/models/expenses_input_state.dart';
+import '../../DOMAIN/providers/input_data_provider.dart';
+import '../../DOMAIN/providers/themes_provider.dart';
+import '../../DATA/models/app_enums.dart';
+import '../../DATA/models/expense_model.dart';
+import '../../DATA/models/expenses_input_state.dart';
 
 class NewOrEditExpense extends ConsumerStatefulWidget {
   final ExpenseModel? initialExpense;
@@ -37,7 +37,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
     if (widget.initialExpense != null) {
       Future(() {
         ref
-            .read(expensesInputDataProvider.notifier)
+            .read(expenseInputProvider.notifier)
             .setInitialExpense(widget.initialExpense!);
         _titleController.text = widget.initialExpense!.title;
         _amountController.text = widget.initialExpense!.amount.toString();
@@ -47,7 +47,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
 
   @override
   Widget build(BuildContext context) {
-    final expenseState = ref.watch(expensesInputDataProvider);
+    final expenseState = ref.watch(expenseInputProvider);
     final theme = ref.watch(themeDataProvider);
     final isDarkMode = theme.brightness == Brightness.dark;
 
@@ -116,10 +116,10 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
 
   Widget _buildTitleInputField(
       WidgetRef ref, NewExpenseState expenseState, ThemeData theme) {
-    final errorText = ref.watch(expensesInputDataProvider.notifier).titleError;
+    final errorText = ref.watch(expenseInputProvider.notifier).titleError;
 
     return SizedBox(
-      height: AppConstants.heightForComponent,
+      height: AppConstants.heightCommon,
       child: TextField(
         controller: _titleController,
         decoration: InputDecoration(
@@ -128,7 +128,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
           labelStyle: TextStyling.labelForTextField(theme, errorText),
         ),
         onChanged: (value) {
-          ref.read(expensesInputDataProvider.notifier).updateTitle(value);
+          ref.read(expenseInputProvider.notifier).updateTitle(value);
         },
       ),
     );
@@ -136,10 +136,10 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
 
   Widget _buildAmountInputField(
       WidgetRef ref, NewExpenseState expenseState, ThemeData theme) {
-    final errorText = ref.watch(expensesInputDataProvider.notifier).amountError;
+    final errorText = ref.watch(expenseInputProvider.notifier).amountError;
 
     return SizedBox(
-      height: AppConstants.heightForComponent,
+      height: AppConstants.heightCommon,
       child: TextField(
         controller: _amountController,
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -149,7 +149,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
           labelStyle: TextStyling.labelForTextField(theme, errorText),
         ),
         onChanged: (value) {
-          ref.read(expensesInputDataProvider.notifier).updateAmount(value);
+          ref.read(expenseInputProvider.notifier).updateAmount(value);
         },
       ),
     );
@@ -157,7 +157,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
 
   Widget _buildCategoryDropdown(
       WidgetRef ref, NewExpenseState expenseState, BuildContext context) {
-    final theme = Helpers.themeGet(context);
+    final theme = Helpers.getTheme(context);
     return DropdownButton<Category>(
       value: expenseState.category,
       items: Category.values.map((category) {
@@ -169,7 +169,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
       }).toList(),
       onChanged: (value) {
         if (value != null) {
-          ref.read(expensesInputDataProvider.notifier).updateCategory(value);
+          ref.read(expenseInputProvider.notifier).updateCategory(value);
         }
       },
     );
@@ -197,7 +197,7 @@ class _NewOrEditExpenseState extends ConsumerState<NewOrEditExpense> {
       firstDate: DateTime(now.year - 1),
       lastDate: now,
     );
-    ref.read(expensesInputDataProvider.notifier).updateDate(pickedDate);
+    ref.read(expenseInputProvider.notifier).updateDate(pickedDate);
   }
 
   @override

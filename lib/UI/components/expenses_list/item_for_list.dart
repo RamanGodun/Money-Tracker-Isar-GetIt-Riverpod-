@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:money_tracker/DATA/constants/app_borders.dart';
 import '../../../DATA/constants/app_constants.dart';
-import '../../../DATA/providers/themes_provider.dart';
+import '../../../DOMAIN/providers/themes_provider.dart';
 import '../../../DOMAIN/Services/_service_locator.dart';
 import '../../../DOMAIN/Services/exp_dialog_service.dart';
-import '../../../DOMAIN/models/expense_model.dart';
-import 'package:money_tracker/DATA/providers/expenses_provider.dart';
+import '../../../DATA/models/expense_model.dart';
+import 'package:money_tracker/DOMAIN/providers/expenses_provider.dart';
 
 import '../text_widgets.dart';
 
@@ -32,7 +32,7 @@ class ExpenseItemForList extends ConsumerWidget {
             borderRadius: AppConstants.borderRadiusCommon,
             onPressed: (_) {
               final dialogService =
-                  DIServiceLocator.instance.get<ExpenseDialogService>();
+                  AppServiceLocator.instance.get<ExpenseDialogService>();
               dialogService.showAddOrEditExpenseDialog(context, ref,
                   expenseToEdit: expense);
             },
@@ -44,7 +44,7 @@ class ExpenseItemForList extends ConsumerWidget {
             borderRadius: AppConstants.borderRadiusCommon,
             onPressed: (_) {
               ref
-                  .read(expensesNotifierProvider.notifier)
+                  .read(expenseManagementProvider.notifier)
                   .removeExpense(expense);
             },
             icon: Icons.delete,

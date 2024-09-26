@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/DATA/constants/app_borders.dart';
-import 'package:money_tracker/DATA/constants/strings_4_app.dart';
+import 'package:money_tracker/DATA/constants/app_strings.dart';
 import 'package:money_tracker/UI/components/text_widgets.dart';
 import '../../DATA/helpers/helpers.dart';
 import '../../UI/components/dialog_and_buttons/buttons_styling.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+/// Service class responsible for displaying custom dialogs in the app.
+/// This class provides methods to show dialogs with custom content and
+/// customizable theming options.
 class SettingsDialogService {
+  /// Displays a custom dialog with the given [title] and [content].
+  /// The dialog supports light and dark themes based on the [isDarkTheme] flag.
   void showCustomDialog({
     required BuildContext context,
     required String title,
     required Widget content,
     bool isDarkTheme = false,
   }) {
-    final theme = Helpers.themeGet(context);
+    // Get the current theme from the provided context
+    final theme = Helpers.getTheme(context);
 
+    // Show the dialog with a customizable barrier color and content
     showDialog(
       context: context,
       barrierColor:
@@ -29,10 +36,14 @@ class SettingsDialogService {
   }
 }
 
+/// Private widget class that provides an animated dialog for displaying
+/// settings-related content. The dialog includes an animated scale transition
+/// when it appears and disappears.
 class _AnimatedSettingsDialog extends HookWidget {
   final String title;
   final Widget content;
 
+  /// Constructor for initializing the dialog with a [title] and [content].
   const _AnimatedSettingsDialog({
     required this.title,
     required this.content,
@@ -40,14 +51,17 @@ class _AnimatedSettingsDialog extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Create an animation controller for handling dialog animations
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 200),
-    )..forward();
+    )..forward(); // Start the animation when the widget is built
 
-    final theme = Helpers.themeGet(context);
+    // Get the current theme and device size from the provided context
+    final theme = Helpers.getTheme(context);
     final isDarkMode = Helpers.isDarkTheme(theme);
-    final deviceSize = Helpers.deviceSizeGet(context);
+    final deviceSize = Helpers.getDeviceSize(context);
 
+    // Build a scale transition dialog with custom styling and animation
     return ScaleTransition(
       scale: animationController,
       child: Dialog(
@@ -60,15 +74,19 @@ class _AnimatedSettingsDialog extends HookWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Display the title of the dialog
               StyledText.titleMedium(theme, title),
+              // Display the custom content passed to the dialog
               content,
               const SizedBox(height: 20),
+              // Display the close button at the bottom of the dialog
               SizedBox(
                 width: deviceSize.width * 0.6,
                 child: AppButtonsStyling.forElevatedButton(
                   context,
                   buttonText: AppStrings.close,
                   onPressed: () {
+                    // Reverse the animation and close the dialog
                     animationController.reverse().then((_) {
                       Navigator.of(context).pop();
                     });
