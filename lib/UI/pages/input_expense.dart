@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_tracker/UI/components/text_widgets.dart';
+import '../components/text_widgets.dart';
 import '../../DATA/constants/app_constants.dart';
 import '../../DATA/constants/app_text_styling.dart';
 import '../../DATA/constants/app_strings.dart';

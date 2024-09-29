@@ -1,6 +1,7 @@
+import 'package:intl/intl.dart';
+
 import 'app_enums.dart';
 import 'db_item_model.dart';
-import 'package:intl/intl.dart';
 
 final DateFormat formatter = DateFormat.yMd();
 

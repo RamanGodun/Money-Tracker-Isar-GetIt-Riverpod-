@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracker/DATA/constants/app_constants.dart';
+import '../../DATA/constants/app_constants.dart';
 import '../../DATA/constants/app_borders.dart';
 import 'app_colors.dart';
 import 'text_styles.dart';

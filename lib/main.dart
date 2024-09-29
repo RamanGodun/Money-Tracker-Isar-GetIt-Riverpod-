@@ -19,15 +19,17 @@ Redistribution, modification, or use of the code for commercial purposes is stri
 */
 
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'DATA/data_services/sh_prefs_service.dart';
 import 'DATA/helpers/error_widget.dart';
+import 'DOMAIN/Services/_service_locator.dart';
 import 'DOMAIN/providers/gen_data_provider.dart';
+import 'DOMAIN/providers/themes_provider.dart';
 import 'UI/pages/main_screen.dart';
 import 'UI/themes_configuration/app_themes.dart';
-import 'DOMAIN/providers/themes_provider.dart';
-import 'DOMAIN/Services/_service_locator.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 ///  This function is an entry app point, initializes required services
 ///  and sets up the application with a `ProviderScope` for state management

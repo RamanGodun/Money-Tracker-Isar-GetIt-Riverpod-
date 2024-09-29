@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:money_tracker/DATA/constants/app_borders.dart';
+import '../../../DATA/constants/app_borders.dart';
 import '../../../DATA/constants/app_constants.dart';
 import '../../../DOMAIN/providers/themes_provider.dart';
 import '../../../DOMAIN/Services/_service_locator.dart';
 import '../../../DOMAIN/Services/exp_dialog_service.dart';
 import '../../../DATA/models/expense_model.dart';
-import 'package:money_tracker/DOMAIN/providers/expenses_provider.dart';
+import '../../../DOMAIN/providers/expenses_provider.dart';
 import '../text_widgets.dart';
 
 /// A widget that represents a single expense item in the list.

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracker/DATA/constants/app_borders.dart';
-import 'package:money_tracker/DATA/constants/app_strings.dart';
-import 'package:money_tracker/UI/components/text_widgets.dart';
+import '../../DATA/constants/app_borders.dart';
+import '../../DATA/constants/app_strings.dart';
+import '../../UI/components/text_widgets.dart';
 import '../../DATA/helpers/helpers.dart';
 import '../../UI/components/dialog_and_buttons/buttons_styling.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_tracker/DOMAIN/Services/animation_controller_service.dart';
+import 'animation_controller_service.dart';
 import '../../DATA/constants/app_strings.dart';
 import '../../DATA/models/expense_model.dart';
 import '../providers/expenses_provider.dart';
